@@ -9,6 +9,7 @@ export function MediaPlaceholder({
   compact = false,
   fit = "cover",
   loading = "lazy",
+  linkedDocument = false,
 }: {
   src?: string | null;
   alt: string;
@@ -17,6 +18,7 @@ export function MediaPlaceholder({
   compact?: boolean;
   fit?: "cover" | "contain";
   loading?: "eager" | "lazy";
+  linkedDocument?: boolean;
 }) {
   if (src)
     return (
@@ -49,16 +51,24 @@ export function MediaPlaceholder({
     <div className={`media-preview media-empty ${compact ? "compact" : ""}`}>
       <div className="media-caption">
         <span className="eyebrow">{label}</span>
-        <span className="eyebrow">Media pending</span>
+        <span className="eyebrow">
+          {linkedDocument ? "Document linked" : "Media pending"}
+        </span>
       </div>
       <div className="media-empty-center">
         <Icon name={icon} width={32} height={32} />
         <span>
-          {kind === "video" ? "Demo to be added" : "Preview to be added"}
+          {linkedDocument
+            ? "View document"
+            : kind === "video"
+              ? "Demo to be added"
+              : "Preview to be added"}
         </span>
       </div>
       <span className="media-footnote eyebrow">
-        Reserved for approved, shareable work
+        {linkedDocument
+          ? "Read the full document in a new tab"
+          : "Reserved for approved, shareable work"}
       </span>
     </div>
   );

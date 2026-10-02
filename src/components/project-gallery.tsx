@@ -8,6 +8,8 @@ import {
   type GalleryItem,
 } from "@/data/gallery";
 import { MediaPlaceholder } from "./media-placeholder";
+import { DocumentOverview } from "./document-overview";
+import { SpreadsheetOverview } from "./spreadsheet-overview";
 import { VideoPreview } from "./video-preview";
 import { Icon } from "./icons";
 
@@ -31,6 +33,8 @@ export function ProjectGallery({
   const [filter, setFilter] = useState<"all" | ArtifactType>("all");
   const [selected, setSelected] = useState<GalleryItem | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const galleryViewportRef = useRef<HTMLDivElement>(null);
+  const galleryGridRef = useRef<HTMLDivElement>(null);
   const items = projectSlug
     ? gallery.filter((item) => item.projectSlug === projectSlug)
     : gallery;
@@ -39,6 +43,33 @@ export function ProjectGallery({
       item.id !== primaryItem?.id && (filter === "all" || item.type === filter),
   );
   const scrollableGallery = Boolean(primaryItem && visibleItems.length > 3);
+  const scrollableLandingGallery =
+    !projectSlug && !primaryItem && visibleItems.length > 6;
+  useEffect(() => {
+    const viewport = galleryViewportRef.current;
+    const grid = galleryGridRef.current;
+    if (!scrollableLandingGallery || !viewport || !grid) return;
+
+    viewport.scrollTop = 0;
+    const cards = Array.from(grid.children).slice(0, 6);
+    function updateViewportHeight() {
+      if (!viewport || !grid) return;
+      const gridTop = grid.getBoundingClientRect().top;
+      const lastRowBottom = Math.max(
+        ...cards.map((card) => card.getBoundingClientRect().bottom),
+      );
+      // Include the viewport padding so all six cards and focus rings fit.
+      viewport.style.maxHeight = `${Math.ceil(lastRowBottom - gridTop) + 8}px`;
+    }
+    const observer = new ResizeObserver(updateViewportHeight);
+    observer.observe(grid);
+    cards.forEach((card) => observer.observe(card));
+    updateViewportHeight();
+    return () => {
+      observer.disconnect();
+      viewport.style.removeProperty("max-height");
+    };
+  }, [scrollableLandingGallery, filter]);
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!selected || !dialog) return;
@@ -142,45 +173,79 @@ export function ProjectGallery({
         </p>
         {visibleItems.length ? (
           <div
-            className={`gallery-grid${scrollableGallery ? " gallery-grid-scrollable" : ""}`}
-            role={scrollableGallery ? "region" : undefined}
-            aria-label={
-              scrollableGallery ? "Work Gallery screenshots" : undefined
+            ref={galleryViewportRef}
+            className={
+              scrollableLandingGallery
+                ? "landing-gallery-scrollable"
+                : undefined
             }
-            tabIndex={scrollableGallery ? 0 : undefined}
+            role={scrollableLandingGallery ? "region" : undefined}
+            aria-label={
+              scrollableLandingGallery ? "Work Gallery artifacts" : undefined
+            }
+            tabIndex={scrollableLandingGallery ? 0 : undefined}
           >
-            {visibleItems.map((item) => (
-              <article className="gallery-item" key={item.id}>
-                <button
-                  className="gallery-preview"
-                  onClick={() => setSelected(item)}
-                  aria-label={`Preview ${item.title}`}
-                >
-                  <MediaPlaceholder
-                    src={item.thumbnail}
-                    alt={item.thumbnailAlt}
-                    kind={item.type}
-                    label={artifactLabels[item.type]}
-                    compact
-                    fit={item.type === "image" ? "contain" : "cover"}
-                  />
-                  <span className="preview-action">
-                    {item.type === "video" ? "View demo" : "Preview"}{" "}
-                    <Icon name={item.type === "video" ? "play" : "external"} />
-                  </span>
-                </button>
-                {!primaryItem && (
-                  <>
-                    <h4>{item.title}</h4>
-                    <p>{item.description}</p>
-                    {item.technologies.length > 0 && (
-                      <p className="eyebrow">{item.technologies.join(" / ")}</p>
+            <div
+              ref={galleryGridRef}
+              className={`gallery-grid${scrollableGallery ? " gallery-grid-scrollable" : ""}`}
+              role={scrollableGallery ? "region" : undefined}
+              aria-label={
+                scrollableGallery ? "Work Gallery screenshots" : undefined
+              }
+              tabIndex={scrollableGallery ? 0 : undefined}
+            >
+              {visibleItems.map((item) => (
+                <article className="gallery-item" key={item.id}>
+                  <button
+                    className="gallery-preview"
+                    onClick={() => setSelected(item)}
+                    aria-label={`Preview ${item.title}`}
+                  >
+                    {hasPublishedDocument(item) && item.spreadsheetPreview ? (
+                      <SpreadsheetOverview
+                        title={item.title}
+                        excerpt={item.spreadsheetPreview}
+                        compact
+                      />
+                    ) : hasPublishedDocument(item) && item.documentPreview ? (
+                      <DocumentOverview
+                        title={item.title}
+                        excerpt={item.documentPreview}
+                        compact
+                      />
+                    ) : (
+                      <MediaPlaceholder
+                        src={item.thumbnail}
+                        alt={item.thumbnailAlt}
+                        kind={item.type}
+                        label={artifactLabels[item.type]}
+                        linkedDocument={hasPublishedDocument(item)}
+                        compact
+                        fit={item.type === "image" ? "contain" : "cover"}
+                      />
                     )}
-                    <ArtifactLinks item={item} />
-                  </>
-                )}
-              </article>
-            ))}
+                    <span className="preview-action">
+                      {item.type === "video" ? "View demo" : "Preview"}{" "}
+                      <Icon
+                        name={item.type === "video" ? "play" : "external"}
+                      />
+                    </span>
+                  </button>
+                  {!primaryItem && (
+                    <>
+                      <h4>{item.title}</h4>
+                      <p>{item.description}</p>
+                      {item.technologies.length > 0 && (
+                        <p className="eyebrow">
+                          {item.technologies.join(" / ")}
+                        </p>
+                      )}
+                      <ArtifactLinks item={item} />
+                    </>
+                  )}
+                </article>
+              ))}
+            </div>
           </div>
         ) : (
           <p className="empty-gallery">
@@ -217,8 +282,28 @@ export function ProjectGallery({
               <h2 id="preview-title">{selected.title}</h2>
               <p id="preview-description">{selected.description}</p>
               <div className="dialog-media">
-                {selected.isPlaceholder ||
-                (!selected.source && !selected.videoId) ? (
+                {hasPublishedDocument(selected) &&
+                selected.spreadsheetPreview ? (
+                  <SpreadsheetOverview
+                    title={selected.title}
+                    excerpt={selected.spreadsheetPreview}
+                  />
+                ) : hasPublishedDocument(selected) &&
+                  selected.documentPreview ? (
+                  <DocumentOverview
+                    title={selected.title}
+                    excerpt={selected.documentPreview}
+                  />
+                ) : hasPublishedDocument(selected) ? (
+                  <MediaPlaceholder
+                    src={selected.thumbnail}
+                    alt={selected.thumbnailAlt}
+                    label={artifactLabels[selected.type]}
+                    kind={selected.type}
+                    linkedDocument
+                  />
+                ) : selected.isPlaceholder ||
+                  (!selected.source && !selected.videoId) ? (
                   <MediaPlaceholder
                     src={selected.thumbnail}
                     alt={selected.thumbnailAlt}
@@ -260,12 +345,23 @@ export function ProjectGallery({
     </div>
   );
 }
-function ArtifactLinks({ item }: { item: GalleryItem }) {
-  const documentUrl =
+function getDocumentUrl(item: GalleryItem) {
+  return (
     item.documentUrl ??
     (item.type === "document" || item.type === "spreadsheet"
       ? item.source
-      : null);
+      : null)
+  );
+}
+function hasPublishedDocument(item: GalleryItem) {
+  return (
+    !item.isPlaceholder &&
+    (item.type === "document" || item.type === "spreadsheet") &&
+    Boolean(getDocumentUrl(item))
+  );
+}
+function ArtifactLinks({ item }: { item: GalleryItem }) {
+  const documentUrl = getDocumentUrl(item);
   const links = [
     { href: item.projectUrl, label: "Open project" },
     { href: item.repositoryUrl, label: "View repository" },

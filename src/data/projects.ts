@@ -14,6 +14,7 @@ export type Project = {
   thumbnail: string | null;
   thumbnailAlt: string;
   liveUrl: string | null;
+  liveUrls: { label: string; url: string }[];
   repositoryUrl: string | null;
 };
 
@@ -26,6 +27,7 @@ const unpublished = {
   thumbnail: null,
   thumbnailAlt: "",
   liveUrl: null,
+  liveUrls: [],
   repositoryUrl: null,
 };
 
@@ -37,18 +39,31 @@ export const projects: Project[] = [
     client: "BADIKLAT · Ministry of Defense",
     year: "2023",
     category: "Enterprise platform",
-    description: "Education and training platforms integrated into a centralized command center.",
+    description:
+      "Education and training platforms integrated into a centralized command center.",
     products: [],
     role: "Software Quality Assurance Lead",
-    testingScope: ["Functional testing", "Manual Testing", "Automated Testing","UAT testing"],
-    approach: "Created test strategy, test plan, and test cases for functional and non-functional testing. Executed manual and automated tests using Selenium WebDriver. Collaborated with developers to identify and resolve defects. Conducted UAT testing with stakeholders to ensure requirements were met.",
-    technologies: ["Selenium WebDriver", "Katalon Studio", "Postman", "REST API"],
-    outcome: "Identified and documented defects, verified fixes, and completed regression testing for key workflows. The results helped the team evaluate release readiness and prioritize remaining issues.",
+    testingScope: [
+      "Functional testing",
+      "Manual Testing",
+      "Automated Testing",
+      "UAT testing",
+    ],
+    approach:
+      "Created test strategy, test plan, and test cases for functional and non-functional testing. Executed manual and automated tests using Selenium WebDriver. Collaborated with developers to identify and resolve defects. Conducted UAT testing with stakeholders to ensure requirements were met.",
+    technologies: [
+      "Selenium WebDriver",
+      "Katalon Studio",
+      "Postman",
+      "REST API",
+    ],
+    outcome:
+      "Identified and documented defects, verified fixes, and completed regression testing for key workflows. The results helped the team evaluate release readiness and prioritize remaining issues.",
     thumbnail: "/projects/command-center/command-center-1.png",
-    thumbnailAlt: "Command Center application launcher with monitoring, account management, cloud storage, virtual collaboration, and building management options",
+    thumbnailAlt:
+      "Command Center application launcher with monitoring, account management, cloud storage, virtual collaboration, and building management options",
     liveUrl: "https://command-center.kemhan.go.id/",
     repositoryUrl: null,
-
   },
   {
     ...unpublished,
@@ -60,10 +75,52 @@ export const projects: Project[] = [
     description:
       "A collection of education and training products, from learning delivery to examinations and data archiving.",
     products: [
-      "Training Information System",
+      "Augmented Reality Learning",
+      "Virtual Reality Learning",
       "Learning Management System",
       "E-Exam",
       "Data Archive",
+    ],
+    role: "Software Quality Assurance Lead",
+    thumbnail:
+      "/projects/pusdiklat-bela-negara/learning-management/image-1.png",
+    thumbnailAlt:
+      "Learning Management System dashboard showing learning module summaries, trainee activity, and recent reports",
+    testingScope: [
+      "Functional testing",
+      "Manual Testing",
+      "Automated Testing",
+      "UAT testing",
+      "Unity application testing",
+      "Cross-platform testing",
+    ],
+    approach:
+      "Created test strategy, test plan, and test cases for functional and non-functional testing across various platforms. Tested Unity applications. Collaborated with developers to identify and resolve defects. Conducted UAT testing with stakeholders to ensure requirements were met.",
+
+    technologies: [
+      "Selenium WebDriver",
+      "Katalon Studio",
+      "Postman",
+      "REST API",
+      "Unity",
+      "Meta Quest",
+    ],
+    outcome:
+      "Identified and documented defects, verified fixes, and completed regression testing for key workflows. The results helped the team evaluate release readiness and prioritize remaining issues.",
+
+    liveUrls: [
+      {
+        label: "Learning Management System",
+        url: "http://ar-bn-frontend.10.70.0.45.nip.io/login",
+      },
+      {
+        label: "E-Exam",
+        url: "http://10.70.0.40:18000/login",
+      },
+      {
+        label: "Data Archive",
+        url: "http://data-archive.10.70.0.45.nip.io/",
+      },
     ],
   },
   {

@@ -45,6 +45,11 @@ export default async function ProjectPage({
   const index = projects.indexOf(project);
   const next = projects[(index + 1) % projects.length];
   const primaryMedia = getProjectMedia(project);
+  const liveLinks = project.liveUrls.length
+    ? project.liveUrls
+    : project.liveUrl
+      ? [{ label: "Live project", url: project.liveUrl }]
+      : [];
   const facts = [
     { label: "Year", value: project.year ?? "Not listed" },
     { label: "Type", value: project.category },
@@ -107,19 +112,26 @@ export default async function ProjectPage({
           <aside>
             <p className="eyebrow">A note on this work</p>
             <p>
-              This overview includes only the professional context provided for
-              the portfolio. Additional documentation and media will be added
-              when ready to share.
+              <strong>
+                If some details are missing/Error, it is because the project is
+                still under NDA or the client has not approved the release of
+                certain information.
+              </strong>
             </p>
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="button button-dark"
-              >
-                Live project <Icon name="external" />
-              </a>
+            {liveLinks.length > 0 && (
+              <div className="project-live-links">
+                {liveLinks.map(({ label, url }) => (
+                  <a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button button-dark"
+                  >
+                    {label} <Icon name="external" />
+                  </a>
+                ))}
+              </div>
             )}
             {project.repositoryUrl && (
               <a
