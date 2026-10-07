@@ -1,17 +1,43 @@
 import type { SpreadsheetExcerpt } from "@/data/gallery";
 import { Icon } from "./icons";
 
-export function SpreadsheetOverview({
+type SpreadsheetOverviewProps = {
+  title: string;
+  excerpt?: SpreadsheetExcerpt;
+  compact?: boolean;
+  isPlaceholder?: boolean;
+  isLinked?: boolean;
+};
+
+export function getSpreadsheetOverviewModel({
   title,
   excerpt,
   compact = false,
-}: {
-  title: string;
-  excerpt: SpreadsheetExcerpt;
-  compact?: boolean;
-}) {
-  const columns = compact ? excerpt.columns.slice(0, 2) : excerpt.columns;
-  const rows = compact ? excerpt.rows.slice(0, 3) : excerpt.rows;
+  isPlaceholder = false,
+}: SpreadsheetOverviewProps) {
+  const preview = excerpt ?? {
+    heading: title,
+    sheetName: "Template structure · Content pending",
+    columns: ["Column A", "Column B", "Column C", "Column D"],
+    rows: [],
+  };
+  const allColumns = preview.columns.length
+    ? preview.columns
+    : ["Column A", "Column B", "Column C", "Column D"];
+  const hasContent = !isPlaceholder && preview.rows.length > 0;
+  const columns = compact ? allColumns.slice(0, 2) : allColumns;
+  const rows = hasContent
+    ? compact
+      ? preview.rows.slice(0, 3)
+      : preview.rows
+    : Array.from({ length: 3 }, () => []);
+  return { preview, hasContent, columns, rows };
+}
+
+export function SpreadsheetOverview(props: SpreadsheetOverviewProps) {
+  const { title, compact = false, isLinked = false } = props;
+  const { preview, hasContent, columns, rows } =
+    getSpreadsheetOverviewModel(props);
   return (
     <div
       className={`media-preview document-overview spreadsheet-overview${compact ? " compact" : ""}`}
@@ -21,20 +47,25 @@ export function SpreadsheetOverview({
           <Icon name="grid" width={20} height={20} />
         </span>
         <span className="document-file-name">{title}</span>
-        <span className="document-provider">Google Sheets</span>
+        <span className="document-provider">
+          {isLinked ? "Google Sheets" : "Spreadsheet"}
+        </span>
       </div>
       <div className="document-sheet" lang="id">
-        <p className="document-sheet-heading">{excerpt.heading}</p>
-        <p className="spreadsheet-tab-name">{excerpt.sheetName}</p>
+        <p className="document-sheet-heading">{preview.heading}</p>
+        <p className="spreadsheet-tab-name">{preview.sheetName}</p>
         <div
           className="spreadsheet-table-viewport"
           role={compact ? undefined : "region"}
-          aria-label={compact ? undefined : "Test case table excerpt"}
+          aria-label={compact ? undefined : "Spreadsheet table preview"}
           tabIndex={compact ? undefined : 0}
         >
           <table>
             <caption className="sr-only">
-              {excerpt.sheetName} — test case excerpt
+              {preview.sheetName} —{" "}
+              {hasContent
+                ? "spreadsheet excerpt"
+                : "template structure, no data supplied"}
             </caption>
             <thead>
               <tr>
@@ -46,11 +77,21 @@ export function SpreadsheetOverview({
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
-                <tr key={row[0]}>
+              {rows.map((row, rowIndex) => (
+                <tr key={rowIndex}>
                   {columns.map((column, index) => (
                     <td key={column}>
-                      <span>{row[index]}</span>
+                      {hasContent ? (
+                        <span>{row[index] ?? ""}</span>
+                      ) : (
+                        <>
+                          <span
+                            className="spreadsheet-empty-cell"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">Not supplied</span>
+                        </>
+                      )}
                     </td>
                   ))}
                 </tr>
@@ -60,9 +101,11 @@ export function SpreadsheetOverview({
         </div>
       </div>
       <p className="document-excerpt-note">
-        Content excerpt
+        {hasContent ? "Content excerpt" : "Template preview"}
         {!compact &&
-          " · Open the spreadsheet for all test cases and scenarios."}
+          (isLinked
+            ? " · Open the spreadsheet for the full content."
+            : " · No spreadsheet has been linked yet.")}
       </p>
     </div>
   );

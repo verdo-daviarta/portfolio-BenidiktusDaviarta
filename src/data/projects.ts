@@ -131,8 +131,38 @@ export const projects: Project[] = [
     year: "2023 / 2024",
     category: "Learning platforms",
     description:
-      "Training information and learning management systems for language education.",
-    products: ["Training Information System", "Learning Management System"],
+      "Training Language and learning management systems for language education.",
+    products: ["Training Language System", "Learning Management System"],
+    testingScope: [
+      "Functional testing",
+      "Manual Testing",
+      "Automated Testing",
+      "UAT testing",
+      "Unity application testing",
+      "Cross-platform testing",
+    ],
+    approach:
+      "Created test strategy, test plan, and test cases for functional and non-functional testing across various platforms. Tested Unity applications. Collaborated with developers to identify and resolve defects. Conducted UAT testing with stakeholders to ensure requirements were met.",
+    technologies: [
+      "Selenium WebDriver",
+      "Katalon Studio",
+      "Postman",
+      "REST API",
+      "Unity",
+    ],
+    thumbnail: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-1.png",
+    thumbnailAlt:
+      "PUSDIKLAT Bahasa admin dashboard showing language, conversation module, listening question, exam, course, and user summaries",
+
+    outcome:
+      "Identified and documented defects, verified fixes, and completed regression testing for key workflows. The results helped the team evaluate release readiness and prioritize remaining issues.",
+
+    liveUrls: [
+      {
+        label: "Training Language System",
+        url: "http://192.168.100.127:11301/admin/dashboard",
+      },
+    ],
   },
   {
     ...unpublished,
@@ -144,6 +174,24 @@ export const projects: Project[] = [
     description:
       "Distance learning and information access through a learning information system and an information kiosk.",
     products: ["Distance Learning Information System", "Information Kiosk"],
+    testingScope: [
+      "Functional testing",
+      "Manual Testing",
+      "Automated Testing",
+      "UAT testing",
+      "Security testing",
+    ],
+    approach:
+      "Created test strategy, test plan, and test cases for functional and non-functional testing across various platforms. Tested Unity applications. Collaborated with developers to identify and resolve defects. Conducted UAT testing with stakeholders to ensure requirements were met.",
+    technologies: [
+      "Selenium WebDriver",
+      "Katalon Studio",
+      "Postman",
+      "REST API",
+    ],
+    thumbnail: "/projects/pusdiklat-tekfunghan/image-2.jpg",
+    thumbnailAlt:
+      "PUSDIKLAT Tekfunghan student management dashboard showing training and student summaries with a student count chart",
   },
   {
     ...unpublished,

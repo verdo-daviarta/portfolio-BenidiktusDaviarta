@@ -201,10 +201,12 @@ export function ProjectGallery({
                     onClick={() => setSelected(item)}
                     aria-label={`Preview ${item.title}`}
                   >
-                    {hasPublishedDocument(item) && item.spreadsheetPreview ? (
+                    {item.type === "spreadsheet" ? (
                       <SpreadsheetOverview
                         title={item.title}
                         excerpt={item.spreadsheetPreview}
+                        isPlaceholder={item.isPlaceholder}
+                        isLinked={hasPublishedDocument(item)}
                         compact
                       />
                     ) : hasPublishedDocument(item) && item.documentPreview ? (
@@ -282,11 +284,12 @@ export function ProjectGallery({
               <h2 id="preview-title">{selected.title}</h2>
               <p id="preview-description">{selected.description}</p>
               <div className="dialog-media">
-                {hasPublishedDocument(selected) &&
-                selected.spreadsheetPreview ? (
+                {selected.type === "spreadsheet" ? (
                   <SpreadsheetOverview
                     title={selected.title}
                     excerpt={selected.spreadsheetPreview}
+                    isPlaceholder={selected.isPlaceholder}
+                    isLinked={hasPublishedDocument(selected)}
                   />
                 ) : hasPublishedDocument(selected) &&
                   selected.documentPreview ? (

@@ -166,6 +166,94 @@ test("gallery filters, keyboard preview, focus trap, and return focus", async ({
   }
 });
 
+test("all spreadsheet cards use the standard table model and Test planning remains an honest empty template", async ({
+  page,
+}) => {
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await page
+      .getByRole("button", { name: "Spreadsheets", exact: true })
+      .click();
+    const cards = page.locator(".gallery-item");
+    const sheets = gallery.filter((item) => item.type === "spreadsheet");
+    await expect(cards).toHaveCount(sheets.length);
+    await expect(cards.locator(".spreadsheet-overview")).toHaveCount(
+      sheets.length,
+    );
+    await expect(cards.locator(".media-empty")).toHaveCount(0);
+    const trigger = page.getByRole("button", {
+      name: "Preview Test planning",
+      exact: true,
+    });
+    const cover = trigger.locator(".spreadsheet-overview");
+    await expect(
+      cover.getByRole("columnheader", { name: "Module", exact: true }),
+    ).toBeVisible();
+    await expect(
+      cover.getByRole("columnheader", { name: "Scenario", exact: true }),
+    ).toBeVisible();
+    await expect(
+      cover.getByText("Template preview", { exact: true }),
+    ).toBeVisible();
+    await expect(cover.getByText("Google Sheets", { exact: true })).toHaveCount(
+      0,
+    );
+    await expect(cover.locator(".spreadsheet-empty-cell")).toHaveCount(6);
+    const actualCard = cards.filter({
+      has: page.getByRole("heading", { name: "Test planning", exact: true }),
+    });
+    await expect(actualCard.getByRole("link")).toHaveCount(0);
+    await trigger.click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.locator(".spreadsheet-overview")).toBeVisible();
+    await expect(dialog.getByRole("columnheader")).toHaveCount(4);
+    await expect(
+      dialog.getByRole("columnheader", { name: "Priority", exact: true }),
+    ).toBeVisible();
+    await expect(dialog.locator(".spreadsheet-empty-cell")).toHaveCount(12);
+    await expect(
+      dialog.getByText(
+        "Template preview · No spreadsheet has been linked yet.",
+        { exact: true },
+      ),
+    ).toBeVisible();
+    await expect(
+      dialog.getByText(
+        "This is a reserved gallery entry. No artifact has been provided yet.",
+        { exact: true },
+      ),
+    ).toBeVisible();
+    await expect(dialog.getByRole("link")).toHaveCount(0);
+    const scroller = dialog.getByRole("region", {
+      name: "Spreadsheet table preview",
+      exact: true,
+    });
+    await scroller.focus();
+    if (
+      await scroller.evaluate(
+        (element) => element.scrollWidth > element.clientWidth,
+      )
+    ) {
+      await page.keyboard.press("ArrowRight");
+      await expect
+        .poll(() => scroller.evaluate((element) => element.scrollLeft))
+        .toBeGreaterThan(0);
+    }
+    expect(
+      await dialog.evaluate(
+        (element) => element.scrollWidth <= element.clientWidth,
+      ),
+    ).toBe(true);
+    const result = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(result.violations).toEqual([]);
+    await page.keyboard.press("Escape");
+    await expect(trigger).toBeFocused();
+  }
+});
+
 test("landing gallery scrolls after six cards and removes the limit for filtered results", async ({
   page,
 }) => {
@@ -498,6 +586,275 @@ test("Bela Negara uses the LMS hero and previews all remaining supplied screensh
   }
 });
 
+test("Tekfunghan uses the student dashboard hero and previews safe representative screenshots", async ({
+  page,
+  request,
+}) => {
+  const project = projects.find(
+    (item) => item.slug === "pusdiklat-tekfunghan",
+  )!;
+  const screenshots = gallery.filter(
+    (item) => item.projectSlug === project.slug,
+  );
+  const heroSource = "/projects/pusdiklat-tekfunghan/image-2.jpg";
+  expect(project.thumbnail).toBe(heroSource);
+  expect(screenshots).toHaveLength(4);
+  expect(
+    screenshots.every((item) => item.type === "image" && !item.isPlaceholder),
+  ).toBe(true);
+  expect(screenshots.map((item) => item.source).sort()).toEqual(
+    [1, 2, 3, 4].map(
+      (number) => `/projects/pusdiklat-tekfunghan/image-${number}.jpg`,
+    ),
+  );
+  await page.goto(`/projects/${project.slug}`);
+  const sidebar = page.locator(".work-gallery-sidebar");
+  await expect(sidebar.locator(".gallery-item")).toHaveCount(3);
+  await expect(sidebar.locator(".gallery-grid-scrollable")).toHaveCount(0);
+  const hero = screenshots.find((item) => item.source === heroSource)!;
+  await expect(
+    sidebar.getByRole("button", { name: `Preview ${hero.title}`, exact: true }),
+  ).toHaveCount(0);
+  const heroImage = page.locator(".main-project-preview img");
+  expect(
+    new URL(
+      (await heroImage.getAttribute("src"))!,
+      page.url(),
+    ).searchParams.get("url"),
+  ).toBe(heroSource);
+  for (const item of screenshots) {
+    const response = await request.get(item.source!);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("image/jpeg");
+  }
+  // The unreviewed exam tokens must not be served by the portfolio.
+  expect(
+    (await request.get("/projects/pusdiklat-tekfunghan/image-5.jpg")).status(),
+  ).toBe(404);
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth <=
+          document.documentElement.clientWidth,
+      ),
+    ).toBe(true);
+    for (const item of screenshots) {
+      const trigger = page.getByRole("button", {
+        name: `Preview ${item.title}`,
+        exact: true,
+      });
+      await trigger.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() =>
+          trigger
+            .locator("img")
+            .evaluate(
+              (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
+            ),
+        )
+        .toBe(true);
+      await trigger.click();
+      const dialog = page.getByRole("dialog");
+      const preview = dialog.getByRole("img", {
+        name: item.thumbnailAlt,
+        exact: true,
+      });
+      await expect
+        .poll(() =>
+          preview.evaluate(
+            (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
+          ),
+        )
+        .toBe(true);
+      expect(
+        new URL(
+          (await preview.getAttribute("src"))!,
+          page.url(),
+        ).searchParams.get("url"),
+      ).toBe(item.source);
+      expect(
+        await preview.evaluate((img) => getComputedStyle(img).objectFit),
+      ).toBe("contain");
+      expect(
+        await dialog.evaluate(
+          (element) => element.scrollWidth <= element.clientWidth,
+        ),
+      ).toBe(true);
+      await page.keyboard.press("Escape");
+      await expect(dialog).not.toBeVisible();
+      await expect(trigger).toBeFocused();
+    }
+  }
+  await page.goto("/");
+  await page.getByRole("button", { name: "Images", exact: true }).click();
+  for (const item of screenshots) {
+    await expect(
+      page.getByRole("button", { name: `Preview ${item.title}`, exact: true }),
+    ).toHaveCount(1);
+  }
+});
+
+test("Bahasa quality scope, testing approach, and tools match Bela Negara", async ({
+  page,
+}) => {
+  const reference = projects.find(
+    (project) => project.slug === "pusdiklat-bela-negara",
+  )!;
+  const bahasa = projects.find(
+    (project) => project.slug === "pusdiklat-bahasa",
+  )!;
+  expect(bahasa.testingScope).toEqual(reference.testingScope);
+  expect(bahasa.approach).toBe(reference.approach);
+  expect(bahasa.technologies).toEqual(reference.technologies);
+  const sections = ["Quality scope", "Testing approach", "Tools"];
+  await page.goto(`/projects/${reference.slug}`);
+  const referenceText: string[] = [];
+  for (const heading of sections) {
+    const section = page.locator(".detail-section").filter({
+      has: page.getByRole("heading", { name: heading, exact: true }),
+    });
+    referenceText.push(await section.locator("p").innerText());
+  }
+  await page.goto(`/projects/${bahasa.slug}`);
+  for (const [index, heading] of sections.entries()) {
+    const section = page.locator(".detail-section").filter({
+      has: page.getByRole("heading", { name: heading, exact: true }),
+    });
+    await expect(section.locator("p")).toHaveText(referenceText[index]);
+  }
+});
+
+test("Bahasa uses the admin hero and previews representative Admin Panel and VR samples", async ({
+  page,
+  request,
+}) => {
+  const screenshots = gallery.filter(
+    (item) => item.projectSlug === "pusdiklat-bahasa",
+  );
+  const heroSource = "/projects/pusdiklat-bahasa/admin-panel/admin-panel-1.png";
+  expect(screenshots).toHaveLength(13);
+  expect(new Set(screenshots.map((item) => item.source)).size).toBe(13);
+  expect(
+    screenshots.every((item) => item.type === "image" && !item.isPlaceholder),
+  ).toBe(true);
+  expect(
+    screenshots.filter((item) => item.source?.includes("/admin-panel/")),
+  ).toHaveLength(5);
+  expect(
+    screenshots.filter((item) => item.source?.includes("/vr/")),
+  ).toHaveLength(8);
+  const project = projects.find((item) => item.slug === "pusdiklat-bahasa")!;
+  expect(project.thumbnail).toBe(heroSource);
+  await page.goto(`/projects/${project.slug}`);
+  const sidebar = page.locator(".work-gallery-sidebar");
+  await expect(sidebar.locator(".gallery-item")).toHaveCount(12);
+  const hero = screenshots.find((item) => item.source === heroSource)!;
+  await expect(
+    sidebar.getByRole("button", { name: `Preview ${hero.title}`, exact: true }),
+  ).toHaveCount(0);
+  const heroImage = page.locator(".main-project-preview img");
+  expect(
+    new URL(
+      (await heroImage.getAttribute("src"))!,
+      page.url(),
+    ).searchParams.get("url"),
+  ).toBe(heroSource);
+
+  for (const item of screenshots) {
+    const response = await request.get(item.source!);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("image/png");
+    const trigger = page.getByRole("button", {
+      name: `Preview ${item.title}`,
+      exact: true,
+    });
+    await trigger.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() =>
+        trigger
+          .locator("img")
+          .evaluate(
+            (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
+          ),
+      )
+      .toBe(true);
+    await trigger.click();
+    const dialog = page.getByRole("dialog");
+    const preview = dialog.getByRole("img", {
+      name: item.thumbnailAlt,
+      exact: true,
+    });
+    await expect
+      .poll(() =>
+        preview.evaluate(
+          (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
+        ),
+      )
+      .toBe(true);
+    expect(
+      new URL(
+        (await preview.getAttribute("src"))!,
+        page.url(),
+      ).searchParams.get("url"),
+    ).toBe(item.source);
+    expect(
+      await preview.evaluate((img) => getComputedStyle(img).objectFit),
+    ).toBe("contain");
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+    await expect(trigger).toBeFocused();
+  }
+
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth <=
+          document.documentElement.clientWidth,
+      ),
+    ).toBe(true);
+    const scroller = page.getByRole("region", {
+      name: "Work Gallery screenshots",
+      exact: true,
+    });
+    expect(
+      await scroller.evaluate(
+        (element) => element.scrollHeight > element.clientHeight,
+      ),
+    ).toBe(true);
+    await scroller.focus();
+    await page.keyboard.press("End");
+    await expect
+      .poll(() => scroller.evaluate((element) => element.scrollTop))
+      .toBeGreaterThan(0);
+    const last = screenshots[screenshots.length - 1];
+    await sidebar
+      .getByRole("button", { name: `Preview ${last.title}`, exact: true })
+      .click();
+    const dialog = page.getByRole("dialog");
+    await expect(
+      dialog.getByRole("img", { name: last.thumbnailAlt, exact: true }),
+    ).toBeVisible();
+    expect(
+      await dialog.evaluate(
+        (element) => element.scrollWidth <= element.clientWidth,
+      ),
+    ).toBe(true);
+    await page.keyboard.press("Escape");
+  }
+
+  await page.goto("/");
+  await page.getByRole("button", { name: "Images", exact: true }).click();
+  for (const item of screenshots) {
+    await expect(
+      page.getByRole("button", { name: `Preview ${item.title}`, exact: true }),
+    ).toHaveCount(1);
+  }
+});
+
 test("AR issue document appears on the landing gallery and Bela Negara with a safe external link", async ({
   page,
 }) => {
@@ -714,7 +1071,7 @@ test("Data Archive sheet has a readable table overview and opens the exact tab",
       ).toBeVisible();
       await expect(table.getByText(/Name Tester|Mutia/)).toHaveCount(0);
       const scroller = dialog.getByRole("region", {
-        name: "Test case table excerpt",
+        name: "Spreadsheet table preview",
         exact: true,
       });
       await scroller.focus();
@@ -869,6 +1226,8 @@ for (const width of [390, 1440]) {
       "/",
       "/projects/command-center",
       "/projects/pusdiklat-bela-negara",
+      "/projects/pusdiklat-bahasa",
+      "/projects/pusdiklat-tekfunghan",
     ]) {
       await page.goto(route);
       if (route === "/") {

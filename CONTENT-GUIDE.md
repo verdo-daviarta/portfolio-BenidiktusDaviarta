@@ -31,10 +31,40 @@ require access to the client's network or VPN.
 
 Edit `src/data/gallery.ts`. Add actual work, supply its metadata and assets, and set `isPlaceholder: false`. Remove unused publishing slots if preferred. Filters appear for six or more entries. Associating an artifact with `projectSlug` also places it in that project's gallery.
 
+### PUSDIKLAT Bahasa media selection
+
+The supplied `images/PUSDIKLAT-Bahasa/` folder contains 90 screenshots: seven
+Admin Panel images and 83 VR/gameplay images. The published selection contains
+13 representative samples, rather than repetitive views of the same interaction:
+
+- Admin Panel: `1`, `2`, `3`, `5`, `6` (dashboard, language catalog, conversation modules, listening question, exam reports).
+- VR/gameplay: `image1`, `image10`, `image41`, `image64`, `image65`, `image67`, `image72`, `image76` (conversation modes, Mandarin dialogue, answer controls, recording, assessment feedback, meeting room, outdoor scene, navigation).
+
+Selected PNGs are copied unchanged into `public/projects/pusdiklat-bahasa/`,
+under `admin-panel/` and `vr/`. The original source folder is retained.
+`Admin Panel 1.png` is the project's hero, configured in `src/data/projects.ts`;
+its matching gallery record prevents duplication in the overview sidebar.
+The other 12 samples appear in the overview's scrollable Work Gallery, while
+the landing page gallery includes all 13. Titles and alt text describe the
+visible screenshots without asserting test results or undocumented features.
+
+### PUSDIKLAT Tekfunghan media selection
+
+All five JPEGs in `images/PUSDIKLAT-Tekfunghan/` were reviewed. Four distinct
+views are copied unchanged to `public/projects/pusdiklat-tekfunghan/`:
+`2.jpg` is the student management dashboard hero, while `1.jpg`, `3.jpg`, and
+`4.jpg` cover student registration, academic assessment, and alumni management.
+The overview gallery contains those three additional images without duplicating
+the hero; the landing gallery includes all four. With three sidebar items, the
+existing layout does not need an internal scrollbar. The original folder is
+retained. `5.jpg` is deliberately not published because its examination schedule
+displays exam token values. Review/redact those values before publishing it.
+No kiosk screenshot is inferred, and project-specific QA content remains unchanged.
+
 | Type          | Preview and destination                                                       |
 | ------------- | ----------------------------------------------------------------------------- |
 | `image`       | `thumbnail` for the gallery, `source` for the full preview                    |
-| `spreadsheet` | Screenshot in `thumbnail`; `documentUrl` opens the real spreadsheet           |
+| `spreadsheet` | Standard table overview from `spreadsheetPreview`; `documentUrl` opens the real spreadsheet |
 | `document`    | Cover/screenshot in `thumbnail`; `documentUrl` or `source` opens the document |
 | `video`       | Set provider and source/ID as described below                                 |
 | `web`         | Screenshot in `thumbnail`; `projectUrl` opens the app                         |
@@ -56,6 +86,15 @@ The card shows the first two columns and three rows; the dialog shows the full
 configured excerpt with a keyboard-scrollable table. Preserve the tab's `gid` in
 `documentUrl`. As with document previews, this is public static content, not a
 live Google Sheets embed; exclude private tester details and update it manually.
+
+All `spreadsheet` cards and dialogs use `SpreadsheetOverview` as the standard
+presentation, even without a link or supplied excerpt. Missing content is shown
+as a labeled **Template preview** with empty rows, never fabricated test cases.
+`Test planning` currently defines only its intended column structure and remains
+unpublished. Without configured columns, the standard fallback uses generic
+column headings. Add approved rows and set `isPlaceholder: false` to display real
+content; add `documentUrl` to enable **Open spreadsheet**. Spreadsheet thumbnails
+do not override this standard table presentation.
 
 ## Videos
 

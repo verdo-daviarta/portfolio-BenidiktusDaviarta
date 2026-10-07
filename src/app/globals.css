@@ -559,6 +559,14 @@ dd {
 .spreadsheet-overview tbody tr:nth-child(even) {
   background: #f7f9f4;
 }
+.spreadsheet-overview td .spreadsheet-empty-cell {
+  display: block;
+  width: 65%;
+  height: 8px;
+  margin: 5px 0;
+  background: var(--line);
+  border-radius: 2px;
+}
 .spreadsheet-overview.compact .document-sheet {
   padding: 10px;
 }

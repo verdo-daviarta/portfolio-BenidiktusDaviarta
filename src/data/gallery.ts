@@ -453,11 +453,254 @@ export const gallery: GalleryItem[] = [
   },
   {
     ...emptyArtifact,
+    id: "bahasa-admin-dashboard",
+    type: "image",
+    title: "Bahasa Admin · Dashboard",
+    description:
+      "Language learning administration dashboard with module, listening question, exam, course, and user summaries.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-1.png",
+    thumbnailAlt:
+      "PUSDIKLAT Bahasa admin dashboard showing language, conversation module, listening question, exam, course, and user summaries",
+    source: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-1.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-admin-languages",
+    type: "image",
+    title: "Bahasa Admin · Language catalog",
+    description: "Language catalog presented as cards with country flags.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-2.png",
+    thumbnailAlt:
+      "Language administration catalog showing language cards with country flags",
+    source: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-2.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-admin-conversation-modules",
+    type: "image",
+    title: "Bahasa Admin · Conversation modules",
+    description:
+      "Conversation module list with language, location, area, and difficulty filters.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-3.png",
+    thumbnailAlt:
+      "Conversation module administration table with search and language, location, area, and difficulty filters",
+    source: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-3.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-admin-listening-question",
+    type: "image",
+    title: "Bahasa Admin · Listening question",
+    description:
+      "Listening question detail with answer choices, a video preview, and question settings.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-5.png",
+    thumbnailAlt:
+      "Listening question administration form showing answer choices, a classroom video preview, and question settings",
+    source: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-5.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-admin-exam-reports",
+    type: "image",
+    title: "Bahasa Admin · Exam reports",
+    description: "Examination report list with language and date filters.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-6.png",
+    thumbnailAlt:
+      "Examination report administration table with language and date filters",
+    source: "/projects/pusdiklat-bahasa/admin-panel/admin-panel-6.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-vr-conversation-modes",
+    type: "image",
+    title: "Bahasa VR · Conversation modes",
+    description:
+      "Beginner classroom conversation scenario with Exercise and Exam options.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/vr/image-1.png",
+    thumbnailAlt:
+      "VR classroom conversation selection for Fill the Free Time with Exercise and Exam buttons and two uniformed characters",
+    source: "/projects/pusdiklat-bahasa/vr/image-1.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-vr-mandarin-dialogue",
+    type: "image",
+    title: "Bahasa VR · Mandarin dialogue",
+    description:
+      "Conversation interface with Mandarin text, Latin transliteration, and a Record Answer control.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/vr/image-10.png",
+    thumbnailAlt:
+      "VR Mandarin conversation with Chinese text, Latin transliteration, Record Answer control, and uniformed characters",
+    source: "/projects/pusdiklat-bahasa/vr/image-10.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-vr-answer-controls",
+    type: "image",
+    title: "Bahasa VR · Answer controls",
+    description:
+      "Participant dialogue and recorded answer text with Send Answer and Delete Answer controls.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/vr/image-41.png",
+    thumbnailAlt:
+      "VR conversation panel showing participant and user answer text, Send Answer and Delete Answer buttons, and two characters",
+    source: "/projects/pusdiklat-bahasa/vr/image-41.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-vr-recording-answer",
+    type: "image",
+    title: "Bahasa VR · Recording an answer",
+    description:
+      "Voice answer interface captured in the Recording state during a Mandarin conversation.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/vr/image-64.png",
+    thumbnailAlt:
+      "VR Mandarin conversation panel with participant text, user answer text, and a red Recording indicator",
+    source: "/projects/pusdiklat-bahasa/vr/image-64.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-vr-answer-report",
+    type: "image",
+    title: "Bahasa VR · Answer report",
+    description:
+      "Conversation report comparing the user answer with the expected answer and displaying assessment feedback.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/vr/image-65.png",
+    thumbnailAlt:
+      "VR conversation report showing participant text, Your Answer and Right Answer fields, time log, and Incorrect feedback",
+    source: "/projects/pusdiklat-bahasa/vr/image-65.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-vr-meeting-room",
+    type: "image",
+    title: "Bahasa VR · Meeting room scenario",
+    description:
+      "Intermediate Notable cities conversation in a meeting room with Exercise and Exam options.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/vr/image-67.png",
+    thumbnailAlt:
+      "VR meeting room with seated characters and the Notable cities conversation selection panel",
+    source: "/projects/pusdiklat-bahasa/vr/image-67.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-vr-outdoor-conversation",
+    type: "image",
+    title: "Bahasa VR · Outdoor conversation",
+    description:
+      "Advanced Earthquake Disaster language conversation scenario in an outdoor seating area.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/vr/image-72.png",
+    thumbnailAlt:
+      "VR outdoor seating area with characters and an advanced Earthquake Disaster conversation selection panel",
+    source: "/projects/pusdiklat-bahasa/vr/image-72.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "bahasa-vr-scenario-navigation",
+    type: "image",
+    title: "Bahasa VR · Scenario navigation",
+    description:
+      "Immersive scenario selection with difficulty labels and a green floor navigation marker.",
+    projectSlug: "pusdiklat-bahasa",
+    thumbnail: "/projects/pusdiklat-bahasa/vr/image-76.png",
+    thumbnailAlt:
+      "VR scenario navigation showing Cultural Economic Advantages and Immigration Area labels with a green floor marker",
+    source: "/projects/pusdiklat-bahasa/vr/image-76.png",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "tekfunghan-student-dashboard",
+    type: "image",
+    title: "Tekfunghan · Student management dashboard",
+    description:
+      "Student management dashboard with training and student summaries and a student count chart.",
+    projectSlug: "pusdiklat-tekfunghan",
+    thumbnail: "/projects/pusdiklat-tekfunghan/image-2.jpg",
+    thumbnailAlt:
+      "PUSDIKLAT Tekfunghan student management dashboard showing training and student summaries with a student count chart",
+    source: "/projects/pusdiklat-tekfunghan/image-2.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "tekfunghan-student-registration",
+    type: "image",
+    title: "Tekfunghan · Student registration",
+    description:
+      "Student information welcome page with campus imagery, student instructions, and an NRP/NIP registration field.",
+    projectSlug: "pusdiklat-tekfunghan",
+    thumbnail: "/projects/pusdiklat-tekfunghan/image-1.jpg",
+    thumbnailAlt:
+      "Tekfunghan student information welcome page showing the campus entrance, institutional logos, and an empty NRP/NIP registration field",
+    source: "/projects/pusdiklat-tekfunghan/image-1.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "tekfunghan-academic-assessment",
+    type: "image",
+    title: "Tekfunghan · Academic assessment",
+    description:
+      "Academic assessment training list with training and year filters, search, status labels, and pagination.",
+    projectSlug: "pusdiklat-tekfunghan",
+    thumbnail: "/projects/pusdiklat-tekfunghan/image-3.jpg",
+    thumbnailAlt:
+      "Tekfunghan academic assessment table with training and year filters, cohort search, training status labels, and pagination",
+    source: "/projects/pusdiklat-tekfunghan/image-3.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "tekfunghan-alumni-dashboard",
+    type: "image",
+    title: "Tekfunghan · Alumni management",
+    description:
+      "Alumni management dashboard showing completed training summaries and a training list.",
+    projectSlug: "pusdiklat-tekfunghan",
+    thumbnail: "/projects/pusdiklat-tekfunghan/image-4.jpg",
+    thumbnailAlt:
+      "Tekfunghan alumni management dashboard showing completed training counts and a table of training cohorts, participants, and dates",
+    source: "/projects/pusdiklat-tekfunghan/image-4.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
     id: "test-planning",
     type: "spreadsheet",
     title: "Test planning",
     description:
       "A space for a shareable test plan, scenario sheet, or test case preview.",
+    // Structure only: no actual test plan or spreadsheet URL has been supplied.
+    spreadsheetPreview: {
+      heading: "Test planning",
+      sheetName: "Template structure · Content pending",
+      columns: ["Module", "Scenario", "Priority", "Expected result"],
+      rows: [],
+    },
   },
   {
     ...emptyArtifact,
