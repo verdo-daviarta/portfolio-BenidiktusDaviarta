@@ -192,6 +192,14 @@ export const projects: Project[] = [
     thumbnail: "/projects/pusdiklat-tekfunghan/image-2.jpg",
     thumbnailAlt:
       "PUSDIKLAT Tekfunghan student management dashboard showing training and student summaries with a student count chart",
+    outcome:
+      "Identified and documented defects, verified fixes, and completed regression testing for key workflows. The results helped the team evaluate release readiness and prioritize remaining issues.",
+    liveUrls: [
+      {
+        label: "Learning Information System",
+        url: "https://siswa-tf.kemhan.go.id/",
+      },
+    ],
   },
   {
     ...unpublished,
