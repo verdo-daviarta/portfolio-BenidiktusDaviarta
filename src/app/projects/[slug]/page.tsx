@@ -42,8 +42,6 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = projects.find((item) => item.slug === slug);
   if (!project) notFound();
-  const index = projects.indexOf(project);
-  const next = projects[(index + 1) % projects.length];
   const primaryMedia = getProjectMedia(project);
   const liveLinks = project.liveUrls.length
     ? project.liveUrls
@@ -160,13 +158,6 @@ export default async function ProjectPage({
             ))}
           </div>
         </div>
-        <Link className="next-project" href={`/projects/${next.slug}`}>
-          <span>
-            <span className="eyebrow">Next project</span>
-            <strong>{next.title}</strong>
-          </span>
-          <Icon name="arrow" width={28} height={28} />
-        </Link>
       </main>
       <footer className="container detail-footer">
         <Link href="/">Benidiktus Daviarta</Link>

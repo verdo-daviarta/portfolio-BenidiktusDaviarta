@@ -29,6 +29,13 @@ require access to the client's network or VPN.
 
 ## Work gallery
 
+PUSDATIN intentionally displays only two editorial SVG illustrations under
+`public/projects/pusdatin/`: a confidential-project hero and a documentation
+privacy notice. These are published illustrations, not actual work evidence or
+pending uploads. Their descriptions and alt text identify them as such. Do not
+add internal screenshots, documents, access details, or client data to this
+project without explicit permission. Its gallery contains no artifact links.
+
 Edit `src/data/gallery.ts`. Add actual work, supply its metadata and assets, and set `isPlaceholder: false`. Remove unused publishing slots if preferred. Filters appear for six or more entries. Associating an artifact with `projectSlug` also places it in that project's gallery.
 
 ### PUSDIKLAT Bahasa media selection

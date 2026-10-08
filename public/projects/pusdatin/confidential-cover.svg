@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+  <title>PUSDATIN — confidential project</title>
+  <desc>Illustration of a closed project folder. No actual project data is shown.</desc>
+  <defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1" fill="#E8E9DE" opacity=".12"/></pattern></defs>
+  <path fill="#243E35" d="M0 0h1200v675H0z"/>
+  <path fill="url(#dots)" d="M0 0h1200v675H0z"/>
+  <path d="m49 49 1103 5-4 569L54 628Z" stroke="#C7CFB9" opacity=".3"/>
+  <g fill="#F5F0E3" font-family="Georgia, serif" font-size="70"><text x="83" y="265">Some work</text><text x="83" y="347">stays private.</text></g>
+  <path d="M87 373c111-14 270-12 400-8m-398 18c128-9 255-8 369-3" stroke="#B8CBA9" stroke-width="3" stroke-linecap="round"/>
+  <g fill="#D7DDCC" font-family="Arial, sans-serif" font-size="25"><text x="85" y="450">Project media is not publicly shared.</text><text x="85" y="489">Respecting client confidentiality.</text></g>
+  <g transform="translate(740 156) rotate(8 170 180)">
+    <path d="m-13 66 90-4 27 30 237-8 9 304-347 7Z" fill="#15291F" opacity=".5"/>
+    <path d="m0 48 94-2 27 30 231-6-5 303-350 5Z" fill="#C6BEA4"/>
+    <path d="m24 18 304 4-3 323-305-1Z" fill="#D9D4C2" transform="rotate(-12 174 181)"/>
+    <path d="m17 4 299 9 2 313-308 7Z" fill="#F4F0E5"/>
+    <path d="m49 66 121 2m-120 26 223 5m-223 24 216 3m-215 26 208 1" stroke="#C0C1B0" stroke-width="3" stroke-linecap="round"/>
+    <path d="m-4 157 357-8-3 229-353 1Z" fill="#E5D8B6"/>
+    <path d="m-4 157 357-8" stroke="#A89D7B" stroke-width="2"/>
+    <g transform="rotate(-13 175 254)" stroke="#8D3D32" stroke-width="4"><path d="m22 218 307-3 2 76-311 2Zm7 7 293-3-1 62-292 2Z"/><text x="175" y="268" text-anchor="middle" fill="#8D3D32" stroke="none" font-family="monospace" font-size="34" font-weight="700" letter-spacing="2">CONFIDENTIAL</text></g>
+    <text x="40" y="338" fill="#5C5C47" font-family="monospace" font-size="16" letter-spacing="2">NO PUBLIC PROJECT MEDIA</text>
+  </g>
+  <text x="85" y="591" fill="#D7DDCC" font-family="monospace" font-size="16" letter-spacing="1">ILLUSTRATION ONLY</text>
+</svg>

@@ -180,14 +180,17 @@ export const projects: Project[] = [
       "Automated Testing",
       "UAT testing",
       "Security testing",
+      "API testing",
+      "Database testing",
     ],
     approach:
-      "Created test strategy, test plan, and test cases for functional and non-functional testing across various platforms. Tested Unity applications. Collaborated with developers to identify and resolve defects. Conducted UAT testing with stakeholders to ensure requirements were met.",
+      "Created test strategy, test plan, and test cases for functional and non-functional testing across various platforms. Testing API integrations and database connections. Collaborated with developers to identify and resolve defects. Conducted UAT testing with stakeholders to ensure requirements were met.",
     technologies: [
       "Selenium WebDriver",
       "Katalon Studio",
       "Postman",
       "REST API",
+      "MySQL",
     ],
     thumbnail: "/projects/pusdiklat-tekfunghan/image-2.jpg",
     thumbnailAlt:
@@ -210,6 +213,29 @@ export const projects: Project[] = [
     category: "Systems integration",
     description: "Server reintegration between PUSDATIN and BADIKLAT.",
     products: [],
+    testingScope: [
+      "Functional testing",
+      "Manual Testing",
+      "Automated Testing",
+      "UAT testing",
+      "Security testing",
+      "API testing",
+      "Database testing",
+    ],
+    approach:
+      "Created test strategy, test plan, and test cases for functional and non-functional testing. Testing database integrations. Collaborated with developers to identify and resolve defects. Conducted UAT testing with stakeholders to ensure requirements were met.",
+    technologies: [
+      "Selenium WebDriver",
+      "Katalon Studio",
+      "Postman",
+      "REST API",
+      "MySQL",
+    ],
+    outcome:
+      "Identified and documented defects, verified fixes, and completed regression testing for key workflows. The results helped the team evaluate release readiness and prioritize remaining issues.",
+    thumbnail: "/projects/pusdatin/confidential-cover.svg",
+    thumbnailAlt:
+      "Illustrated PUSDATIN confidential project cover with a closed folder and a Confidential stamp; no project data is shown",
   },
   {
     ...unpublished,

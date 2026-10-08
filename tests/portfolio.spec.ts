@@ -33,6 +33,24 @@ for (const width of [375, 390, 768, 1024, 1280, 1440]) {
             .getByRole("button", { name: project.title, exact: true })
             .click();
           await expect(page.locator("article.featured-project")).toHaveCount(1);
+          const overview = page.getByRole("link", {
+            name: "Project overview",
+            exact: true,
+          });
+          await expect(overview).toHaveClass("button button-dark");
+          await expect(overview).toHaveAttribute(
+            "href",
+            `/projects/${project.slug}`,
+          );
+          await expect(overview).toHaveCSS("min-height", "48px");
+          // Expanding a row can place the overview button under the pointer.
+          await page.mouse.move(0, 0);
+          await expect(overview).toHaveCSS(
+            "background-color",
+            await page
+              .locator(".hero-intro .button-dark")
+              .evaluate((element) => getComputedStyle(element).backgroundColor),
+          );
           expect(
             await page.evaluate(
               () =>
@@ -43,6 +61,13 @@ for (const width of [375, 390, 768, 1024, 1280, 1440]) {
         }
       }
       if (route !== "/") {
+        await expect(page.locator(".next-project")).toHaveCount(0);
+        await expect(
+          page.getByRole("link", { name: /Next project/i }),
+        ).toHaveCount(0);
+        await expect(
+          page.getByRole("link", { name: /All selected work/ }),
+        ).toHaveAttribute("href", "/#projects");
         await expect(page.locator(".project-media-layout")).toHaveCount(1);
         await expect(page.locator(".main-project-preview")).toHaveCount(1);
         await expect(page.locator(".work-gallery-sidebar")).toHaveCount(1);

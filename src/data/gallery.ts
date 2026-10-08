@@ -689,6 +689,34 @@ export const gallery: GalleryItem[] = [
   },
   {
     ...emptyArtifact,
+    id: "pusdatin-confidential-cover",
+    type: "image",
+    title: "PUSDATIN · Confidential project",
+    description:
+      "Illustrated confidentiality cover, not a project screenshot. Project data and media are withheld to respect client confidentiality.",
+    projectSlug: "pusdatin",
+    thumbnail: "/projects/pusdatin/confidential-cover.svg",
+    thumbnailAlt:
+      "Illustrated PUSDATIN confidential project cover with a closed folder and a Confidential stamp; no project data is shown",
+    source: "/projects/pusdatin/confidential-cover.svg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "pusdatin-confidential-library",
+    type: "image",
+    title: "PUSDATIN · Documentation withheld",
+    description:
+      "Illustrated privacy notice, not an actual project document. Screenshots, internal files, and client documentation are not published because the project is confidential.",
+    projectSlug: "pusdatin",
+    thumbnail: "/projects/pusdatin/confidential-library.svg",
+    thumbnailAlt:
+      "Illustrated PUSDATIN privacy notice on tilted paper stamped Not for public release; no actual project documentation is shown",
+    source: "/projects/pusdatin/confidential-library.svg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
     id: "test-planning",
     type: "spreadsheet",
     title: "Test planning",

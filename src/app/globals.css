@@ -679,7 +679,7 @@ dd {
   color: var(--accent);
   border-color: var(--accent);
 }
-.featured-copy .text-link {
+.featured-copy .button {
   margin-top: 22px;
 }
 .confidential-note {
@@ -1291,28 +1291,6 @@ dd {
   width: 4px;
   background: var(--accent);
 }
-.next-project {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  border-block: 1px solid var(--line);
-  padding: 32px 0;
-  margin-top: 58px;
-}
-.next-project span {
-  display: block;
-}
-.next-project strong {
-  font-size: 24px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  margin-top: 14px;
-  display: block;
-}
-.next-project:hover strong {
-  color: var(--accent);
-}
 .detail-footer {
   display: flex;
   justify-content: space-between;
@@ -1460,7 +1438,7 @@ dd {
   .featured-copy .body-copy {
     font-size: 12px;
   }
-  .featured-copy .text-link {
+  .featured-copy .button {
     margin-top: 12px;
   }
   .confidential-note {
@@ -1816,9 +1794,6 @@ dd {
   }
   .detail-section p {
     font-size: 13px;
-  }
-  .next-project strong {
-    font-size: 21px;
   }
   .detail-footer {
     font-size: 10px;

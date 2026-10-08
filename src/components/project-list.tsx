@@ -80,7 +80,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                     <p className="project-client">{project.client}</p>
                     <p className="body-copy">{project.description}</p>
                     <Link
-                      className="text-link"
+                      className="button button-dark"
                       href={`/projects/${project.slug}`}
                     >
                       Project overview <Icon />
