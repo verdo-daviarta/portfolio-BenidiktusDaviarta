@@ -12,6 +12,7 @@ import { DocumentOverview } from "./document-overview";
 import { SpreadsheetOverview } from "./spreadsheet-overview";
 import { VideoPreview } from "./video-preview";
 import { Icon } from "./icons";
+import { SectionHeading } from "./section-heading";
 
 const filters: { id: "all" | ArtifactType; label: string }[] = [
   { id: "all", label: "All artifacts" },
@@ -134,21 +135,16 @@ export function ProjectGallery({
         {primaryItem ? (
           <h2 className="sidebar-gallery-heading">Work Gallery</h2>
         ) : (
-          <div className="gallery-heading">
-            <div>
-              <p className="eyebrow">The working record</p>
-              <h3>
-                Work gallery<span>.</span>
-              </h3>
-            </div>
-            <p>
-              {projectSlug
+          <SectionHeading
+            id="work-gallery-heading"
+            label="The working record"
+            title="Work gallery."
+            description={`${
+              projectSlug
                 ? "Screenshots and the work behind this project."
-                : "Test plans, screenshots, automation, and the work behind a release."}
-              <br />
-              Select an artifact to view its preview.
-            </p>
-          </div>
+                : "Test plans, screenshots, automation, and the work behind a release."
+            } Select an artifact to view its preview.`}
+          />
         )}
         {!primaryItem && items.length >= 6 && (
           <div

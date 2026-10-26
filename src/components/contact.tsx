@@ -22,7 +22,7 @@ export function Contact() {
     >
       <div className="container contact-grid">
         <div>
-          <p className="eyebrow">Contact</p>
+          {/* <p className="eyebrow">Contact</p> */}
           <h2 id="contact-heading">
             Let’s talk about
             <br />

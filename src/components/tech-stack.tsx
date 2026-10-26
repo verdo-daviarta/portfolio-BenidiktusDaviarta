@@ -24,12 +24,28 @@ export function TechStack() {
               </div>
             </div>
             <ul className="tools-list">
-              {category.tools.map((tool) => (
-                <li key={tool.name} className="tool" tabIndex={0}>
-                  <span className="tool-name">{tool.name}</span>
-                  <span className="tool-description">{tool.description}</span>
-                </li>
-              ))}
+              {category.tools.map((tool) => {
+                const descriptionId = `tool-${category.name}-${tool.name}`
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-");
+                return (
+                  <li
+                    key={tool.name}
+                    className="tool"
+                    tabIndex={0}
+                    aria-describedby={descriptionId}
+                  >
+                    <span className="tool-name">{tool.name}</span>
+                    <span
+                      id={descriptionId}
+                      role="tooltip"
+                      className="tool-description"
+                    >
+                      {tool.description}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
