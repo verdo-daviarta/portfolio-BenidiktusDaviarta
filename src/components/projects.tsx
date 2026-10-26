@@ -1,4 +1,4 @@
-import { projects } from "@/data/projects";
+import { projects, sortProjectsByYear } from "@/data/projects";
 import { SectionHeading } from "./section-heading";
 import { ProjectGallery } from "./project-gallery";
 import { ProjectList } from "./project-list";
@@ -16,7 +16,7 @@ export function Projects() {
         title="Quality in context."
         description="Enterprise platforms, connected systems, and immersive applications. A selection from my professional experience."
       />
-      <ProjectList projects={projects} />
+      <ProjectList projects={sortProjectsByYear(projects)} />
       <ProjectGallery />
     </section>
   );

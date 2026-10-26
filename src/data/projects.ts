@@ -133,6 +133,7 @@ export const projects: Project[] = [
     description:
       "Training Language and learning management systems for language education.",
     products: ["Training Language System", "Learning Management System"],
+    role: "Software Quality Assurance Lead",
     testingScope: [
       "Functional testing",
       "Manual Testing",
@@ -174,6 +175,7 @@ export const projects: Project[] = [
     description:
       "Distance learning and information access through a learning information system and an information kiosk.",
     products: ["Distance Learning Information System", "Information Kiosk"],
+    role: "Software Quality Assurance Lead",
     testingScope: [
       "Functional testing",
       "Manual Testing",
@@ -212,6 +214,7 @@ export const projects: Project[] = [
     year: "2023",
     category: "Systems integration",
     description: "Server reintegration between PUSDATIN and BADIKLAT.",
+    role: "Software Quality Assurance Lead",
     products: [],
     testingScope: [
       "Functional testing",
@@ -239,17 +242,35 @@ export const projects: Project[] = [
   },
   {
     ...unpublished,
-    slug: "virtual-reality",
-    title: "Virtual reality applications",
-    client: "Learning, simulation & museum experiences",
-    year: null,
-    category: "Virtual reality",
+    slug: "ems-energy-management-system",
+    title: "EMS – Energy Management System",
+    client: "PUSDATIN · Ministry of Defense",
+    year: "2026",
+    category: "Enterprise platform",
     description:
-      "Professional experience across language learning, disaster management, and a standalone museum VR application.",
-    products: [
-      "Classat Lugha · Interactive Language Learning VR",
-      "Disaster Management VR",
-      "Museum Bela Negara VR Standalone",
+      "An IoT-based energy management system for monitoring energy usage in buildings.",
+    products: ["EMS – Energy Management System"],
+    role: "Software Quality Assurance Lead",
+    testingScope: [
+      "Functional testing",
+      "Manual testing",
+      "Automated testing",
+      "UAT testing",
     ],
+    approach:
+      "Developed a test strategy, a test plan, and test cases for functional and non-functional testing, including API testing, parameter testing, boundary value testing, and security testing. Performed manual testing and executed automated tests using Cypress. Collaborated with developers to identify and resolve defects. Conducted UAT with stakeholders to verify that requirements were met.",
+    technologies: ["Cypress", "Codex", "Postman", "ERP", "IoT"],
+    outcome:
+      "Identified and documented defects, verified fixes, and completed regression testing for key workflows. The results helped the team evaluate release readiness and prioritize remaining issues.",
   },
 ];
+
+export function sortProjectsByYear(items: readonly Project[]): Project[] {
+  const latestYear = (year: string | null) =>
+    Math.max(0, ...(year?.match(/\d{4}/g) ?? []).map(Number));
+
+  // Use the latest year in a range and preserve the source order for ties.
+  return [...items].sort(
+    (left, right) => latestYear(right.year) - latestYear(left.year),
+  );
+}
