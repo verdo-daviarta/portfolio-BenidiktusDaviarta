@@ -173,7 +173,6 @@ test("gallery filters, keyboard preview, focus trap, and return focus", async ({
     .click();
   await expect(page.locator(".gallery-item")).toHaveCount(gallery.length);
   for (const name of [
-    "Preview Automation demo",
     "Preview QA documentation",
     "Preview Work screenshot",
     "Preview Web project",

@@ -736,7 +736,15 @@ export const gallery: GalleryItem[] = [
     type: "video",
     title: "Automation demo",
     description:
-      "A space for a browser automation recording with a short explanation.",
+      "A Cypress browser automation testing recording for the Energy Management System (EMS).",
+    technologies: ["Cypress"],
+    thumbnail: "/videos/automation-demo-poster.webp",
+    thumbnailAlt:
+      "Cypress test runner showing the EMS automation test specifications",
+    source:
+      "/videos/EMS_Automation_Testing - Google Chrome 2026-10-27 10-10-49.mp4",
+    videoProvider: "file",
+    isPlaceholder: false,
   },
   {
     ...emptyArtifact,

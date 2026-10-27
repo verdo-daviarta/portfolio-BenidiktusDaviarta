@@ -16,12 +16,12 @@ import { SectionHeading } from "./section-heading";
 
 const filters: { id: "all" | ArtifactType; label: string }[] = [
   { id: "all", label: "All artifacts" },
-  { id: "spreadsheet", label: "Spreadsheets" },
   { id: "video", label: "Video" },
-  { id: "document", label: "Documents" },
-  { id: "image", label: "Images" },
-  { id: "web", label: "Web" },
   { id: "repository", label: "Source" },
+  { id: "spreadsheet", label: "Spreadsheets" },
+  { id: "document", label: "Documents" },
+  { id: "web", label: "Web" },
+  { id: "image", label: "Images" },
 ];
 
 export function ProjectGallery({
@@ -43,6 +43,14 @@ export function ProjectGallery({
     (item) =>
       item.id !== primaryItem?.id && (filter === "all" || item.type === filter),
   );
+  if (!projectSlug && !primaryItem && filter === "all") {
+    // Sort this filtered copy only; keep project media and source data in order.
+    visibleItems.sort(
+      (left, right) =>
+        filters.findIndex(({ id }) => id === left.type) -
+        filters.findIndex(({ id }) => id === right.type),
+    );
+  }
   const scrollableGallery = Boolean(primaryItem && visibleItems.length > 3);
   const scrollableLandingGallery =
     !projectSlug && !primaryItem && visibleItems.length > 6;
