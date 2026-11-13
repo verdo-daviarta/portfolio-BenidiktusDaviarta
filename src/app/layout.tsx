@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { profile, siteUrl } from "@/data/profile";
 import "@fontsource-variable/geist";
-import "@fontsource-variable/geist-mono";
+import "@fontsource/urbanist/400.css";
 import "./globals.css";
 const title = `${profile.name} — ${profile.role}`;
 const description =

@@ -1,9 +1,10 @@
 export const profile = {
   name: "Benidiktus Daviarta",
   role: "Software Quality Assurance Lead",
-  secondaryRole: "QA Automation Engineer",
+  secondaryRole: "QA Automation Engineer, Manual Tester, Test Analyst",
   location: "Depok, West Java, Indonesia",
   experience: "4+ years",
+  education: "Magister Management System Information, Gundarma University",
   email: "benedictusverdoartha@gmail.com",
   linkedin: "https://www.linkedin.com/in/benidiktus-verdo",
   github: "https://github.com/verdo-daviarta",

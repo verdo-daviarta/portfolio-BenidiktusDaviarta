@@ -1,25 +1,11 @@
 import { profile } from "@/data/profile";
-import { Icon } from "./icons";
+import { HeroIntro } from "./hero-intro";
 
 export function Hero() {
   return (
     <section id="home" className="hero container" aria-labelledby="hero-title">
       <div className="hero-grid">
-        <div className="hero-intro">
-          <h1 id="hero-title">
-            Benidiktus
-            <br />
-            Daviarta<span className="name-period">.</span>
-          </h1>
-          <p className="hero-role">
-            {profile.role}
-            <br />
-            <span>{profile.secondaryRole}</span>
-          </p>
-          <a className="button button-dark" href="#projects">
-            Explore my work <Icon />
-          </a>
-        </div>
+        <HeroIntro />
         <div className="hero-profile">
           <p className="hero-statement">
             Reliable software starts
@@ -30,6 +16,10 @@ export function Hero() {
             <div>
               <dt>Experience</dt>
               <dd>{profile.experience} in software QA</dd>
+            </div>
+            <div>
+              <dt>Education</dt>
+              <dd>{profile.education}</dd>
             </div>
             <div>
               <dt>Based in</dt>

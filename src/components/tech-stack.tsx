@@ -10,7 +10,6 @@ export function TechStack() {
     >
       <SectionHeading
         id="stack-heading"
-        label="Tech stack"
         title="The tools behind the testing."
         description="A practical toolkit for verifying behaviour, automating checks, and keeping quality traceable."
       />

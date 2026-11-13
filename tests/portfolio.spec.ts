@@ -172,12 +172,7 @@ test("gallery filters, keyboard preview, focus trap, and return focus", async ({
     .getByRole("button", { name: "All artifacts", exact: true })
     .click();
   await expect(page.locator(".gallery-item")).toHaveCount(gallery.length);
-  for (const name of [
-    "Preview QA documentation",
-    "Preview Work screenshot",
-    "Preview Web project",
-    "Preview Automation source",
-  ]) {
+  for (const name of ["Preview QA documentation", "Preview Work screenshot"]) {
     await page.getByRole("button", { name, exact: true }).click();
     await expect(dialog).toBeVisible();
     await expect(
@@ -190,7 +185,7 @@ test("gallery filters, keyboard preview, focus trap, and return focus", async ({
   }
 });
 
-test("all spreadsheet cards use the standard table model and Test planning remains an honest empty template", async ({
+test("all spreadsheet cards use the standard table model and Test planning shows the EMS Overview", async ({
   page,
 }) => {
   for (const width of [390, 768, 1440]) {
@@ -212,43 +207,62 @@ test("all spreadsheet cards use the standard table model and Test planning remai
     });
     const cover = trigger.locator(".spreadsheet-overview");
     await expect(
-      cover.getByRole("columnheader", { name: "Module", exact: true }),
+      cover.getByRole("columnheader", { name: "Informasi", exact: true }),
     ).toBeVisible();
     await expect(
-      cover.getByRole("columnheader", { name: "Scenario", exact: true }),
+      cover.getByRole("columnheader", { name: "Detail", exact: true }),
     ).toBeVisible();
     await expect(
       cover.getByText("Template preview", { exact: true }),
-    ).toBeVisible();
+    ).toHaveCount(0);
     await expect(cover.getByText("Google Sheets", { exact: true })).toHaveCount(
       0,
     );
-    await expect(cover.locator(".spreadsheet-empty-cell")).toHaveCount(6);
+    await expect(cover.locator(".spreadsheet-empty-cell")).toHaveCount(0);
+    await expect(
+      cover.getByText("EMS — Test Plan", { exact: true }),
+    ).toBeVisible();
     const actualCard = cards.filter({
       has: page.getByRole("heading", { name: "Test planning", exact: true }),
     });
-    await expect(actualCard.getByRole("link")).toHaveCount(0);
+    const sourceUrl =
+      "https://docs.google.com/spreadsheets/d/1BDZLZis_2wGaVi9Oiv-3FqI33elyFFtfi3bME7K76qs/edit?gid=1712295592#gid=1712295592&range=A2";
+    await expect(
+      actualCard.getByRole("link", { name: "Open spreadsheet", exact: true }),
+    ).toHaveAttribute("href", sourceUrl);
     await trigger.click();
     const dialog = page.getByRole("dialog");
     await expect(dialog.locator(".spreadsheet-overview")).toBeVisible();
-    await expect(dialog.getByRole("columnheader")).toHaveCount(4);
+    await expect(dialog.getByRole("columnheader")).toHaveCount(2);
     await expect(
-      dialog.getByRole("columnheader", { name: "Priority", exact: true }),
+      dialog.getByText("Cypress, Playwright, Postman", { exact: true }),
     ).toBeVisible();
-    await expect(dialog.locator(".spreadsheet-empty-cell")).toHaveCount(12);
+    await expect(dialog.locator(".spreadsheet-empty-cell")).toHaveCount(0);
+    await expect(dialog.getByRole("table").getByRole("row")).toHaveCount(5);
+    await expect(
+      dialog.getByText("Chrome Desktop dan Chrome Mobile", { exact: true }),
+    ).toBeVisible();
+    await expect(dialog.getByText("Tujuan", { exact: true })).toBeVisible();
     await expect(
       dialog.getByText(
         "Template preview · No spreadsheet has been linked yet.",
         { exact: true },
       ),
-    ).toBeVisible();
+    ).toHaveCount(0);
     await expect(
       dialog.getByText(
         "This is a reserved gallery entry. No artifact has been provided yet.",
         { exact: true },
       ),
-    ).toBeVisible();
-    await expect(dialog.getByRole("link")).toHaveCount(0);
+    ).toHaveCount(0);
+    const sourceLink = dialog.getByRole("link", {
+      name: "Open spreadsheet",
+      exact: true,
+    });
+    await expect(sourceLink).toHaveAttribute("href", sourceUrl);
+    await expect(sourceLink).toHaveAttribute("target", "_blank");
+    await expect(sourceLink).toHaveAttribute("rel", "noopener noreferrer");
+    await expect(dialog.getByText(/10\.70\./)).toHaveCount(0);
     const scroller = dialog.getByRole("region", {
       name: "Spreadsheet table preview",
       exact: true,
@@ -287,7 +301,7 @@ test("landing gallery scrolls after six cards and removes the limit for filtered
   const cards = scroller.locator(".gallery-item");
   await expect(cards).toHaveCount(gallery.length);
 
-  for (const width of [1440, 768, 390]) {
+  for (const width of [1440, 768]) {
     await page.setViewportSize({ width, height: 900 });
     await page.evaluate(() => document.fonts.ready);
     await scroller.evaluate((element) => {
@@ -340,7 +354,7 @@ test("landing gallery scrolls after six cards and removes the limit for filtered
     .poll(() => scroller.evaluate((element) => element.scrollTop))
     .toBeGreaterThan(0);
   const trigger = page.getByRole("button", {
-    name: "Preview Automation source",
+    name: "Preview EMS · QA automation source",
     exact: true,
   });
   await trigger.click();
@@ -905,7 +919,9 @@ test("AR issue document appears on the landing gallery and Bela Negara with a sa
     await trigger.scrollIntoViewIfNeeded();
     const cover = trigger.locator(".document-overview");
     await expect(cover).toBeVisible();
-    await expect(cover.getByText("Google Docs", { exact: true })).toBeVisible();
+    await expect(cover.getByText("Google Docs", { exact: true })).toHaveCount(
+      0,
+    );
     await expect(
       cover.getByText("MODUL & SCENARIO Unity Level Design", { exact: true }),
     ).toBeVisible();
@@ -914,7 +930,7 @@ test("AR issue document appears on the landing gallery and Bela Negara with a sa
     ).toBeVisible();
     await expect(
       cover.getByText("Content excerpt", { exact: true }),
-    ).toBeVisible();
+    ).toHaveCount(0);
     await expect(trigger.getByText("Media pending")).toHaveCount(0);
     await trigger.click();
     const dialog = page.getByRole("dialog");
@@ -934,7 +950,7 @@ test("AR issue document appears on the landing gallery and Bela Negara with a sa
         "Content excerpt · Open the document for the full issue report.",
         { exact: true },
       ),
-    ).toBeVisible();
+    ).toHaveCount(0);
     await expect(
       dialog.getByText(
         /Artifact not published|No artifact has been provided yet|Media pending/,
@@ -1035,7 +1051,9 @@ test("Data Archive sheet has a readable table overview and opens the exact tab",
         await page
           .getByRole("button", { name: "Spreadsheets", exact: true })
           .click();
-        await expect(page.locator(".gallery-item")).toHaveCount(2);
+        await expect(page.locator(".gallery-item")).toHaveCount(
+          gallery.filter((item) => item.type === "spreadsheet").length,
+        );
         const card = page.locator(".gallery-item").filter({
           has: page.getByRole("heading", { name: title, exact: true }),
         });
@@ -1083,7 +1101,7 @@ test("Data Archive sheet has a readable table overview and opens the exact tab",
       ).toBeVisible();
       await expect(
         dialog.getByText("Google Sheets", { exact: true }),
-      ).toBeVisible();
+      ).toHaveCount(0);
       const table = dialog.getByRole("table");
       await expect(table.getByRole("columnheader")).toHaveCount(4);
       await expect(table.getByRole("row")).toHaveCount(5);

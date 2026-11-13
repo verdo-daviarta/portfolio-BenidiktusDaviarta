@@ -12,7 +12,6 @@ export function Projects() {
     >
       <SectionHeading
         id="projects-heading"
-        label="Selected work"
         title="Quality in context."
         description="Enterprise platforms, connected systems, and immersive applications. A selection from my professional experience."
       />

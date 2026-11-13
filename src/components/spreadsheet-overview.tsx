@@ -6,7 +6,6 @@ type SpreadsheetOverviewProps = {
   excerpt?: SpreadsheetExcerpt;
   compact?: boolean;
   isPlaceholder?: boolean;
-  isLinked?: boolean;
 };
 
 export function getSpreadsheetOverviewModel({
@@ -35,7 +34,7 @@ export function getSpreadsheetOverviewModel({
 }
 
 export function SpreadsheetOverview(props: SpreadsheetOverviewProps) {
-  const { title, compact = false, isLinked = false } = props;
+  const { title, compact = false } = props;
   const { preview, hasContent, columns, rows } =
     getSpreadsheetOverviewModel(props);
   return (
@@ -47,9 +46,6 @@ export function SpreadsheetOverview(props: SpreadsheetOverviewProps) {
           <Icon name="grid" width={20} height={20} />
         </span>
         <span className="document-file-name">{title}</span>
-        <span className="document-provider">
-          {isLinked ? "Google Sheets" : "Spreadsheet"}
-        </span>
       </div>
       <div className="document-sheet" lang="id">
         <p className="document-sheet-heading">{preview.heading}</p>
@@ -100,13 +96,6 @@ export function SpreadsheetOverview(props: SpreadsheetOverviewProps) {
           </table>
         </div>
       </div>
-      <p className="document-excerpt-note">
-        {hasContent ? "Content excerpt" : "Template preview"}
-        {!compact &&
-          (isLinked
-            ? " · Open the spreadsheet for the full content."
-            : " · No spreadsheet has been linked yet.")}
-      </p>
     </div>
   );
 }

@@ -13,6 +13,8 @@ import { SpreadsheetOverview } from "./spreadsheet-overview";
 import { VideoPreview } from "./video-preview";
 import { Icon } from "./icons";
 import { SectionHeading } from "./section-heading";
+import { RepositoryOverview } from "./repository-overview";
+import { WebOverview } from "./web-overview";
 
 const filters: { id: "all" | ArtifactType; label: string }[] = [
   { id: "all", label: "All artifacts" },
@@ -52,17 +54,23 @@ export function ProjectGallery({
     );
   }
   const scrollableGallery = Boolean(primaryItem && visibleItems.length > 3);
-  const scrollableLandingGallery =
-    !projectSlug && !primaryItem && visibleItems.length > 6;
+  const landingGallery = !projectSlug && !primaryItem;
+  const scrollableLandingGallery = landingGallery && visibleItems.length > 6;
   useEffect(() => {
     const viewport = galleryViewportRef.current;
     const grid = galleryGridRef.current;
-    if (!scrollableLandingGallery || !viewport || !grid) return;
+    if (!landingGallery || !viewport || !grid) return;
 
     viewport.scrollTop = 0;
+    viewport.scrollLeft = 0;
+    const mobileViewport = window.matchMedia("(max-width: 640px)");
     const cards = Array.from(grid.children).slice(0, 6);
     function updateViewportHeight() {
       if (!viewport || !grid) return;
+      if (mobileViewport.matches || !scrollableLandingGallery) {
+        viewport.style.removeProperty("max-height");
+        return;
+      }
       const gridTop = grid.getBoundingClientRect().top;
       const lastRowBottom = Math.max(
         ...cards.map((card) => card.getBoundingClientRect().bottom),
@@ -73,12 +81,14 @@ export function ProjectGallery({
     const observer = new ResizeObserver(updateViewportHeight);
     observer.observe(grid);
     cards.forEach((card) => observer.observe(card));
+    mobileViewport.addEventListener("change", updateViewportHeight);
     updateViewportHeight();
     return () => {
       observer.disconnect();
+      mobileViewport.removeEventListener("change", updateViewportHeight);
       viewport.style.removeProperty("max-height");
     };
-  }, [scrollableLandingGallery, filter]);
+  }, [landingGallery, scrollableLandingGallery, filter]);
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!selected || !dialog) return;
@@ -145,7 +155,6 @@ export function ProjectGallery({
         ) : (
           <SectionHeading
             id="work-gallery-heading"
-            label="The working record"
             title="Work gallery."
             description={`${
               projectSlug
@@ -175,13 +184,27 @@ export function ProjectGallery({
           {visibleItems.length}{" "}
           {visibleItems.length === 1 ? "artifact" : "artifacts"} shown
         </p>
+        {landingGallery && visibleItems.length > 1 && (
+          <p className="gallery-mobile-hint">
+            <span>
+              Swipe to explore <Icon />
+            </span>
+            <span>{visibleItems.length} artifacts</span>
+          </p>
+        )}
         {visibleItems.length ? (
           <div
             ref={galleryViewportRef}
             className={
-              scrollableLandingGallery
-                ? "landing-gallery-scrollable"
-                : undefined
+              [
+                landingGallery && "landing-gallery-mobile",
+                scrollableLandingGallery && "landing-gallery-scrollable",
+                landingGallery &&
+                  visibleItems.length === 1 &&
+                  "gallery-single-artifact",
+              ]
+                .filter(Boolean)
+                .join(" ") || undefined
             }
             role={scrollableLandingGallery ? "region" : undefined}
             aria-label={
@@ -205,12 +228,20 @@ export function ProjectGallery({
                     onClick={() => setSelected(item)}
                     aria-label={`Preview ${item.title}`}
                   >
-                    {item.type === "spreadsheet" ? (
+                    {item.type === "web" &&
+                    !item.isPlaceholder &&
+                    item.webPreview ? (
+                      <WebOverview preview={item.webPreview} compact />
+                    ) : hasRepositoryPreview(item) ? (
+                      <RepositoryOverview
+                        preview={item.repositoryPreview!}
+                        compact
+                      />
+                    ) : item.type === "spreadsheet" ? (
                       <SpreadsheetOverview
                         title={item.title}
                         excerpt={item.spreadsheetPreview}
                         isPlaceholder={item.isPlaceholder}
-                        isLinked={hasPublishedDocument(item)}
                         compact
                       />
                     ) : hasPublishedDocument(item) && item.documentPreview ? (
@@ -238,16 +269,11 @@ export function ProjectGallery({
                     </span>
                   </button>
                   {!primaryItem && (
-                    <>
+                    <div className="gallery-card-details">
                       <h4>{item.title}</h4>
                       <p>{item.description}</p>
-                      {item.technologies.length > 0 && (
-                        <p className="eyebrow">
-                          {item.technologies.join(" / ")}
-                        </p>
-                      )}
                       <ArtifactLinks item={item} />
-                    </>
+                    </div>
                   )}
                 </article>
               ))}
@@ -288,12 +314,17 @@ export function ProjectGallery({
               <h2 id="preview-title">{selected.title}</h2>
               <p id="preview-description">{selected.description}</p>
               <div className="dialog-media">
-                {selected.type === "spreadsheet" ? (
+                {selected.type === "web" &&
+                !selected.isPlaceholder &&
+                selected.webPreview ? (
+                  <WebOverview preview={selected.webPreview} />
+                ) : hasRepositoryPreview(selected) ? (
+                  <RepositoryOverview preview={selected.repositoryPreview!} />
+                ) : selected.type === "spreadsheet" ? (
                   <SpreadsheetOverview
                     title={selected.title}
                     excerpt={selected.spreadsheetPreview}
                     isPlaceholder={selected.isPlaceholder}
-                    isLinked={hasPublishedDocument(selected)}
                   />
                 ) : hasPublishedDocument(selected) &&
                   selected.documentPreview ? (
@@ -358,6 +389,13 @@ function getDocumentUrl(item: GalleryItem) {
     (item.type === "document" || item.type === "spreadsheet"
       ? item.source
       : null)
+  );
+}
+function hasRepositoryPreview(item: GalleryItem) {
+  return (
+    item.type === "repository" &&
+    !item.isPlaceholder &&
+    Boolean(item.repositoryUrl && item.repositoryPreview)
   );
 }
 function hasPublishedDocument(item: GalleryItem) {

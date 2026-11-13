@@ -260,6 +260,9 @@ export const projects: Project[] = [
     approach:
       "Developed a test strategy, a test plan, and test cases for functional and non-functional testing, including API testing, parameter testing, boundary value testing, and security testing. Performed manual testing and executed automated tests using Cypress. Collaborated with developers to identify and resolve defects. Conducted UAT with stakeholders to verify that requirements were met.",
     technologies: ["Cypress", "Codex", "Postman", "ERP", "IoT"],
+    thumbnail: "/projects/ems/EMS 2.jpg",
+    thumbnailAlt:
+      "EMS dashboard showing energy usage, gateway and device summaries, and upcoming schedules",
     outcome:
       "Identified and documented defects, verified fixes, and completed regression testing for key workflows. The results helped the team evaluate release readiness and prioritize remaining issues.",
   },

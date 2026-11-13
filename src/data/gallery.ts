@@ -12,6 +12,16 @@ export type SpreadsheetExcerpt = {
   columns: string[];
   rows: string[][];
 };
+export type RepositoryExcerpt = {
+  owner: string;
+  name: string;
+  heading: string;
+  branch: string;
+  language: string;
+  frameworks: string[];
+  files: string[];
+  snippet: { path: string; startLine: number; lines: string[] };
+};
 export type GalleryItem = {
   id: string;
   type: ArtifactType;
@@ -31,6 +41,17 @@ export type GalleryItem = {
   documentUrl: string | null;
   documentPreview?: DocumentExcerpt;
   spreadsheetPreview?: SpreadsheetExcerpt;
+  repositoryPreview?: RepositoryExcerpt;
+  webPreview?: {
+    variant?: "invitation" | "business";
+    brand?: string;
+    kicker?: string;
+    repositoryNotice?: string;
+    heading: string;
+    summary: string;
+    coverages: string[];
+    features: string[];
+  };
   isPlaceholder: boolean;
 };
 
@@ -717,18 +738,152 @@ export const gallery: GalleryItem[] = [
   },
   {
     ...emptyArtifact,
+    id: "ems-dashboard",
+    type: "image",
+    title: "EMS · Dashboard",
+    description:
+      "Energy monitoring dashboard with energy usage, gateway and device summaries, and upcoming schedules.",
+    projectSlug: "ems-energy-management-system",
+    thumbnail: "/projects/ems/EMS 2.jpg",
+    thumbnailAlt:
+      "EMS dashboard showing energy usage, gateway and device summaries, and upcoming schedules",
+    source: "/projects/ems/EMS 2.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "ems-login",
+    type: "image",
+    title: "EMS · Sign in",
+    description:
+      "Sign-in page with empty username and password fields and a verification widget.",
+    projectSlug: "ems-energy-management-system",
+    thumbnail: "/projects/ems/EMS 1.jpg",
+    thumbnailAlt:
+      "EMS sign-in page with Smart Energy branding, empty login fields, and a verification widget",
+    source: "/projects/ems/EMS 1.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "ems-schedules",
+    type: "image",
+    title: "EMS · Schedules",
+    description:
+      "Schedule management with active and upcoming schedule summaries, search, and scheduled room actions.",
+    projectSlug: "ems-energy-management-system",
+    thumbnail: "/projects/ems/EMS 3.jpg",
+    thumbnailAlt:
+      "EMS schedules page showing schedule summaries, active and upcoming tabs, a search field, and a schedule table",
+    source: "/projects/ems/EMS 3.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "ems-rooms",
+    type: "image",
+    title: "EMS · Rooms",
+    description:
+      "Room inventory with gateway and device summaries, energy usage, search, and status controls.",
+    projectSlug: "ems-energy-management-system",
+    thumbnail: "/projects/ems/EMS 4.jpg",
+    thumbnailAlt:
+      "EMS rooms page showing room, gateway, and device summaries and a room table with energy usage and status controls",
+    source: "/projects/ems/EMS 4.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "ems-gateways",
+    type: "image",
+    title: "EMS · Gateways",
+    description:
+      "Gateway inventory with connection status, installation dates, search, and management actions.",
+    projectSlug: "ems-energy-management-system",
+    thumbnail: "/projects/ems/EMS 5.jpg",
+    thumbnailAlt:
+      "EMS gateways table showing gateway names, installation dates, online status, search, and management actions",
+    source: "/projects/ems/EMS 5.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "ems-devices",
+    type: "image",
+    title: "EMS · Devices",
+    description:
+      "Electrical device inventory with on and off summaries, gateway and room assignments, and status controls.",
+    projectSlug: "ems-energy-management-system",
+    thumbnail: "/projects/ems/EMS 6.jpg",
+    thumbnailAlt:
+      "EMS devices page showing device summaries and a table of devices, gateways, rooms, reporting intervals, and status controls",
+    source: "/projects/ems/EMS 6.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "ems-energy-reports",
+    type: "image",
+    title: "EMS · Energy reports",
+    description:
+      "Energy reports with usage summaries, per-device readings, date ranges, search, and an export control.",
+    projectSlug: "ems-energy-management-system",
+    thumbnail: "/projects/ems/EMS 7.jpg",
+    thumbnailAlt:
+      "EMS reports page showing energy usage summaries, device readings, date ranges, usage totals, search, and an export button",
+    source: "/projects/ems/EMS 7.jpg",
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "ems-test-scenarios",
+    type: "spreadsheet",
+    title: "EMS · Test scenarios",
+    description:
+      "A reviewed excerpt of EMS test scenarios covering login, notifications, schedules, and rooms. Open the spreadsheet for the full test plan.",
+    projectSlug: "ems-energy-management-system",
+    documentUrl:
+      "https://docs.google.com/spreadsheets/d/1BDZLZis_2wGaVi9Oiv-3FqI33elyFFtfi3bME7K76qs/edit?gid=811114103#gid=811114103&range=A2",
+    // Static excerpt: Test Scenarios A5:C30 and I5:J30; no test data or results.
+    spreadsheetPreview: {
+      heading: "Test Scenario Prioritas — Starter Set",
+      sheetName: "Test Scenarios",
+      columns: ["Test ID", "Scenario", "Layer", "Priority"],
+      rows: [
+        ["TS-001", "Login dengan credential valid", "UI+API", "P0"],
+        ["TS-009", "Notifikasi CRUD oleh user lain", "Socket+UI", "P1"],
+        ["TS-017", "Tambah schedule non-repeat", "API+UI", "P0"],
+        ["TS-025", "Tambah room valid dan duplikat", "API+UI", "P1"],
+      ],
+    },
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
     id: "test-planning",
     type: "spreadsheet",
     title: "Test planning",
     description:
-      "A space for a shareable test plan, scenario sheet, or test case preview.",
-    // Structure only: no actual test plan or spreadsheet URL has been supplied.
+      "EMS test planning overview covering the application, testing target, available tools, and project objective.",
+    projectSlug: "ems-energy-management-system",
+    documentUrl:
+      "https://docs.google.com/spreadsheets/d/1BDZLZis_2wGaVi9Oiv-3FqI33elyFFtfi3bME7K76qs/edit?gid=1712295592#gid=1712295592&range=A2",
+    // Reviewed Overview fields from A6:B10; exclude environment URLs and KPI claims.
     spreadsheetPreview: {
-      heading: "Test planning",
-      sheetName: "Template structure · Content pending",
-      columns: ["Module", "Scenario", "Priority", "Expected result"],
-      rows: [],
+      heading: "EMS — Test Plan",
+      sheetName: "Overview",
+      columns: ["Informasi", "Detail"],
+      rows: [
+        ["Nama aplikasi", "EMS — Energy Management System"],
+        ["Target", "Chrome Desktop dan Chrome Mobile"],
+        ["Tools tersedia", "Cypress, Playwright, Postman"],
+        [
+          "Tujuan",
+          "Memantau energi dan mengelola room, gateway IoT, device, schedule, notifikasi, report, user, dan role.",
+        ],
+      ],
     },
+    isPlaceholder: false,
   },
   {
     ...emptyArtifact,
@@ -765,16 +920,192 @@ export const gallery: GalleryItem[] = [
     ...emptyArtifact,
     id: "web-project",
     type: "web",
-    title: "Web project",
-    description: "A space for a small application, prototype, or QA tool.",
+    title: "Test Execution Report AI Assistant",
+    description:
+      "A QA workspace for drafting test scenarios from requirements and UI screenshots, reviewing test cases, and exporting them to CSV.",
+    technologies: ["React", "TypeScript", "Express", "SQLite"],
+    repositoryUrl:
+      "https://github.com/verdo-daviarta/Test-Execution-Report-AI-Assistant",
+    webPreview: {
+      heading: "From requirements to test-ready drafts.",
+      summary: "AI-assisted test design. Reviewed by QA.",
+      coverages: ["Positive", "Negative", "Validation", "Boundary"],
+      features: [
+        "UI screenshot analysis",
+        "Editable scenarios",
+        "Saved history",
+        "CSV export",
+      ],
+    },
+    isPlaceholder: false,
   },
   {
     ...emptyArtifact,
     id: "automation-source",
     type: "repository",
-    title: "Automation source",
+    title: "EMS · QA automation source",
     description:
-      "A space for a public repository and its supporting documentation.",
+      "Cypress-led UI automation for EMS, with Playwright API, mobile, and responsive checks.",
+    projectSlug: "ems-energy-management-system",
+    technologies: ["Cypress", "Playwright", "JavaScript"],
+    repositoryUrl: "https://github.com/verdo-daviarta/ems-automation-2026",
+    // Reviewed repository structure and source excerpt; no live GitHub sync.
+    repositoryPreview: {
+      owner: "verdo-daviarta",
+      name: "ems-automation-2026",
+      heading: "EMS QA Automation",
+      branch: "main",
+      language: "JavaScript",
+      frameworks: ["Cypress", "Playwright"],
+      files: [
+        "cypress/e2e/",
+        "cypress/pages/",
+        "playwright/tests/",
+        "shared/",
+        "docs/",
+      ],
+      snippet: {
+        path: "cypress/e2e/FEAT-013-energy-summary/energy-summary.cy.js",
+        startLine: 13,
+        lines: [
+          "dashboardPage.trackEnergySummary();",
+          "cy.loginAs(role);",
+          "dashboardPage.assertReady();",
+          "dashboardPage.waitForEnergySummary();",
+          "",
+          "dashboardPage.energyUsageCard.should('be.visible');",
+          "dashboardPage.energyUsageUnit.should('be.visible');",
+        ],
+      },
+    },
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "wedding-invitation-web",
+    type: "web",
+    title: "Wedding Invitation",
+    description:
+      "A personal wedding invitation with an event timeline, photo gallery, music controls, and RSVP interface.",
+    technologies: ["React", "TypeScript", "vinext", "Vite"],
+    repositoryUrl: "https://github.com/verdo-daviarta/wedding-invitation",
+    webPreview: {
+      variant: "invitation",
+      brand: "Wedding Invitation",
+      kicker: "Celebrations / Web experience",
+      heading: "A little story. A lifetime together.",
+      summary:
+        "An invitation designed around moments, memories, and celebration.",
+      coverages: [],
+      features: [
+        "Event timeline",
+        "Photo gallery",
+        "Music controls",
+        "RSVP interface",
+      ],
+    },
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "light4web-web",
+    type: "web",
+    title: "light4web · Custom Apparel",
+    description:
+      "A clothing production business website with product browsing, product details, consultation, and order interfaces.",
+    technologies: ["React", "TypeScript", "Vite", "Tailwind CSS"],
+    repositoryUrl: "https://github.com/verdo-daviarta/light4web",
+    webPreview: {
+      variant: "business",
+      brand: "light4web",
+      kicker: "Custom apparel / Business website",
+      heading: "Made to wear. Built for your brand.",
+      summary:
+        "A digital storefront connecting custom apparel with a consultation-led ordering experience.",
+      coverages: [],
+      features: [
+        "Product catalogue",
+        "Product details",
+        "Consultation interface",
+        "Order interface",
+      ],
+      repositoryNotice: "Private repository · GitHub access required",
+    },
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "cashback-sociolla-finance-source",
+    type: "repository",
+    title: "Cashback Sociolla Finance · QA Source",
+    description:
+      "Java browser automation for finance workflows, organised with page objects, Cucumber features, TestNG, and reusable browser strategies.",
+    technologies: ["Java", "Selenium", "Cucumber", "TestNG", "Maven"],
+    repositoryUrl: "https://github.com/verdo-daviarta/CashbackSociollaFinance",
+    repositoryPreview: {
+      owner: "verdo-daviarta",
+      name: "CashbackSociollaFinance",
+      heading: "Cashback Finance QA",
+      branch: "master",
+      language: "Java",
+      frameworks: ["Selenium", "Cucumber", "TestNG"],
+      files: [
+        "src/main/java/com/juaracoding/pages/",
+        "src/main/resources/",
+        "src/test/java/com/juaracoding/",
+        "pom.xml",
+      ],
+      snippet: {
+        path: "src/main/java/com/juaracoding/drivers/strategies/DriverStrategy.java",
+        startLine: 3,
+        lines: [
+          "import org.openqa.selenium.WebDriver;",
+          "",
+          "public interface DriverStrategy {",
+          "",
+          "    WebDriver setStrategy();",
+          "",
+          "}",
+        ],
+      },
+    },
+    isPlaceholder: false,
+  },
+  {
+    ...emptyArtifact,
+    id: "sqa-batch-training-source",
+    type: "repository",
+    title: "SQA Batch Training · Selenium Source",
+    description:
+      "Java and Selenium training exercises covering checkboxes, radio buttons, text fields, web tables, and browser window handling.",
+    technologies: ["Java", "Selenium", "Maven"],
+    repositoryUrl: "https://github.com/verdo-daviarta/SQABatchTrainingProject",
+    repositoryPreview: {
+      owner: "verdo-daviarta",
+      name: "SQABatchTrainingProject",
+      heading: "Selenium Training",
+      branch: "master",
+      language: "Java",
+      frameworks: ["Selenium", "Maven"],
+      files: [
+        "src/main/java/com/juaracoding/CheckBox.java",
+        "src/main/java/com/juaracoding/WebTables.java",
+        "src/main/java/com/juaracoding/HandlingWindow.java",
+        "pom.xml",
+      ],
+      snippet: {
+        path: "src/main/java/com/juaracoding/CheckBox.java",
+        startLine: 12,
+        lines: [
+          "import org.openqa.selenium.By;",
+          "import org.openqa.selenium.JavascriptExecutor;",
+          "import org.openqa.selenium.Keys;",
+          "import org.openqa.selenium.WebDriver;",
+          "import org.openqa.selenium.chrome.ChromeDriver;",
+        ],
+      },
+    },
+    isPlaceholder: false,
   },
 ];
 export const artifactLabels: Record<ArtifactType, string> = {

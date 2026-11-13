@@ -23,9 +23,12 @@ for (const width of [390, 768, 1440]) {
       .filter({ has: referenceTitle });
     const heading = page.locator(".work-gallery > .section-heading");
     await expect(heading).toHaveCount(1);
-    await expect(
-      heading.getByText("The working record", { exact: true }),
-    ).toBeVisible();
+    await expect(heading.locator(".section-accent")).toBeVisible();
+    await expect(heading.locator(".section-accent")).toBeEmpty();
+    await expect(heading.locator(".section-accent")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
     await expect(heading.locator(".section-description")).toHaveText(
       "Test plans, screenshots, automation, and the work behind a release. Select an artifact to view its preview.",
     );

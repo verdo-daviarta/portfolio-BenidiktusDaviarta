@@ -20,7 +20,6 @@ export function DocumentOverview({
           <Icon name="file" width={20} height={20} />
         </span>
         <span className="document-file-name">{title}</span>
-        <span className="document-provider">Google Docs</span>
       </div>
       <div className="document-sheet" lang="id">
         <p className="document-sheet-heading">{excerpt.heading}</p>
@@ -35,10 +34,6 @@ export function DocumentOverview({
           </div>
         ))}
       </div>
-      <p className="document-excerpt-note">
-        Content excerpt
-        {!compact && " · Open the document for the full issue report."}
-      </p>
     </div>
   );
 }

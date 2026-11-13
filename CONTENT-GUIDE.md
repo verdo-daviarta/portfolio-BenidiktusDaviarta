@@ -96,14 +96,62 @@ live Google Sheets embed; exclude private tester details and update it manually.
 
 All `spreadsheet` cards and dialogs use `SpreadsheetOverview` as the standard
 presentation, even without a link or supplied excerpt. Missing content is shown
-as a labeled **Template preview** with empty rows, never fabricated test cases.
-`Test planning` currently defines only its intended column structure and remains
-unpublished. Without configured columns, the standard fallback uses generic
+with empty rows, never fabricated test cases.
+`Test planning` publishes four reviewed key/value fields from the EMS workbook's
+`Overview` tab (`gid=1712295592`, range `A2`): application, target, tools, and objective.
+It is a static excerpt, excludes environment URLs and KPI claims, and links to
+the original sheet. Without configured columns, the standard fallback uses generic
 column headings. Add approved rows and set `isPlaceholder: false` to display real
 content; add `documentUrl` to enable **Open spreadsheet**. Spreadsheet thumbnails
 do not override this standard table presentation.
 
+## EMS testing artifacts
+
+The EMS scenario card links to the supplied Google Sheet's `Test Scenarios` tab
+(`gid=811114103`, initial range `A2`). Its standard spreadsheet preview contains
+four reviewed scenarios from columns A/C/I/J, not credentials, test data,
+execution status, evidence, or defect references. This is a public static
+excerpt, not a live embed; refresh it manually after reviewing source changes.
+
+The existing `automation-source` slot now points to the public EMS QA repository.
+Its `repositoryPreview` powers the shared `RepositoryOverview` component: a
+compact repository card and a larger, keyboard-scrollable source preview.
+Directory names and the energy-summary excerpt (lines 13–19) were checked against
+the repository; no source is executed or fetched by portfolio visitors. The
+metadata and excerpt are snapshots, not live GitHub statistics or test results.
+Both artifacts are associated with `ems-energy-management-system`; their external
+links open in a new tab and preserve the original access controls.
+
+## Web applications
+
+The Web gallery slot contains **Test Execution Report AI Assistant**, linked to
+its public GitHub repository. `webPreview` renders a responsive illustrative
+workspace through `WebOverview`, based on the README and frontend source. Example
+scenarios are illustrative, not execution results or an application screenshot.
+Keep `projectUrl` empty until an approved deployed application URL is available.
+
+## Additional Web and Source projects
+
+Additional gallery entries: `wedding-invitation-web` and `light4web-web` use
+illustrative invitation/business variants of `WebOverview`; neither has an
+approved deployed URL. light4web was private when reviewed; show its access notice
+and retain GitHub permissions. Do not publish personal event details or contact data.
+`cashback-sociolla-finance-source` and `sqa-batch-training-source` reuse
+`RepositoryOverview` with reviewed Java excerpts from their `master` branches.
+These previews describe source structure, not successful test executions.
+
+## Mobile gallery navigation
+
+On landing-page screens up to 640px, every filter uses a single-row horizontal
+carousel. With multiple artifacts, keep the next card partly visible and show the
+swipe hint/count. A single artifact fills the viewport without a swipe hint.
+Vertical gestures should scroll the page toward Contact.
+Desktop retains the six-card vertical viewport; project sidebars are separate.
+
 ## Videos
+
+
+
 
 - Local MP4/WebM: put the file in `public/videos/`, set `videoProvider: "file"`, and set `source` to its public path.
 - External direct video: use `videoProvider: "file"` and the actual MP4/WebM URL in `source`.
