@@ -23,13 +23,13 @@ export function Contact() {
       <div className="container contact-grid">
         <div>
           <h2 id="contact-heading">
-            Let’s talk about
+            Have a testing problem?
             <br />
-            software quality<span>.</span>
+            Let’s work through it<span>.</span>
           </h2>
           <p>
-            For conversations about QA leadership, automation, and testing
-            strategy.
+            Get in touch about QA roles, test automation, or a project that
+            needs another pair of eyes.
           </p>
           <p className="contact-location">{profile.location}</p>
         </div>

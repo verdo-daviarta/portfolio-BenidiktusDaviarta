@@ -11,7 +11,7 @@ export function TechStack() {
       <SectionHeading
         id="stack-heading"
         title="The tools behind the testing."
-        description="A practical toolkit for verifying behaviour, automating checks, and keeping quality traceable."
+        description="What I use to plan tests, investigate failures, and automate repeat checks. Hover or focus on a tool to see how it fits my work."
       />
       <div className="stack-table">
         {techStack.map((category) => (

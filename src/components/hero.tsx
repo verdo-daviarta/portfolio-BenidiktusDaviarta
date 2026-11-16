@@ -8,8 +8,8 @@ export function Hero() {
         <HeroIntro />
         <div className="hero-profile">
           <p className="hero-statement">
-            Reliable software starts
-            <br className="desktop-break" /> with the right questions.
+            Where can this break?
+            <br className="desktop-break" /> That is where I start.
           </p>
           <p className="body-copy">{profile.description}</p>
           <dl className="profile-facts">
@@ -35,8 +35,8 @@ export function Hero() {
       <div className="hero-bottom">
         <span className="eyebrow">From strategy to release</span>
         <p>
-          Test planning <span>/</span> Automation <span>/</span> Manual testing <span>/</span> API validation{" "}
-          <span>/</span> Defect management
+          Test planning <span>/</span> Automation <span>/</span> Manual testing{" "}
+          <span>/</span> API validation <span>/</span> Defect management
         </p>
       </div>
       <div className="professional-context">

@@ -13,7 +13,7 @@ export function Projects() {
       <SectionHeading
         id="projects-heading"
         title="Quality in context."
-        description="Enterprise platforms, connected systems, and immersive applications. A selection from my professional experience."
+        description="The projects I have tested, the work I took on, and the checks behind each release. Open a project for its testing scope and available evidence."
       />
       <ProjectList projects={sortProjectsByYear(projects)} />
       <ProjectGallery />

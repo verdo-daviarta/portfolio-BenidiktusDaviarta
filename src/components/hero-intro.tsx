@@ -53,7 +53,7 @@ export function HeroIntro() {
           <span>{profile.secondaryRole}</span>
         </p>
         <a className="button button-dark" href="#projects">
-          Explore my work <Icon />
+          Review my projects <Icon />
         </a>
       </div>
       <div
@@ -78,6 +78,7 @@ export function HeroIntro() {
               fill
               sizes="(max-width: 640px) 100vw, 50vw"
               loading="eager"
+              fetchPriority="high"
               draggable={false}
               className="hero-portrait-image"
             />

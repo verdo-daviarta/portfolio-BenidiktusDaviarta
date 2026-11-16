@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { profile, siteUrl } from "@/data/profile";
+import { SectionMotion } from "@/components/section-motion";
 import "@fontsource-variable/geist";
 import "@fontsource/urbanist/400.css";
 import "./globals.css";
@@ -40,6 +41,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <SectionMotion />
       </body>
     </html>
   );

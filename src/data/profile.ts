@@ -9,9 +9,9 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/benidiktus-verdo",
   github: "https://github.com/verdo-daviarta",
   description:
-    "I work across the software development lifecycle to identify risk, validate behaviour, and automate repetitive verification. My focus is helping teams release reliable software.",
+    "I lead QA and write automated tests. I look for the paths that fail, turn repeat checks into automation, and work with developers to verify the fixes.",
   context:
-    "From test strategy to release validation, I lead quality assurance for enterprise web, desktop, and virtual reality applications. I collaborate with developers, business analysts, designers, and stakeholders to make quality part of the process.",
+    "My work covers enterprise web, desktop, and virtual reality applications, from the first test plan to release checks. I work with developers, analysts, designers, and stakeholders to understand what needs testing and follow defects through to a verified fix.",
 };
 
 // Set NEXT_PUBLIC_SITE_URL to the real deployment origin. No domain is invented.

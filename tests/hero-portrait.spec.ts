@@ -103,7 +103,7 @@ for (const width of [390, 768, 1440]) {
         )
         .toBe(true);
       await expect(
-        page.getByRole("link", { name: "Explore my work", exact: true }),
+        page.getByRole("link", { name: "Review my projects", exact: true }),
       ).toHaveCount(0);
       const photoBounds = (await hero.boundingBox())!;
       expect(
@@ -137,7 +137,7 @@ for (const width of [390, 768, 1440]) {
           ),
         );
       await expect(
-        page.getByRole("link", { name: "Explore my work", exact: true }),
+        page.getByRole("link", { name: "Review my projects", exact: true }),
       ).toBeVisible();
       for (let repeat = 0; repeat < 2; repeat++) {
         await name.click();
