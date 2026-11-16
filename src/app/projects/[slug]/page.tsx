@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
 import { getProjectMedia } from "@/data/gallery";
-import { siteUrl } from "@/data/profile";
+import { profile, siteUrl } from "@/data/profile";
 import { Header } from "@/components/header";
 import { ProjectGallery } from "@/components/project-gallery";
 import { Icon } from "@/components/icons";
@@ -160,7 +160,7 @@ export default async function ProjectPage({
         </div>
       </main>
       <footer className="container detail-footer">
-        <Link href="/">Benidiktus Daviarta</Link>
+        <Link href="/">{profile.name}</Link>
         <Link href="/#contact" className="text-link">
           Get in touch <Icon />
         </Link>

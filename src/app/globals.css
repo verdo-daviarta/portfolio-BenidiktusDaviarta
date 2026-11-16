@@ -148,6 +148,7 @@ dd {
   color: var(--accent);
 }
 .wordmark-name {
+  white-space: pre-line;
   font-size: 11px;
   font-weight: 500;
   line-height: 1.4;
@@ -187,10 +188,14 @@ dd {
 .hero {
   padding-top: 52px;
 }
-.hero-grid {
+.hero-grid,
+.hero-bottom,
+.professional-context {
   display: grid;
   grid-template-columns: 1.08fr 1fr;
-  gap: 80px;
+  column-gap: 80px;
+}
+.hero-grid {
   padding: 0 0 58px;
 }
 .hero-intro h1 {
@@ -213,6 +218,7 @@ dd {
   outline-offset: -3px;
 }
 .hero-name-button {
+  white-space: pre-line;
   display: inline-block;
   padding: 0;
   font: inherit;
@@ -379,10 +385,7 @@ dd {
   font-size: 11px;
 }
 .hero-bottom {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
   padding: 24px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -395,13 +398,10 @@ dd {
   color: #8c9185;
 }
 .professional-context {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 44px;
   padding-top: 36px;
 }
 .professional-context > p {
-  font-size: 15px;
+  font-size: 14px;
   max-width: 710px;
   line-height: 1.85;
 }
@@ -1493,34 +1493,15 @@ dd {
   padding: 12px;
   gap: 8px;
 }
-.web-overview.compact .web-overview-kicker {
-  font-size: 8px;
-}
 .web-overview.compact .web-overview-title {
   margin-top: 0;
   font-size: 18px;
 }
-.web-overview.compact .web-overview-summary {
-  display: none;
-}
 .web-overview.compact .web-workspace-body {
   grid-template-columns: minmax(0, 1fr);
 }
-.web-overview.compact .web-workspace-nav,
-.web-overview.compact .web-requirement,
-.web-overview.compact .web-overview-footer {
-  display: none;
-}
 .web-overview.compact .web-browser-bar {
   padding: 6px 10px;
-}
-.web-overview.compact .web-workspace-nav {
-  font-size: 7px;
-  gap: 10px;
-  padding: 12px 8px;
-}
-.web-overview.compact .web-app-mark {
-  font-size: 16px;
 }
 .web-overview.compact .web-generation {
   padding: 8px;
@@ -1528,27 +1509,11 @@ dd {
 .web-overview.compact .web-generation-heading {
   font-size: 10px;
 }
-.web-overview.compact .web-draft-tag,
-.web-overview.compact .web-requirement p,
-.web-overview.compact .web-flow {
-  display: none;
-}
-.web-overview.compact .web-requirement {
-  margin-top: 8px;
-  padding: 8px;
-}
-.web-overview.compact .web-field-label,
 .web-overview.compact .web-coverages > span {
   font-size: 7px;
 }
-.web-overview.compact .web-text-lines {
-  margin-top: 8px;
-}
 .web-overview.compact .web-coverages {
   margin-top: 8px;
-}
-.web-overview.compact .web-overview-footer {
-  padding-bottom: 22px;
 }
 .web-overview.compact + .preview-action {
   background: #f7f7f2;
@@ -2098,19 +2063,13 @@ dd {
   .container {
     width: calc(100% - 80px);
   }
-  .hero-grid {
-    gap: 45px;
-  }
-  .hero-bottom {
-    flex-wrap: wrap;
-    gap: 10px 24px;
-  }
-  .hero-bottom > .eyebrow {
-    width: 100%;
+  .hero-grid,
+  .hero-bottom,
+  .professional-context {
+    column-gap: 45px;
   }
   .section-heading,
-  .stack-row,
-  .professional-context {
+  .stack-row {
     grid-template-columns: 0.85fr 2fr;
     gap: 32px;
   }
@@ -2154,8 +2113,10 @@ dd {
   .wordmark-name {
     display: none;
   }
-  .hero-grid {
-    gap: 32px;
+  .hero-grid,
+  .hero-bottom,
+  .professional-context {
+    column-gap: 32px;
     grid-template-columns: 1fr 1fr;
   }
   .hero-intro h1 {
@@ -2180,8 +2141,7 @@ dd {
   .hero-bottom p span {
     margin-inline: 7px;
   }
-  .section-heading,
-  .professional-context {
+  .section-heading {
     grid-template-columns: 1fr;
     gap: 18px;
   }
@@ -2295,8 +2255,12 @@ dd {
   .hero {
     padding-top: 32px;
   }
-  .hero-grid {
+  .hero-grid,
+  .hero-bottom,
+  .professional-context {
     grid-template-columns: 1fr;
+  }
+  .hero-grid {
     padding: 0 0 32px;
     gap: 46px;
   }
@@ -2345,9 +2309,6 @@ dd {
   .professional-context {
     padding-top: 26px;
     gap: 14px;
-  }
-  .professional-context > p {
-    font-size: 13px;
   }
   .section-heading {
     gap: 17px;

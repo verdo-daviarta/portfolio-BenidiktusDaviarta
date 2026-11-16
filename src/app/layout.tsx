@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Software Quality Assurance",
     "QA Lead",
     "QA Automation",
-    "Benidiktus Daviarta",
+    profile.name,
     "API Testing",
     "Test Strategy",
   ],

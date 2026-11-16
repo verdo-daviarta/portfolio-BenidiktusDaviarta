@@ -35,7 +35,7 @@ export function Hero() {
       <div className="hero-bottom">
         <span className="eyebrow">From strategy to release</span>
         <p>
-          Test planning <span>/</span> Automation <span>/</span> API validation{" "}
+          Test planning <span>/</span> Automation <span>/</span> Manual testing <span>/</span> API validation{" "}
           <span>/</span> Defect management
         </p>
       </div>

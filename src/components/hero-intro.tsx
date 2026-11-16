@@ -37,15 +37,14 @@ export function HeroIntro() {
             ref={nameRef}
             type="button"
             className="hero-name-button"
-            aria-label="Show portrait of Benidiktus Daviarta"
+            aria-label={`Show portrait of ${profile.name}`}
             aria-controls="hero-portrait-panel"
             aria-expanded={showPortrait}
             title="Show portrait"
             onClick={() => togglePortrait(true)}
           >
-            Benidiktus
-            <br />
-            Daviarta<span className="name-period">.</span>
+            {profile.name.replace(" ", "\n")}
+            <span className="name-period">.</span>
           </button>
         </h1>
         <p className="hero-role">
@@ -75,7 +74,7 @@ export function HeroIntro() {
           <span className="hero-portrait-frame">
             <Image
               src="/hero photos.png"
-              alt="Portrait of Benidiktus Daviarta"
+              alt={`Portrait of ${profile.name}`}
               fill
               sizes="(max-width: 640px) 100vw, 50vw"
               loading="eager"

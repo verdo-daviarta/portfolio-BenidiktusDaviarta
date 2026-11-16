@@ -159,6 +159,14 @@ test("gallery filters, keyboard preview, focus trap, and return focus", async ({
   await expect(
     page.getByRole("button", { name: "Close preview" }),
   ).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(
+    dialog.getByRole("link", { name: "Open spreadsheet", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(
+    dialog.getByRole("button", { name: "Close preview" }),
+  ).toBeFocused();
   await page.keyboard.press("Tab");
   expect(
     await dialog.evaluate((element) =>
@@ -457,7 +465,7 @@ test("Command Center screenshots load and open complete image previews", async (
   }
 });
 
-test("Bela Negara shows three application links and other projects retain single or no live links", async ({
+test("Bela Negara shows three application links and other projects render their configured live links", async ({
   page,
 }) => {
   const destinations = [
@@ -507,6 +515,17 @@ test("Bela Negara shows three application links and other projects retain single
     links.getByRole("link", { name: "Live project", exact: true }),
   ).toHaveAttribute("href", "https://command-center.kemhan.go.id/");
   await page.goto("/projects/pusdiklat-bahasa");
+  const bahasa = projects.find(
+    (project) => project.slug === "pusdiklat-bahasa",
+  )!;
+  await expect(links.getByRole("link")).toHaveCount(bahasa.liveUrls.length);
+  for (const { label, url } of bahasa.liveUrls) {
+    const link = links.getByRole("link", { name: label, exact: true });
+    await expect(link).toHaveAttribute("href", url);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  }
+  await page.goto("/projects/ems-energy-management-system");
   await expect(links).toHaveCount(0);
 });
 
@@ -734,7 +753,7 @@ test("Tekfunghan uses the student dashboard hero and previews safe representativ
   }
 });
 
-test("Bahasa quality scope, testing approach, and tools match Bela Negara", async ({
+test("Bahasa keeps the shared testing approach and renders its configured tools", async ({
   page,
 }) => {
   const reference = projects.find(
@@ -745,8 +764,7 @@ test("Bahasa quality scope, testing approach, and tools match Bela Negara", asyn
   )!;
   expect(bahasa.testingScope).toEqual(reference.testingScope);
   expect(bahasa.approach).toBe(reference.approach);
-  expect(bahasa.technologies).toEqual(reference.technologies);
-  const sections = ["Quality scope", "Testing approach", "Tools"];
+  const sections = ["Quality scope", "Testing approach"];
   await page.goto(`/projects/${reference.slug}`);
   const referenceText: string[] = [];
   for (const heading of sections) {
@@ -762,6 +780,10 @@ test("Bahasa quality scope, testing approach, and tools match Bela Negara", asyn
     });
     await expect(section.locator("p")).toHaveText(referenceText[index]);
   }
+  const tools = page.locator(".detail-section").filter({
+    has: page.getByRole("heading", { name: "Tools", exact: true }),
+  });
+  await expect(tools.locator("p")).toHaveText(bahasa.technologies.join(" · "));
 });
 
 test("Bahasa uses the admin hero and previews representative Admin Panel and VR samples", async ({
@@ -1310,14 +1332,16 @@ test("missing routes return a usable 404, metadata endpoints respond", async ({
     "This page isn’tin the test plan.",
   );
   await page.getByRole("link", { name: "Return to the portfolio" }).click();
-  await expect(page).toHaveTitle(
-    /Benidiktus Daviarta — Software Quality Assurance Lead/,
-  );
+  await expect(page).toHaveTitle(`${profile.name} — ${profile.role}`);
   for (const path of ["/robots.txt", "/sitemap.xml", "/icon.svg"])
     expect((await request.get(path)).status()).toBe(200);
   await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
     "content",
-    /Benidiktus Daviarta/,
+    `${profile.name} — ${profile.role}`,
+  );
+  await expect(page.locator('meta[name="keywords"]')).toHaveAttribute(
+    "content",
+    expect.stringContaining(profile.name),
   );
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",

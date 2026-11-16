@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { profile } from "@/data/profile";
 const sections = [
   { id: "home", label: "Home" },
   { id: "stack", label: "Stack" },
@@ -50,15 +51,13 @@ export function Header({ detail = false }: { detail?: boolean }) {
         <Link
           href={detail ? "/" : "#home"}
           className="wordmark"
-          aria-label="Benidiktus Daviarta, home"
+          aria-label={`${profile.name}, home`}
         >
           <span className="monogram">
             bd<span>.</span>
           </span>
           <span className="wordmark-name">
-            Benidiktus
-            <br />
-            Daviarta
+            {profile.name.replace(" ", "\n")}
           </span>
         </Link>
         <nav aria-label="Main navigation">

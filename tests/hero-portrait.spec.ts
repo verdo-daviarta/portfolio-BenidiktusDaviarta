@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { profile } from "../src/data/profile";
 
 for (const width of [390, 768, 1440]) {
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
@@ -13,9 +14,12 @@ for (const width of [390, 768, 1440]) {
       const hero = page.locator(".hero-intro");
       const original = (await hero.boundingBox())!;
       const name = page.getByRole("button", {
-        name: "Show portrait of Benidiktus Daviarta",
+        name: `Show portrait of ${profile.name}`,
         exact: true,
       });
+      await expect(page.locator(".wordmark-name")).toHaveText(profile.name);
+      await expect(page.locator("h1")).toHaveAccessibleName(profile.name);
+      await expect(name).toHaveText(`${profile.name}.`);
       const panel = page.locator(".hero-portrait-panel");
       const slogan = page.locator(".hero-portrait-slogan");
       await expect(slogan).not.toBeVisible();
@@ -58,7 +62,7 @@ for (const width of [390, 768, 1440]) {
         ),
       );
       const image = portrait.getByRole("img", {
-        name: "Portrait of Benidiktus Daviarta",
+        name: `Portrait of ${profile.name}`,
       });
       await expect(image).toBeVisible();
       await expect(slogan).toBeVisible();

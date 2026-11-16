@@ -16,7 +16,7 @@ export function WebOverview({
           <p className="web-overview-kicker">QA toolkit / Web application</p>
         )}
         <p className="web-overview-title">{preview.heading}</p>
-        <p className="web-overview-summary">{preview.summary}</p>
+        {!compact && <p className="web-overview-summary">{preview.summary}</p>}
       </div>
       <div className="web-workspace">
         <div className="web-browser-bar">
@@ -27,39 +27,47 @@ export function WebOverview({
           <span className="web-ai-mark">AI</span>
         </div>
         <div className="web-workspace-body">
-          <div className="web-workspace-nav" aria-hidden="true">
-            <span className="web-app-mark">
-              QA<span> / </span>
-            </span>
-            <span className="web-nav-selected">New Generation</span>
-            <span>Projects</span>
-            <span>History</span>
-          </div>
+          {!compact && (
+            <div className="web-workspace-nav" aria-hidden="true">
+              <span className="web-app-mark">
+                QA<span> / </span>
+              </span>
+              <span className="web-nav-selected">New Generation</span>
+              <span>Projects</span>
+              <span>History</span>
+            </div>
+          )}
           <div className="web-generation">
             <div className="web-generation-heading">
               <span>New Generation</span>
-              <span className="web-draft-tag">Draft workspace</span>
+              {!compact && (
+                <span className="web-draft-tag">Draft workspace</span>
+              )}
             </div>
-            <div className="web-requirement">
-              <span className="web-field-label">Requirements</span>
-              <p>Turn requirements into structured test scenarios.</p>
-              <div className="web-text-lines" aria-hidden="true">
-                <i />
-                <i />
+            {!compact && (
+              <div className="web-requirement">
+                <span className="web-field-label">Requirements</span>
+                <p>Turn requirements into structured test scenarios.</p>
+                <div className="web-text-lines" aria-hidden="true">
+                  <i />
+                  <i />
+                </div>
               </div>
-            </div>
+            )}
             <div className="web-coverages" aria-label="Supported test coverage">
               {preview.coverages.map((coverage) => (
                 <span key={coverage}>{coverage}</span>
               ))}
             </div>
-            <div className="web-flow" aria-label="Test design workflow">
-              <span>01 / Define</span>
-              <span aria-hidden="true">→</span>
-              <span>02 / Review</span>
-              <span aria-hidden="true">→</span>
-              <span>03 / Export</span>
-            </div>
+            {!compact && (
+              <div className="web-flow" aria-label="Test design workflow">
+                <span>01 / Define</span>
+                <span aria-hidden="true">→</span>
+                <span>02 / Review</span>
+                <span aria-hidden="true">→</span>
+                <span>03 / Export</span>
+              </div>
+            )}
             {!compact && (
               <div className="web-result-preview">
                 <span className="web-field-label">

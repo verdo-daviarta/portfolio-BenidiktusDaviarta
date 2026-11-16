@@ -21,6 +21,11 @@ for (const width of [390, 768, 1440]) {
     await expect(trigger.locator(".web-overview.compact")).toBeVisible();
     await expect(trigger.locator(".web-overview-kicker")).toHaveCount(0);
     await expect(
+      trigger.locator(
+        ".web-overview-summary, .web-workspace-nav, .web-requirement, .web-draft-tag, .web-flow",
+      ),
+    ).toHaveCount(0);
+    await expect(
       trigger.getByText("Illustrative preview", { exact: true }),
     ).toHaveCount(0);
     expect(
@@ -51,6 +56,9 @@ for (const width of [390, 768, 1440]) {
       "Boundary",
     ]);
     await expect(dialog.locator(".web-feature-list > li")).toHaveCount(4);
+    await expect(dialog.locator(".web-workspace-nav")).toHaveCount(1);
+    await expect(dialog.locator(".web-requirement")).toBeVisible();
+    await expect(dialog.locator(".web-flow")).toBeVisible();
     await expect(
       dialog.getByRole("link", { name: "View repository", exact: true }),
     ).toHaveAttribute(

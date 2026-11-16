@@ -228,39 +228,7 @@ export function ProjectGallery({
                     onClick={() => setSelected(item)}
                     aria-label={`Preview ${item.title}`}
                   >
-                    {item.type === "web" &&
-                    !item.isPlaceholder &&
-                    item.webPreview ? (
-                      <WebOverview preview={item.webPreview} compact />
-                    ) : hasRepositoryPreview(item) ? (
-                      <RepositoryOverview
-                        preview={item.repositoryPreview!}
-                        compact
-                      />
-                    ) : item.type === "spreadsheet" ? (
-                      <SpreadsheetOverview
-                        title={item.title}
-                        excerpt={item.spreadsheetPreview}
-                        isPlaceholder={item.isPlaceholder}
-                        compact
-                      />
-                    ) : hasPublishedDocument(item) && item.documentPreview ? (
-                      <DocumentOverview
-                        title={item.title}
-                        excerpt={item.documentPreview}
-                        compact
-                      />
-                    ) : (
-                      <MediaPlaceholder
-                        src={item.thumbnail}
-                        alt={item.thumbnailAlt}
-                        kind={item.type}
-                        label={artifactLabels[item.type]}
-                        linkedDocument={hasPublishedDocument(item)}
-                        compact
-                        fit={item.type === "image" ? "contain" : "cover"}
-                      />
-                    )}
+                    <ArtifactPreview item={item} compact />
                     <span className="preview-action">
                       {item.type === "video" ? "View demo" : "Preview"}{" "}
                       <Icon
@@ -314,60 +282,7 @@ export function ProjectGallery({
               <h2 id="preview-title">{selected.title}</h2>
               <p id="preview-description">{selected.description}</p>
               <div className="dialog-media">
-                {selected.type === "web" &&
-                !selected.isPlaceholder &&
-                selected.webPreview ? (
-                  <WebOverview preview={selected.webPreview} />
-                ) : hasRepositoryPreview(selected) ? (
-                  <RepositoryOverview preview={selected.repositoryPreview!} />
-                ) : selected.type === "spreadsheet" ? (
-                  <SpreadsheetOverview
-                    title={selected.title}
-                    excerpt={selected.spreadsheetPreview}
-                    isPlaceholder={selected.isPlaceholder}
-                  />
-                ) : hasPublishedDocument(selected) &&
-                  selected.documentPreview ? (
-                  <DocumentOverview
-                    title={selected.title}
-                    excerpt={selected.documentPreview}
-                  />
-                ) : hasPublishedDocument(selected) ? (
-                  <MediaPlaceholder
-                    src={selected.thumbnail}
-                    alt={selected.thumbnailAlt}
-                    label={artifactLabels[selected.type]}
-                    kind={selected.type}
-                    linkedDocument
-                  />
-                ) : selected.isPlaceholder ||
-                  (!selected.source && !selected.videoId) ? (
-                  <MediaPlaceholder
-                    src={selected.thumbnail}
-                    alt={selected.thumbnailAlt}
-                    label="Artifact not published"
-                    kind={selected.type}
-                  />
-                ) : selected.type === "video" ? (
-                  <VideoPreview item={selected} />
-                ) : selected.source && selected.type === "image" ? (
-                  <div className="dialog-image">
-                    <Image
-                      src={selected.source}
-                      alt={selected.thumbnailAlt || selected.title}
-                      fill
-                      sizes="(max-width: 768px) 90vw, 800px"
-                      style={{ objectFit: "contain" }}
-                    />
-                  </div>
-                ) : (
-                  <MediaPlaceholder
-                    src={selected.thumbnail}
-                    alt={selected.thumbnailAlt}
-                    label={artifactLabels[selected.type]}
-                    kind={selected.type}
-                  />
-                )}
+                <ArtifactPreview item={selected} />
               </div>
               {selected.isPlaceholder && (
                 <p className="preview-note">
@@ -391,11 +306,73 @@ function getDocumentUrl(item: GalleryItem) {
       : null)
   );
 }
-function hasRepositoryPreview(item: GalleryItem) {
-  return (
+function ArtifactPreview({
+  item,
+  compact = false,
+}: {
+  item: GalleryItem;
+  compact?: boolean;
+}) {
+  if (item.type === "web" && !item.isPlaceholder && item.webPreview)
+    return <WebOverview preview={item.webPreview} compact={compact} />;
+  if (
     item.type === "repository" &&
     !item.isPlaceholder &&
-    Boolean(item.repositoryUrl && item.repositoryPreview)
+    item.repositoryUrl &&
+    item.repositoryPreview
+  )
+    return (
+      <RepositoryOverview preview={item.repositoryPreview} compact={compact} />
+    );
+  if (item.type === "spreadsheet")
+    return (
+      <SpreadsheetOverview
+        title={item.title}
+        excerpt={item.spreadsheetPreview}
+        isPlaceholder={item.isPlaceholder}
+        compact={compact}
+      />
+    );
+  const linkedDocument = hasPublishedDocument(item);
+  if (linkedDocument && item.documentPreview)
+    return (
+      <DocumentOverview
+        title={item.title}
+        excerpt={item.documentPreview}
+        compact={compact}
+      />
+    );
+  const unpublished =
+    !linkedDocument && (item.isPlaceholder || (!item.source && !item.videoId));
+  if (!compact && !unpublished && !linkedDocument) {
+    if (item.type === "video") return <VideoPreview item={item} />;
+    if (item.type === "image" && item.source)
+      return (
+        <div className="dialog-image">
+          <Image
+            src={item.source}
+            alt={item.thumbnailAlt || item.title}
+            fill
+            sizes="(max-width: 768px) 90vw, 800px"
+            style={{ objectFit: "contain" }}
+          />
+        </div>
+      );
+  }
+  return (
+    <MediaPlaceholder
+      src={item.thumbnail}
+      alt={item.thumbnailAlt}
+      kind={item.type}
+      label={
+        !compact && unpublished
+          ? "Artifact not published"
+          : artifactLabels[item.type]
+      }
+      linkedDocument={linkedDocument}
+      compact={compact}
+      fit={compact && item.type === "image" ? "contain" : "cover"}
+    />
   );
 }
 function hasPublishedDocument(item: GalleryItem) {
