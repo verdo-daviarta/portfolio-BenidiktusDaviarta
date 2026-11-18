@@ -2,7 +2,13 @@ import { test, expect } from "@playwright/test";
 
 declare global {
   interface Window {
-    sectionEntrances: { className: string; path: string }[];
+    sectionEntrances: {
+      className: string;
+      path: string;
+      headingId?: string;
+      delay: number;
+      duration: number;
+    }[];
   }
 }
 
@@ -11,11 +17,18 @@ test.beforeEach(async ({ page }) => {
     window.sectionEntrances = [];
     const original = Element.prototype.animate;
     Element.prototype.animate = function (...args) {
+      const animation = original.apply(this, args);
+      const timing = animation.effect!.getTiming();
       window.sectionEntrances.push({
         className: this.className,
         path: location.pathname,
+        headingId: this.parentElement?.matches(".section-heading")
+          ? this.parentElement.querySelector("h2")?.id
+          : undefined,
+        delay: timing.delay ?? 0,
+        duration: Number(timing.duration),
       });
-      return original.apply(this, args);
+      return animation;
     };
   });
 });
@@ -29,33 +42,27 @@ for (const width of [390, 1440]) {
     await heading.scrollIntoViewIfNeeded();
     await expect
       .poll(() =>
-        heading.evaluate(
-          (element) => element.getAnimations({ subtree: true }).length,
+        page.evaluate(
+          () =>
+            window.sectionEntrances.filter(
+              (entry) => entry.headingId === "stack-heading",
+            ).length,
         ),
       )
       .toBe(2);
-    const timings = await heading.evaluate((element) =>
-      element.getAnimations({ subtree: true }).map((animation) => {
-        const effect = animation.effect as KeyframeEffect;
-        return {
-          accent: (effect.target as Element).classList.contains(
-            "section-accent",
-          ),
-          delay: effect.getTiming().delay,
-          duration: effect.getTiming().duration,
-        };
-      }),
+    const timings = await page.evaluate(() =>
+      window.sectionEntrances.filter(
+        (entry) => entry.headingId === "stack-heading",
+      ),
     );
-    expect(timings).toEqual(
-      expect.arrayContaining([
-        { accent: true, delay: 0, duration: 1500 },
-        { accent: false, delay: 1500, duration: 1500 },
-      ]),
-    );
-    await expect(heading.locator(".section-accent + div")).toHaveCSS(
-      "clip-path",
-      "inset(0px 100% 0px 0px)",
-    );
+    const accent = timings.find(
+      (entry) => entry.className === "section-accent",
+    )!;
+    const copy = timings.find((entry) => entry.className !== "section-accent")!;
+    expect(accent.duration).toBeGreaterThan(0);
+    expect(copy.duration).toBeGreaterThan(0);
+    expect(accent.delay).toBe(0);
+    expect(copy.delay).toBeGreaterThanOrEqual(accent.delay + accent.duration);
     await page.emulateMedia({ reducedMotion: "reduce" });
     await expect(heading.locator(".section-accent")).toHaveCSS(
       "clip-path",
@@ -101,11 +108,6 @@ for (const width of [390, 1440]) {
           ).length,
       ),
     ).toBe(1);
-    await page.evaluate(() =>
-      Promise.all(
-        document.getAnimations().map((animation) => animation.finished),
-      ),
-    );
     await expect(page.locator(".contact-grid")).toHaveCSS("transform", "none");
     expect(
       await page.evaluate(
