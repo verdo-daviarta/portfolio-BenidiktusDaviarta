@@ -7,6 +7,11 @@ import { animate } from "motion/mini";
 
 const entrances = [
   {
+    selector: ".section-heading",
+    frames: { opacity: [0.92, 1] },
+    duration: 0.22,
+  },
+  {
     selector: ".project-detail > h1",
     frames: { clipPath: ["inset(0 100% 0 0)", "inset(0 0% 0 0)"] },
     duration: 1.5,
@@ -39,26 +44,6 @@ export function SectionMotion() {
     function observe() {
       stop();
       if (preference.matches) return;
-      cleanups.push(
-        inView(".section-heading", (heading) => {
-          const accent = heading.querySelector(".section-accent");
-          const copy = heading.lastElementChild;
-          if (!accent || !copy) return;
-          const frames = {
-            clipPath: ["inset(0 100% 0 0)", "inset(0 0% 0 0)"],
-          };
-          const options = { duration: 0.22, ease: [0.22, 0.22, 0.36, 0.22] as const };
-          const accentAnimation = animate(accent, frames, options);
-          const copyAnimation = animate(copy, frames, {
-            ...options,
-            delay: 0.42,
-          });
-          cleanups.push(() => {
-            accentAnimation.cancel();
-            copyAnimation.cancel();
-          });
-        }),
-      );
       for (const { selector, frames, duration } of entrances) {
         cleanups.push(
           inView(selector, (element) => {

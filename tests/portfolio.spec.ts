@@ -230,14 +230,8 @@ test("all spreadsheet cards use the standard table model and Test planning shows
     await expect(
       cover.getByText("EMS — Test Plan", { exact: true }),
     ).toBeVisible();
-    const actualCard = cards.filter({
-      has: page.getByRole("heading", { name: "Test planning", exact: true }),
-    });
     const sourceUrl =
       "https://docs.google.com/spreadsheets/d/1BDZLZis_2wGaVi9Oiv-3FqI33elyFFtfi3bME7K76qs/edit?gid=1712295592#gid=1712295592&range=A2";
-    await expect(
-      actualCard.getByRole("link", { name: "Open spreadsheet", exact: true }),
-    ).toHaveAttribute("href", sourceUrl);
     await trigger.click();
     const dialog = page.getByRole("dialog");
     await expect(dialog.locator(".spreadsheet-overview")).toBeVisible();
@@ -927,12 +921,6 @@ test("AR issue document appears on the landing gallery and Bela Negara with a sa
         .getByRole("button", { name: "Documents", exact: true })
         .click();
       await expect(page.locator(".gallery-item")).toHaveCount(2);
-      const card = page
-        .locator(".gallery-item")
-        .filter({ hasText: "AR_Issue" });
-      await expect(
-        card.getByRole("link", { name: "View document", exact: true }),
-      ).toHaveAttribute("href", documentUrl);
     }
     const trigger = page.getByRole("button", {
       name: "Preview AR_Issue",
@@ -1076,12 +1064,6 @@ test("Data Archive sheet has a readable table overview and opens the exact tab",
         await expect(page.locator(".gallery-item")).toHaveCount(
           gallery.filter((item) => item.type === "spreadsheet").length,
         );
-        const card = page.locator(".gallery-item").filter({
-          has: page.getByRole("heading", { name: title, exact: true }),
-        });
-        await expect(
-          card.getByRole("link", { name: "Open spreadsheet", exact: true }),
-        ).toHaveAttribute("href", url);
       }
       const trigger = page.getByRole("button", {
         name: `Preview ${title}`,
@@ -1235,6 +1217,26 @@ test("sidebar gallery scrolls independently while the main image and heading sta
   await expect
     .poll(() => scroller.evaluate((element) => element.scrollTop))
     .toBeGreaterThan(0);
+});
+
+test("Home returns to the top after manual scrolling with the same hash", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/#home");
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+  const home = nav.getByRole("link", { name: "Home", exact: true });
+  for (let attempt = 0; attempt < 2; attempt++) {
+    await page.mouse.move(900, 600);
+    await page.mouse.wheel(0, 1500);
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeGreaterThan(900);
+    await expect(page).toHaveURL(/#home$/);
+    await home.click();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    await expect(home).toHaveAttribute("aria-current", "location");
+  }
 });
 
 test("navigation, supplied contact links, clipboard, and reduced motion", async ({

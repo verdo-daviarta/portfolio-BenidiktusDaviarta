@@ -12,6 +12,7 @@ const sections = [
 
 export function Header({ detail = false }: { detail?: boolean }) {
   const [active, setActive] = useState("home");
+  const SectionLink = detail ? Link : "a";
   useEffect(() => {
     if (detail) return;
     const elements = sections.map(({ id }) => document.getElementById(id));
@@ -48,7 +49,7 @@ export function Header({ detail = false }: { detail?: boolean }) {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <Link
+        <SectionLink
           href={detail ? "/" : "#home"}
           className="wordmark"
           aria-label={`${profile.name}, home`}
@@ -59,19 +60,19 @@ export function Header({ detail = false }: { detail?: boolean }) {
           <span className="wordmark-name">
             {profile.name.replace(" ", "\n")}
           </span>
-        </Link>
+        </SectionLink>
         <nav aria-label="Main navigation">
           <ul>
             {sections.map(({ id, label }) => (
               <li key={id}>
-                <Link
+                <SectionLink
                   href={`${detail ? "/" : ""}#${id}`}
                   aria-current={
                     !detail && active === id ? "location" : undefined
                   }
                 >
                   {label}
-                </Link>
+                </SectionLink>
               </li>
             ))}
           </ul>

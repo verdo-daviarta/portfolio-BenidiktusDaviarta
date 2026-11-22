@@ -23,21 +23,31 @@ for (const width of [390, 768, 1440]) {
       .filter({ has: referenceTitle });
     const heading = page.locator(".work-gallery > .section-heading");
     await expect(heading).toHaveCount(1);
-    await expect(heading.locator(".section-accent")).toBeVisible();
-    await expect(heading.locator(".section-accent")).toBeEmpty();
-    await expect(heading.locator(".section-accent")).toHaveAttribute(
-      "aria-hidden",
-      "true",
-    );
+    await expect(page.locator(".section-accent")).toHaveCount(0);
+    for (const section of await page.locator(".section-heading").all()) {
+      await expect(section.getByRole("heading")).toHaveCSS(
+        "text-align",
+        "center",
+      );
+      const description = section.locator(".section-description");
+      await expect(description).toHaveCSS("text-align", "center");
+      const { sectionCenter, descriptionCenter } = await description.evaluate(
+        (element) => {
+          const parent = element.parentElement!.getBoundingClientRect();
+          const paragraph = element.getBoundingClientRect();
+          return {
+            sectionCenter: parent.x + parent.width / 2,
+            descriptionCenter: paragraph.x + paragraph.width / 2,
+          };
+        },
+      );
+      expect(descriptionCenter).toBeCloseTo(sectionCenter, 1);
+    }
     await expect(heading.locator(".section-description")).toHaveText(
       "Test plans, screenshots, automation, and the work behind a release. Select an artifact to view its preview.",
     );
     for (const [actual, expected, properties] of [
-      [
-        heading,
-        reference,
-        ["display", "grid-template-columns", "gap", "margin-bottom"],
-      ],
+      [heading, reference, ["text-align", "margin-bottom"]],
       [
         galleryTitle,
         referenceTitle,

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { profile } from "@/data/profile";
-import { Icon } from "./icons";
 
 export function Contact() {
   const [copyStatus, setCopyStatus] = useState("");
@@ -36,12 +35,8 @@ export function Contact() {
         <div className="contact-links">
           <div className="contact-email">
             <span className="eyebrow">Email</span>
-            <a href={`mailto:${profile.email}`}>
-              {profile.email}
-              <Icon name="external" />
-            </a>
+            <a href={`mailto:${profile.email}`}>{profile.email}</a>
             <button className="copy-email" onClick={copyEmail}>
-              <Icon name={copyStatus === "Email copied" ? "check" : "copy"} />
               {copyStatus === "Email copied" ? "Copied" : "Copy email"}
             </button>
             <span className="copy-status" role="status">
@@ -55,9 +50,7 @@ export function Contact() {
             rel="noopener noreferrer"
           >
             <span>LinkedIn</span>
-            <span className="eyebrow">
-              Connect <Icon name="external" />
-            </span>
+            <span className="eyebrow">Connect</span>
           </a>
           <a
             className="social-link"
@@ -66,9 +59,7 @@ export function Contact() {
             rel="noopener noreferrer"
           >
             <span>GitHub</span>
-            <span className="eyebrow">
-              View profile <Icon name="external" />
-            </span>
+            <span className="eyebrow">View profile</span>
           </a>
         </div>
       </div>

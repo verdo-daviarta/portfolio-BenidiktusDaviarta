@@ -22,16 +22,9 @@ for (const width of [390, 768, 1440]) {
       await expect(
         page.locator(".gallery-card-details > .eyebrow"),
       ).toHaveCount(0);
-      const linkGaps = await page
-        .locator(".gallery-card-details > .artifact-links:not(:empty)")
-        .evaluateAll((links) =>
-          links.map(
-            (link) =>
-              link.getBoundingClientRect().top -
-              link.previousElementSibling!.getBoundingClientRect().bottom,
-          ),
-        );
-      expect(linkGaps.every((gap) => gap >= 0 && gap <= 8)).toBe(true);
+      await expect(page.locator(".gallery-item").getByRole("link")).toHaveCount(
+        0,
+      );
       const dimensions = await page
         .locator(".gallery-item")
         .evaluateAll((cards) =>

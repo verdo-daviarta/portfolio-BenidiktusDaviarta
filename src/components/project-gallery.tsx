@@ -240,7 +240,6 @@ export function ProjectGallery({
                     <div className="gallery-card-details">
                       <h4>{item.title}</h4>
                       <p>{item.description}</p>
-                      <ArtifactLinks item={item} />
                     </div>
                   )}
                 </article>
@@ -403,7 +402,6 @@ function ArtifactLinks({ item }: { item: GalleryItem }) {
           className="text-link"
         >
           {link.label}
-          <Icon name="external" />
         </a>
       ))}
     </div>

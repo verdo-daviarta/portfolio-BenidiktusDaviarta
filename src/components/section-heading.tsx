@@ -9,11 +9,8 @@ export function SectionHeading({
 }) {
   return (
     <div className="section-heading">
-      <div className="section-accent" aria-hidden="true" />
-      <div>
-        <h2 id={id}>{title}</h2>
-        {description && <p className="section-description">{description}</p>}
-      </div>
+      <h2 id={id}>{title}</h2>
+      {description && <p className="section-description">{description}</p>}
     </div>
   );
 }

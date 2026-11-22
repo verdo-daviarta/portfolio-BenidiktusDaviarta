@@ -22,8 +22,8 @@ test.beforeEach(async ({ page }) => {
       window.sectionEntrances.push({
         className: this.className,
         path: location.pathname,
-        headingId: this.parentElement?.matches(".section-heading")
-          ? this.parentElement.querySelector("h2")?.id
+        headingId: this.matches(".section-heading")
+          ? this.querySelector("h2")?.id
           : undefined,
         delay: timing.delay ?? 0,
         duration: Number(timing.duration),
@@ -34,7 +34,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const width of [390, 1440]) {
-  test(`section accent precedes its text at ${width}px`, async ({ page }) => {
+  test(`section heading enters as one centered block at ${width}px`, async ({
+    page,
+  }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto("/");
@@ -49,29 +51,19 @@ for (const width of [390, 1440]) {
             ).length,
         ),
       )
-      .toBe(2);
+      .toBe(1);
     const timings = await page.evaluate(() =>
       window.sectionEntrances.filter(
         (entry) => entry.headingId === "stack-heading",
       ),
     );
-    const accent = timings.find(
-      (entry) => entry.className === "section-accent",
-    )!;
-    const copy = timings.find((entry) => entry.className !== "section-accent")!;
-    expect(accent.duration).toBeGreaterThan(0);
-    expect(copy.duration).toBeGreaterThan(0);
-    expect(accent.delay).toBe(0);
-    expect(copy.delay).toBeGreaterThanOrEqual(accent.delay + accent.duration);
+    expect(timings[0]).toMatchObject({
+      className: "section-heading",
+      delay: 0,
+    });
+    expect(timings[0].duration).toBeGreaterThan(0);
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await expect(heading.locator(".section-accent")).toHaveCSS(
-      "clip-path",
-      "none",
-    );
-    await expect(heading.locator(".section-accent + div")).toHaveCSS(
-      "clip-path",
-      "none",
-    );
+    await expect(heading).toHaveCSS("opacity", "1");
   });
 
   test(`section entrances play once and keep content readable at ${width}px`, async ({
