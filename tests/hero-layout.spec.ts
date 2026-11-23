@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test("hero supporting text aligns with the description and context stays 14px", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/portfolio");
   for (const width of [375, 640, 641, 768, 1024, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     const description = await page

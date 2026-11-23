@@ -28,7 +28,7 @@ for (const width of [390, 768, 1440]) {
         mediaRequests.push(req.url());
       }
     });
-    await page.goto("/");
+    await page.goto("/portfolio");
     await page.getByRole("button", { name: "Video", exact: true }).click();
     await expect(page.locator(".gallery-item")).toHaveCount(1);
     const trigger = page.getByRole("button", {

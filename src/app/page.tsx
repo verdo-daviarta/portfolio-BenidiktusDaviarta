@@ -1,20 +1,11 @@
-import { Header } from "@/components/header";
-import { Hero } from "@/components/hero";
-import { TechStack } from "@/components/tech-stack";
-import { Projects } from "@/components/projects";
-import { Contact } from "@/components/contact";
-import { Footer } from "@/components/footer";
+import { SpotlightButton } from "@/components/spotlight-button";
+import { profile } from "@/data/profile";
+
 export default function Home() {
   return (
-    <>
-      <Header />
-      <main id="main-content">
-        <Hero />
-        <TechStack />
-        <Projects />
-        <Contact />
-      </main>
-      <Footer />
-    </>
+    <main id="main-content" className="entry-page">
+      <h1 className="sr-only">{profile.name} portfolio</h1>
+      <SpotlightButton />
+    </main>
   );
 }

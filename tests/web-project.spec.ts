@@ -6,7 +6,7 @@ const title = "Test Execution Report AI Assistant";
 for (const width of [390, 768, 1440]) {
   test(`Web project preview is usable at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
+    await page.goto("/portfolio");
     await page.getByRole("button", { name: "Web", exact: true }).click();
     await expect(
       page.getByRole("button", { name: "Web", exact: true }),

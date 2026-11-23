@@ -21,11 +21,22 @@ const orderedArtifacts = filters.flatMap(({ type }) =>
 );
 
 for (const width of [390, 768, 1440]) {
-  test(`selected gallery filter keeps its green background at ${width}px`, async ({
+  test(`selected gallery filter keeps its theme colors at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
+    await page.goto("/portfolio");
+    const colors = await page.evaluate(() => {
+      const reference = document.createElement("span");
+      reference.hidden = true;
+      reference.style.backgroundColor = "var(--accent-fill)";
+      reference.style.color = "var(--on-accent)";
+      document.body.append(reference);
+      const style = getComputedStyle(reference);
+      const colors = { background: style.backgroundColor, text: style.color };
+      reference.remove();
+      return colors;
+    });
     const group = page.getByRole("group", { name: "Filter work artifacts" });
     await expect(page.locator(".gallery-item h4")).toHaveText(
       orderedArtifacts.map((item) => item.title),
@@ -38,8 +49,8 @@ for (const width of [390, 768, 1440]) {
       exact: true,
     });
     await expect(all).toHaveAttribute("aria-pressed", "true");
-    await expect(all).toHaveCSS("background-color", "rgb(52, 105, 75)");
-    await expect(all).toHaveCSS("color", "rgb(247, 247, 242)");
+    await expect(all).toHaveCSS("background-color", colors.background);
+    await expect(all).toHaveCSS("color", colors.text);
     for (const filter of filters) {
       const button = group.getByRole("button", {
         name: filter.label,
@@ -49,11 +60,11 @@ for (const width of [390, 768, 1440]) {
       await expect(group.getByRole("button", { pressed: true })).toHaveCount(1);
       await expect(button).toHaveAttribute("aria-pressed", "true");
       await button.hover();
-      await expect(button).toHaveCSS("background-color", "rgb(52, 105, 75)");
-      await expect(button).toHaveCSS("color", "rgb(247, 247, 242)");
+      await expect(button).toHaveCSS("background-color", colors.background);
+      await expect(button).toHaveCSS("color", colors.text);
       await page.mouse.move(0, 0);
-      await expect(button).toHaveCSS("background-color", "rgb(52, 105, 75)");
-      await expect(button).toHaveCSS("color", "rgb(247, 247, 242)");
+      await expect(button).toHaveCSS("background-color", colors.background);
+      await expect(button).toHaveCSS("color", colors.text);
       for (const inactive of await group
         .getByRole("button", { pressed: false })
         .all()) {
@@ -78,7 +89,7 @@ for (const width of [390, 768, 1440]) {
     await images.focus();
     await page.keyboard.press("Enter");
     await expect(images).toHaveAttribute("aria-pressed", "true");
-    await expect(images).toHaveCSS("background-color", "rgb(52, 105, 75)");
+    await expect(images).toHaveCSS("background-color", colors.background);
     await expect(images).toBeFocused();
     expect(
       await page.evaluate(

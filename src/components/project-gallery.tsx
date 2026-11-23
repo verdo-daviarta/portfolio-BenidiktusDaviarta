@@ -134,9 +134,7 @@ export function ProjectGallery({
               fit="contain"
               loading="eager"
             />
-            <span className="preview-action">
-              Preview <Icon name="external" />
-            </span>
+            <span className="preview-action">Preview</span>
           </button>
         ) : (
           <div className="main-project-preview">
@@ -231,9 +229,7 @@ export function ProjectGallery({
                     <ArtifactPreview item={item} compact />
                     <span className="preview-action">
                       {item.type === "video" ? "View demo" : "Preview"}{" "}
-                      <Icon
-                        name={item.type === "video" ? "play" : "external"}
-                      />
+                      {item.type === "video" && <Icon name="play" />}
                     </span>
                   </button>
                   {!primaryItem && (

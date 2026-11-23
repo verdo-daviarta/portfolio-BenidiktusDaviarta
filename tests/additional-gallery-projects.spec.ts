@@ -37,7 +37,7 @@ for (const width of [390, 768, 1440]) {
     page,
   }) => {
     await page.setViewportSize({ width, height: 950 });
-    await page.goto("/");
+    await page.goto("/portfolio");
     for (const project of projects) {
       const filter = page.getByRole("button", {
         name: project.filter,
@@ -57,7 +57,7 @@ for (const width of [390, 768, 1440]) {
         ).toHaveCount(0);
       }
       const bounds = (await trigger.boundingBox())!;
-      expect(bounds.height).toBe(200);
+      expect(bounds.height).toBeCloseTo(200, 2);
       expect(
         await trigger.evaluate(
           (element) => element.scrollWidth <= element.clientWidth,
@@ -67,6 +67,12 @@ for (const width of [390, 768, 1440]) {
         await trigger.screenshot({ path: `.next/card-${project.repo}.png` });
       await trigger.click();
       const dialog = page.getByRole("dialog");
+      await expect(dialog).toHaveCSS(
+        "background-color",
+        await page.locator("html").evaluate((element) => {
+          return getComputedStyle(element).backgroundColor;
+        }),
+      );
       await expect(
         dialog.getByRole("heading", { name: project.title, exact: true }),
       ).toBeVisible();

@@ -3,7 +3,6 @@ import type { SVGProps } from "react";
 type IconProps = SVGProps<SVGSVGElement> & {
   name?:
     | "arrow"
-    | "external"
     | "check"
     | "copy"
     | "close"
@@ -18,11 +17,6 @@ export function Icon({ name = "arrow", ...props }: IconProps) {
     arrow: (
       <>
         <path d="M4 12h15M13 6l6 6-6 6" />
-      </>
-    ),
-    external: (
-      <>
-        <path d="M7 17 17 7M7 7h10v10" />
       </>
     ),
     check: <path d="m5 12 4 4L19 6" />,

@@ -7,7 +7,7 @@ for (const width of [360, 390, 430]) {
   }) => {
     await page.setViewportSize({ width, height: 800 });
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/portfolio");
     const viewport = page.locator(".landing-gallery-mobile");
     for (const filter of [
       "All artifacts",
@@ -80,7 +80,7 @@ for (const width of [360, 390, 430]) {
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.setViewportSize({ width, height: 800 });
-    await page.goto("/");
+    await page.goto("/portfolio");
     const scroller = page.getByRole("region", {
       name: "Work Gallery artifacts",
       exact: true,
@@ -164,7 +164,7 @@ test("gallery restores the desktop grid after resizing from mobile", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 800 });
-  await page.goto("/");
+  await page.goto("/portfolio");
   const scroller = page.getByRole("region", {
     name: "Work Gallery artifacts",
     exact: true,

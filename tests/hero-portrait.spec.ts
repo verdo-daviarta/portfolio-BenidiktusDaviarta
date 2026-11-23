@@ -9,7 +9,7 @@ for (const width of [390, 768, 1440]) {
     }) => {
       await page.emulateMedia({ reducedMotion });
       await page.setViewportSize({ width, height: 1000 });
-      await page.goto("/");
+      await page.goto("/portfolio");
       await page.evaluate(() => document.fonts.ready);
       const hero = page.locator(".hero-intro");
       const original = (await hero.boundingBox())!;

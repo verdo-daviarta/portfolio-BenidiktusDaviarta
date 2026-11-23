@@ -28,9 +28,12 @@ for (const width of [390, 768, 1440]) {
       "Priority",
     ]);
     await page.setViewportSize({ width, height: 900 });
-    for (const route of ["/", "/projects/ems-energy-management-system"]) {
+    for (const route of [
+      "/portfolio",
+      "/projects/ems-energy-management-system",
+    ]) {
       await page.goto(route);
-      if (route === "/")
+      if (route === "/portfolio")
         await page
           .getByRole("button", { name: "Spreadsheets", exact: true })
           .click();
@@ -83,7 +86,10 @@ for (const width of [390, 768, 1440]) {
     expect(item.projectSlug).toBe("ems-energy-management-system");
     expect(item.repositoryUrl).toBe(repositoryUrl);
     await page.setViewportSize({ width, height: 900 });
-    for (const route of ["/", "/projects/ems-energy-management-system"]) {
+    for (const route of [
+      "/portfolio",
+      "/projects/ems-energy-management-system",
+    ]) {
       const externalRequests: string[] = [];
       const onRequest = (request: import("@playwright/test").Request) => {
         if (/github\.com|googleapis\.com|docs\.google\.com/.test(request.url()))
@@ -91,7 +97,7 @@ for (const width of [390, 768, 1440]) {
       };
       page.on("request", onRequest);
       await page.goto(route);
-      if (route === "/")
+      if (route === "/portfolio")
         await page.getByRole("button", { name: "Source", exact: true }).click();
       const trigger = page.getByRole("button", {
         name: `Preview ${item.title}`,
@@ -108,14 +114,20 @@ for (const width of [390, 768, 1440]) {
       await expect(card.getByText("Cypress", { exact: true })).toBeVisible();
       await expect(card.getByText("Playwright", { exact: true })).toBeVisible();
       await expect(trigger.locator(".media-empty")).toHaveCount(0);
-      const cardBounds = (await card.boundingBox())!;
-      for (const selector of [
-        ".repository-title",
-        ".repository-frameworks",
-        ".repository-language",
-        ".repository-branch",
-      ]) {
-        const bounds = (await card.locator(selector).boundingBox())!;
+      const { cardBounds, contentBounds } = await card.evaluate((element) => {
+        // Sample one layout frame so scrolling cannot move the card between reads.
+        const cardBounds = element.getBoundingClientRect().toJSON();
+        const contentBounds = [
+          ".repository-title",
+          ".repository-frameworks",
+          ".repository-language",
+          ".repository-branch",
+        ].map((selector) =>
+          element.querySelector(selector)!.getBoundingClientRect().toJSON(),
+        );
+        return { cardBounds, contentBounds };
+      });
+      for (const bounds of contentBounds) {
         expect(bounds.y).toBeGreaterThanOrEqual(cardBounds.y);
         expect(bounds.y + bounds.height).toBeLessThanOrEqual(
           cardBounds.y + cardBounds.height + 1,

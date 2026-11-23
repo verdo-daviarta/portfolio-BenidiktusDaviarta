@@ -74,7 +74,6 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                     <h3>
                       <Link href={`/projects/${project.slug}`}>
                         {project.title}
-                        <Icon name="external" />
                       </Link>
                     </h3>
                     <p className="project-client">{project.client}</p>

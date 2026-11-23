@@ -55,7 +55,7 @@ for (const width of [390, 768, 1440]) {
     request,
   }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
+    await page.goto("/portfolio");
     const list = page.locator("#projects .project-index");
     const titles = expectedOrder.map(
       (slug) => projects.find((project) => project.slug === slug)!.title,

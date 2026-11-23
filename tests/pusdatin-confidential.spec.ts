@@ -97,7 +97,7 @@ test("PUSDATIN displays only illustrated confidentiality notices, not project ev
       await expect(trigger).toBeFocused();
     }
   }
-  await page.goto("/");
+  await page.goto("/portfolio");
   await page.getByRole("button", { name: "PUSDATIN", exact: true }).click();
   await expect(page.locator("article.featured-project img")).toHaveAttribute(
     "src",

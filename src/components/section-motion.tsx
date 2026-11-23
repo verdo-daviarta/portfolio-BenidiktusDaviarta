@@ -8,8 +8,11 @@ import { animate } from "motion/mini";
 const entrances = [
   {
     selector: ".section-heading",
-    frames: { opacity: [0.92, 1] },
-    duration: 0.22,
+    frames: {
+      clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"],
+      transform: ["translateY(12px)", "none"],
+    },
+    duration: 0.65,
   },
   {
     selector: ".project-detail > h1",
@@ -17,15 +20,20 @@ const entrances = [
     duration: 1.5,
   },
   {
-    selector:
-      ".hero-grid, .hero-bottom, .professional-context, .stack-table, .project-index, .gallery-filters, .landing-gallery-mobile, .detail-facts, .project-media-layout, .footer, .detail-footer",
+    selector: ".hero-grid, .gallery-filters, .footer, .detail-footer",
     frames: { opacity: [0.92, 1] },
-    duration: 1.5,
+    duration: 0.4,
   },
   {
-    selector: ".contact-grid, .detail-section, .detail-description",
-    frames: { transform: ["translateY(8px)", "none"] },
-    duration: 1.5,
+    selector:
+      ".stack-table, .project-index, .landing-gallery-mobile, .detail-facts, .project-media-layout, .detail-section, .detail-description",
+    frames: { transform: ["translateY(20px)", "none"] },
+    duration: 0.7,
+  },
+  {
+    selector: ".contact-grid",
+    frames: { transform: ["translateY(24px)", "none"] },
+    duration: 0.8,
   },
 ];
 

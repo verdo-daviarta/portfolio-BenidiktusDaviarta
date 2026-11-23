@@ -14,7 +14,7 @@ export default function NotFound() {
         <p>
           The address may have changed, or the project hasn’t been published.
         </p>
-        <Link href="/" className="button button-dark">
+        <Link href="/portfolio" className="button button-dark">
           Return to the portfolio →
         </Link>
       </main>

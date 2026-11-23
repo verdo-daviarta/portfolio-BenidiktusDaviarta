@@ -33,7 +33,9 @@ Browser tests use installed Chrome. See [QA.md](QA.md) for verified behavior, Li
 - `public/projects/`, `public/gallery/`, `public/videos/`: reserved locations for owner-supplied assets.
 - `tests/`: responsive, accessibility, navigation, gallery, clipboard, and route verification.
 
-The homepage contains Home, Tech Stack, Projects with the Work Gallery, and Contact. Each project has a dedicated route. Client JavaScript is limited to navigation state, gallery controls, media playback management, and clipboard interaction. Fonts are hosted locally.
+The entry page at `/` has a centered "Let's Test!" Spotlight Button, adapted from [hover.dev](https://www.hover.dev/components/buttons#spotlight-button). It opens `/portfolio`, which contains Home, Tech Stack, Projects with the Work Gallery, and Contact. Project pages stay at `/projects/[slug]`; their return links lead directly to `/portfolio`. The entry link also works without JavaScript. Fonts are hosted locally.
+
+The supplied texture is shared across every page as `public/backgrounds/bg2.webp`. Entering through the Spotlight Button uses a 900ms circular React ViewTransition. Reduced motion disables the reveal, and unsupported browsers navigate normally. Direct visits to `/portfolio` retain the GSAP opening.
 
 ## Add your content
 

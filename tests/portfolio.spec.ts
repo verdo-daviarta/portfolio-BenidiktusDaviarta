@@ -13,7 +13,7 @@ for (const width of [375, 390, 768, 1024, 1280, 1440]) {
       if (message.type() === "error") errors.push(message.text());
     });
     for (const route of [
-      "/",
+      "/portfolio",
       ...projects.map(({ slug }) => `/projects/${slug}`),
     ]) {
       const response = await page.goto(route);
@@ -27,7 +27,7 @@ for (const width of [375, 390, 768, 1024, 1280, 1440]) {
         ),
       ).toBe(true);
       await expect(page.locator("h1")).toBeVisible();
-      if (route === "/") {
+      if (route === "/portfolio") {
         for (const project of projects) {
           await page
             .getByRole("button", { name: project.title, exact: true })
@@ -60,14 +60,14 @@ for (const width of [375, 390, 768, 1024, 1280, 1440]) {
           ).toBe(true);
         }
       }
-      if (route !== "/") {
+      if (route !== "/portfolio") {
         await expect(page.locator(".next-project")).toHaveCount(0);
         await expect(
           page.getByRole("link", { name: /Next project/i }),
         ).toHaveCount(0);
         await expect(
           page.getByRole("link", { name: /All selected work/ }),
-        ).toHaveAttribute("href", "/#projects");
+        ).toHaveAttribute("href", "/portfolio#projects");
         await expect(page.locator(".project-media-layout")).toHaveCount(1);
         await expect(page.locator(".main-project-preview")).toHaveCount(1);
         await expect(page.locator(".work-gallery-sidebar")).toHaveCount(1);
@@ -95,7 +95,7 @@ for (const width of [375, 390, 768, 1024, 1280, 1440]) {
 test("project rows expand one at a time, collapse, and retain overview navigation", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/portfolio");
   await expect(page.locator("article.project-row")).toHaveCount(
     projects.length,
   );
@@ -142,7 +142,7 @@ test("project rows expand one at a time, collapse, and retain overview navigatio
 test("gallery filters, keyboard preview, focus trap, and return focus", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/portfolio");
   await expect(page.locator(".gallery-item")).toHaveCount(gallery.length);
   await page.getByRole("button", { name: "Spreadsheets", exact: true }).click();
   await expect(page.locator(".gallery-item")).toHaveCount(
@@ -198,7 +198,7 @@ test("all spreadsheet cards use the standard table model and Test planning shows
 }) => {
   for (const width of [390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
+    await page.goto("/portfolio");
     await page
       .getByRole("button", { name: "Spreadsheets", exact: true })
       .click();
@@ -298,7 +298,7 @@ test("landing gallery scrolls after six cards and removes the limit for filtered
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
+  await page.goto("/portfolio");
   const scroller = page.getByRole("region", { name: "Work Gallery artifacts" });
   const cards = scroller.locator(".gallery-item");
   await expect(cards).toHaveCount(gallery.length);
@@ -738,7 +738,7 @@ test("Tekfunghan uses the student dashboard hero and previews safe representativ
       await expect(trigger).toBeFocused();
     }
   }
-  await page.goto("/");
+  await page.goto("/portfolio");
   await page.getByRole("button", { name: "Images", exact: true }).click();
   for (const item of screenshots) {
     await expect(
@@ -900,7 +900,7 @@ test("Bahasa uses the admin hero and previews representative Admin Panel and VR 
     await page.keyboard.press("Escape");
   }
 
-  await page.goto("/");
+  await page.goto("/portfolio");
   await page.getByRole("button", { name: "Images", exact: true }).click();
   for (const item of screenshots) {
     await expect(
@@ -914,9 +914,9 @@ test("AR issue document appears on the landing gallery and Bela Negara with a sa
 }) => {
   const documentUrl =
     "https://docs.google.com/document/d/1HY3UR9OErT7YvaGcMs3tYiWyV2cr2jHf-WLomZ5STB8/edit?usp=sharing";
-  for (const route of ["/", "/projects/pusdiklat-bela-negara"]) {
+  for (const route of ["/portfolio", "/projects/pusdiklat-bela-negara"]) {
     await page.goto(route);
-    if (route === "/") {
+    if (route === "/portfolio") {
       await page
         .getByRole("button", { name: "Documents", exact: true })
         .click();
@@ -993,9 +993,9 @@ test("document overview keeps a readable issue excerpt and usable preview at res
 }) => {
   for (const width of [390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const route of ["/", "/projects/pusdiklat-bela-negara"]) {
+    for (const route of ["/portfolio", "/projects/pusdiklat-bela-negara"]) {
       await page.goto(route);
-      if (route === "/") {
+      if (route === "/portfolio") {
         await page
           .getByRole("button", { name: "Documents", exact: true })
           .click();
@@ -1055,9 +1055,9 @@ test("Data Archive sheet has a readable table overview and opens the exact tab",
     "https://docs.google.com/spreadsheets/d/1PNT3h3j_aFL7UaqpJPOTVkDDPNO7Xi4v7qiGB7f4LeA/edit?gid=352178411#gid=352178411&range=A1:B1";
   for (const width of [390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const route of ["/", "/projects/pusdiklat-bela-negara"]) {
+    for (const route of ["/portfolio", "/projects/pusdiklat-bela-negara"]) {
       await page.goto(route);
-      if (route === "/") {
+      if (route === "/portfolio") {
         await page
           .getByRole("button", { name: "Spreadsheets", exact: true })
           .click();
@@ -1223,7 +1223,7 @@ test("Home returns to the top after manual scrolling with the same hash", async 
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/#home");
+  await page.goto("/portfolio#home");
   const nav = page.getByRole("navigation", { name: "Main navigation" });
   const home = nav.getByRole("link", { name: "Home", exact: true });
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -1245,7 +1245,7 @@ test("navigation, supplied contact links, clipboard, and reduced motion", async 
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
+  await page.goto("/portfolio");
   await page.keyboard.press("Tab");
   await expect(
     page.getByRole("link", { name: "Skip to content" }),
@@ -1289,14 +1289,14 @@ for (const width of [390, 1440]) {
   }) => {
     await page.setViewportSize({ width, height: 900 });
     for (const route of [
-      "/",
+      "/portfolio",
       "/projects/command-center",
       "/projects/pusdiklat-bela-negara",
       "/projects/pusdiklat-bahasa",
       "/projects/pusdiklat-tekfunghan",
     ]) {
       await page.goto(route);
-      if (route === "/") {
+      if (route === "/portfolio") {
         await page
           .getByRole("button", { name: projects[0].title, exact: true })
           .click();
@@ -1313,7 +1313,7 @@ for (const width of [390, 1440]) {
         .analyze();
       expect(result.violations).toEqual([]);
     }
-    await page.goto("/");
+    await page.goto("/portfolio");
     await page
       .getByRole("button", { name: "Preview Test planning", exact: true })
       .click();

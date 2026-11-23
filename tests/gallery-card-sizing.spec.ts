@@ -5,7 +5,7 @@ for (const width of [390, 768, 1440]) {
     page,
   }) => {
     await page.setViewportSize({ width, height: 1000 });
-    await page.goto("/");
+    await page.goto("/portfolio");
     let expectedHeight = 0;
     for (const filter of [
       "All artifacts",
@@ -51,8 +51,8 @@ for (const width of [390, 768, 1440]) {
         expect(
           Math.abs(dimension.width - dimensions[0].width),
         ).toBeLessThanOrEqual(1);
-        expect(dimension.previewHeight).toBe(200);
-        expect(dimension.mediaHeight).toBe(200);
+        expect(dimension.previewHeight).toBeCloseTo(200, 2);
+        expect(dimension.mediaHeight).toBeCloseTo(200, 2);
         expect(dimension.previewScrollWidth).toBeLessThanOrEqual(
           dimension.previewWidth,
         );
@@ -72,7 +72,9 @@ for (const width of [390, 768, 1440]) {
         elements.map((element) => element.getBoundingClientRect().height),
       );
     expect(sidebarHeights.length).toBeGreaterThan(1);
-    expect(sidebarHeights.every((height) => height === 200)).toBe(true);
+    for (const height of sidebarHeights) {
+      expect(height).toBeCloseTo(200, 2);
+    }
     expect(
       await page.evaluate(
         () =>

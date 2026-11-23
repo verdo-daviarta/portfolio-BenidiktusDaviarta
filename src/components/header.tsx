@@ -50,7 +50,7 @@ export function Header({ detail = false }: { detail?: boolean }) {
     <header className="site-header">
       <div className="container header-inner">
         <SectionLink
-          href={detail ? "/" : "#home"}
+          href={detail ? "/portfolio" : "#home"}
           className="wordmark"
           aria-label={`${profile.name}, home`}
         >
@@ -66,7 +66,7 @@ export function Header({ detail = false }: { detail?: boolean }) {
             {sections.map(({ id, label }) => (
               <li key={id}>
                 <SectionLink
-                  href={`${detail ? "/" : ""}#${id}`}
+                  href={`${detail ? "/portfolio" : ""}#${id}`}
                   aria-current={
                     !detail && active === id ? "location" : undefined
                   }

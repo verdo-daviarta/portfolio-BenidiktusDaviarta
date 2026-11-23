@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { profile, siteUrl } from "@/data/profile";
 import { SectionMotion } from "@/components/section-motion";
+import { PageEntrance } from "@/components/page-entrance";
+import { PageViewTransition } from "@/components/page-view-transition";
 import "@fontsource-variable/geist";
 import "@fontsource/urbanist/400.css";
 import "./globals.css";
@@ -37,11 +39,14 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className="antialiased">
-        <a href="#main-content" className="skip-link">
-          Skip to content
-        </a>
-        {children}
+        <PageViewTransition>
+          <a href="#main-content" className="skip-link">
+            Skip to content
+          </a>
+          {children}
+        </PageViewTransition>
         <SectionMotion />
+        <PageEntrance />
       </body>
     </html>
   );

@@ -9,12 +9,13 @@
 }
 
 :root {
-  color-scheme: dark;
-  --paper: #1d07419a;
-  --ink: #f1eef5;
-  --muted: #bcb8c7;
-  --line: #40394d;
-  --accent: #a03257;
+  color-scheme: light;
+  --paper: #f7f7f4;
+  --canvas: #f7f7f4;
+  --ink: #252922;
+  --muted: #40463e;
+  --line: #b3b9ac;
+  --accent: #7b2949;
   --accent-fill: #45061b;
   --on-accent: #f7f7f2;
   --media: #27004b00;
@@ -28,6 +29,7 @@
   box-sizing: border-box;
 }
 html {
+  background: var(--canvas);
   scroll-behavior: smooth;
   scroll-padding-top: 110px;
 }
@@ -35,14 +37,110 @@ body {
   isolation: isolate;
   margin: 0;
   color: var(--ink);
-  background: var(--paper);
+  background: transparent;
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.65;
 }
+.site-shell {
+  min-height: 100svh;
+  isolation: isolate;
+}
+.site-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgb(255 255 255 / 50%), rgb(255 255 255 / 50%)),
+    var(--canvas) url("/backgrounds/bg2.webp") center / cover no-repeat;
+}
+::view-transition-group(.portfolio-enter) {
+  animation: none;
+}
+::view-transition-old(.portfolio-enter) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(.portfolio-enter) {
+  animation: portfolio-circle-enter 900ms cubic-bezier(0.65, 0, 0.35, 1) both;
+  mix-blend-mode: normal;
+}
+@keyframes portfolio-circle-enter {
+  from {
+    clip-path: circle(24px at 50vw 50svh);
+  }
+  to {
+    clip-path: circle(75vmax at 50vw 50svh);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(.portfolio-enter) {
+    animation: none;
+  }
+}
 ::selection {
-  background: #d8e6d8;
-  color: var(--paper);
+  background: var(--accent-fill);
+  color: var(--on-accent);
+}
+.entry-page {
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: 24px;
+}
+.spotlight-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(320px, 100%);
+  min-height: 60px;
+  overflow: hidden;
+  isolation: isolate;
+  /* border: 1px solid var(--accent); */
+  border-radius: 8px;
+  background: var(--accent-fill);
+  color: #ec9bb5;
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 500;
+  transition: transform 150ms ease;
+}
+.spotlight-button:active {
+  transform: scale(0.985);
+}
+.spotlight-label {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+.spotlight-circle {
+  position: absolute;
+  left: var(--spotlight-x, 50%);
+  top: 50%;
+  width: 128px;
+  height: 128px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--paper);
+  pointer-events: none;
+  transition: left 250ms ease;
+}
+.spotlight-button:not(:hover) .spotlight-circle {
+  transition-duration: 100ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-button,
+  .spotlight-button:active {
+    transform: none;
+    transition: none;
+  }
+  .spotlight-circle {
+    left: 50%;
+    transition: none;
+  }
 }
 a {
   cursor: pointer;
@@ -118,7 +216,7 @@ dd {
   left: 8px;
   padding: 12px 18px;
   background: var(--ink);
-  color: var(--paper);
+  color: var(--canvas);
   transform: translateY(-150%);
 }
 .skip-link:focus {
@@ -347,13 +445,13 @@ dd {
   (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
 ) {
   .site-header {
-    background-color: rgb(17 15 27 / 76%);
+    background-color: rgb(247 247 244 / 94%);
     border-bottom-color: rgb(215 204 235 / 22%);
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     backdrop-filter: blur(16px) saturate(120%);
   }
   .button-dark {
-    background-color: rgb(54 47 68 / 56%);
+    background-color: #242824;
     -webkit-backdrop-filter: blur(10px) saturate(120%);
     backdrop-filter: blur(10px) saturate(120%);
   }
@@ -517,7 +615,7 @@ dd {
   right: 0;
   font-size: 12px;
   background: var(--ink);
-  color: var(--paper);
+  color: var(--canvas);
   width: max-content;
   max-width: 205px;
   padding: 7px 10px;
@@ -722,6 +820,7 @@ dd {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
 }
 .gallery-preview .document-overview.compact {
@@ -755,6 +854,7 @@ dd {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
 }
 .featured-copy {
@@ -1050,7 +1150,7 @@ dd {
   padding: 4px 8px;
   font-size: 10px;
   color: var(--on-accent);
-  background: var(--paper);
+  background: var(--accent-fill);
 }
 .preview-action svg {
   width: 14px;
@@ -1077,6 +1177,7 @@ dd {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
   overflow-wrap: anywhere;
   margin: 0;
@@ -1708,7 +1809,7 @@ dd {
 .preview-dialog {
   padding: 0;
   border: 1px solid var(--line);
-  background: var(--paper);
+  background: var(--canvas);
   color: var(--ink);
   width: min(850px, calc(100% - 32px));
   max-height: calc(100dvh - 40px);
@@ -1772,9 +1873,13 @@ dd {
   font-size: 11px;
 }
 .contact-section {
+  --ink: #f7f7f2;
+  --muted: #dfcbd2;
+  --accent: #ec9bb5;
+  --line: #9a6a7b;
   margin-top: var(--space-section);
   padding: 74px 0 68px;
-  background: rgb(13 12 24 / 65%);
+  background: #252922;
   color: var(--ink);
 }
 .contact-grid {
@@ -1783,10 +1888,10 @@ dd {
   gap: 100px;
 }
 .contact-section .eyebrow {
-  color: #afb8ac;
+  color: var(--muted);
 }
 .contact-section :focus-visible {
-  outline-color: #b8d6bc;
+  outline-color: var(--accent);
 }
 .contact-section h2 {
   font-size: 42px;
@@ -1795,16 +1900,16 @@ dd {
   line-height: 1.2;
 }
 .contact-section h2 span {
-  color: #96bd9e;
+  color: var(--accent);
 }
 .contact-section h2 + p {
   font-size: 14px;
-  color: #c4cac0;
+  color: var(--muted);
   max-width: 365px;
   margin-top: 22px;
 }
 .contact-location {
-  color: #afb8ac;
+  color: var(--muted);
   font-size: 12px;
   margin-top: 28px;
 }
@@ -1825,7 +1930,7 @@ dd {
 }
 .contact-email > a:hover,
 .social-link:hover {
-  color: #b8d6bc;
+  color: var(--accent);
 }
 .copy-email {
   display: flex;
@@ -1833,12 +1938,12 @@ dd {
   font-size: 10px;
   min-height: 44px;
   padding: 0;
-  color: #b8d6bc;
+  color: var(--accent);
 }
 .copy-status {
   display: block;
   font-size: 10px;
-  color: #b8d6bc;
+  color: var(--accent);
 }
 .copy-status:empty {
   display: none;

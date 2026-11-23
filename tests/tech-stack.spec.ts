@@ -8,7 +8,7 @@ for (const width of [390, 768, 1440]) {
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/portfolio");
     const section = page.locator("#stack");
     const tools = techStack.flatMap((category) => category.tools);
     await expect(section.locator(".tool")).toHaveCount(tools.length);
@@ -58,7 +58,7 @@ for (const width of [390, 768, 1440]) {
 test("tool descriptions remain available through keyboard focus without activation", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/portfolio");
   const section = page.locator("#stack");
   const playwright = section.getByRole("listitem").filter({
     has: page.getByText("Playwright", { exact: true }),

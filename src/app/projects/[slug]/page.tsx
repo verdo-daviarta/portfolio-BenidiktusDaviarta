@@ -88,7 +88,7 @@ export default async function ProjectPage({
     <>
       <Header detail />
       <main id="main-content" className="container project-detail">
-        <Link className="text-link back-link" href="/#projects">
+        <Link className="text-link back-link" href="/portfolio#projects">
           <span>←</span> All selected work
         </Link>
         <p className="eyebrow">Project overview</p>
@@ -126,7 +126,7 @@ export default async function ProjectPage({
                     rel="noopener noreferrer"
                     className="button button-dark"
                   >
-                    {label} <Icon name="external" />
+                    {label}
                   </a>
                 ))}
               </div>
@@ -138,7 +138,7 @@ export default async function ProjectPage({
                 rel="noopener noreferrer"
                 className="text-link"
               >
-                Repository <Icon name="external" />
+                Repository
               </a>
             )}
           </aside>
@@ -161,7 +161,7 @@ export default async function ProjectPage({
       </main>
       <footer className="container detail-footer">
         <Link href="/">{profile.name}</Link>
-        <Link href="/#contact" className="text-link">
+        <Link href="/portfolio#contact" className="text-link">
           Get in touch <Icon />
         </Link>
       </footer>
