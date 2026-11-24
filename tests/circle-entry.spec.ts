@@ -43,7 +43,15 @@ for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto("/");
-    const entry = page.getByRole("link", { name: "Let's Test!", exact: true });
+    await page
+      .getByRole("textbox", { name: "Request body" })
+      .fill(JSON.stringify({ visitor: "guest", id: "001" }, null, 2));
+    await page.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(page.getByRole("status")).toContainText("200 OK");
+    const entry = page.getByRole("link", {
+      name: "Enter portfolio",
+      exact: true,
+    });
     await entry.focus();
     await entry.press("Enter");
     await expect(page).toHaveURL("/portfolio");
@@ -93,14 +101,23 @@ for (const width of [390, 1440]) {
         ),
       ).toBe(true);
     }
-    await expect(entry).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Send", exact: true }),
+    ).toBeVisible();
   });
 }
 
 test("reduced motion enters without a circle animation", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  await page.getByRole("link", { name: "Let's Test!", exact: true }).click();
+  await page
+    .getByRole("textbox", { name: "Request body" })
+    .fill(JSON.stringify({ visitor: "guest", id: "001" }, null, 2));
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("200 OK");
+  await page
+    .getByRole("link", { name: "Enter portfolio", exact: true })
+    .click();
   await expect(page).toHaveURL("/portfolio");
   await expect(page.locator(".site-shell")).not.toHaveAttribute(
     "data-entry-revealed",
@@ -118,7 +135,14 @@ test("a browser without View Transitions still opens the portfolio", async ({
     });
   });
   await page.goto("/");
-  await page.getByRole("link", { name: "Let's Test!", exact: true }).click();
+  await page
+    .getByRole("textbox", { name: "Request body" })
+    .fill(JSON.stringify({ visitor: "guest", id: "001" }, null, 2));
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("200 OK");
+  await page
+    .getByRole("link", { name: "Enter portfolio", exact: true })
+    .click();
   await expect(page).toHaveURL("/portfolio");
   await expect(page.locator("#hero-title")).toBeVisible();
   await expect(page.locator("#hero-title")).toHaveCSS("clip-path", "none");

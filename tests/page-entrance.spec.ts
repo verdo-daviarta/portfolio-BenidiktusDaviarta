@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
@@ -66,7 +66,14 @@ test("direct home anchor plays the opening", async ({ page }) => {
 test("entry view transition avoids a second GSAP opening", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
-  await page.getByRole("link", { name: "Let's Test!", exact: true }).click();
+  await page
+    .getByRole("textbox", { name: "Request body" })
+    .fill(JSON.stringify({ visitor: "guest", id: "001" }, null, 2));
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("200 OK");
+  await page
+    .getByRole("link", { name: "Enter portfolio", exact: true })
+    .click();
   await expect(page).toHaveURL("/portfolio");
   await expect(page.locator("#hero-title")).toHaveCSS("clip-path", "none");
   await expect(page.locator(".site-shell")).not.toHaveAttribute(

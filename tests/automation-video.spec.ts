@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import { gallery } from "../src/data/gallery";
 
 for (const width of [390, 768, 1440]) {

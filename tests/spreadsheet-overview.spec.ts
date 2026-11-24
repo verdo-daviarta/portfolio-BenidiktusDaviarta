@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import { getSpreadsheetOverviewModel } from "../src/components/spreadsheet-overview";
 
 test("spreadsheet model has a safe fallback without configured content", () => {

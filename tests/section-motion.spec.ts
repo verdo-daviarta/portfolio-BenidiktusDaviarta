@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 declare global {
   interface Window {
@@ -217,6 +217,12 @@ test("section content remains visible without JavaScript", async ({
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
+    await context.request.post(
+      `${process.env.QA_BASE_URL ?? "http://127.0.0.1:3100"}/api/entry-test`,
+      {
+        data: { visitor: "guest", id: "001" },
+      },
+    );
     const page = await context.newPage();
     await page.goto(
       `${process.env.QA_BASE_URL ?? "http://127.0.0.1:3100"}/portfolio`,

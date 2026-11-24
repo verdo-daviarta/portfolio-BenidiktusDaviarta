@@ -1,11 +1,26 @@
-import { SpotlightButton } from "@/components/spotlight-button";
-import { profile } from "@/data/profile";
+import { EntryApiTest } from "@/components/entry-api-test";
+import { portfolioDestination } from "@/lib/entry-test";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string | string[] }>;
+}) {
+  const { next } = await searchParams;
+  const destination = portfolioDestination(
+    typeof next === "string" ? next : null,
+  );
   return (
     <main id="main-content" className="entry-page">
-      <h1 className="sr-only">{profile.name} portfolio</h1>
-      <SpotlightButton />
+      <div className="entry-page-content">
+        <EntryApiTest destination={destination} />
+        <noscript>
+          <p>
+            Enable JavaScript to send this API request, or use Skip test to
+            enter the portfolio.
+          </p>
+        </noscript>
+      </div>
     </main>
   );
 }

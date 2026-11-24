@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 test("hero supporting text aligns with the description and context stays 14px", async ({
   page,
