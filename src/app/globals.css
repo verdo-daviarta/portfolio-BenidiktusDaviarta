@@ -223,14 +223,10 @@ dd {
   transform: translateY(0);
 }
 .site-header {
-  --header-bg: #252922;
-  --ink: #f7f7f2;
-  --accent: #ec9bb5;
   position: sticky;
   top: 0;
   z-index: 30;
-  background: var(--header-bg);
-  color: var(--ink);
+  background: var(--paper);
   /* border-bottom: 1px solid var(--line); */
 }
 .header-inner {
@@ -315,7 +311,6 @@ dd {
   color: var(--accent);
 }
 .hero-switch {
-  --hero-cue-offset: 27px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -329,33 +324,12 @@ dd {
   outline-offset: -3px;
 }
 .hero-name-button {
+  white-space: pre-line;
   display: inline-block;
-  max-width: 100%;
-  padding: 0 4px calc(var(--hero-cue-offset) + 4px) 0;
+  padding: 0;
   font: inherit;
   letter-spacing: inherit;
   text-align: left;
-}
-.hero-name-last-line {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  white-space: nowrap;
-}
-.hero-name-cue {
-  position: relative;
-  width: 84px;
-  aspect-ratio: 2357 / 1272;
-  margin-bottom: calc(-1 * var(--hero-cue-offset));
-  overflow: hidden;
-}
-.hero-name-cue img {
-  position: absolute;
-  /* Crop the transparent padding around the supplied art. */
-  inset: -9.67% auto auto -8.36%;
-  width: 114.94%;
-  max-width: none;
-  height: auto;
 }
 .hero-text-panel,
 .hero-portrait-panel {
@@ -438,7 +412,7 @@ dd {
 }
 .hero-role {
   font-size: 17px;
-  margin-top: 8px;
+  margin-top: 25px;
   line-height: 1.7;
   letter-spacing: -0.02em;
 }
@@ -471,7 +445,7 @@ dd {
   (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
 ) {
   .site-header {
-    background-color: color-mix(in srgb, var(--header-bg) 94%, transparent);
+    background-color: rgb(247 247 244 / 94%);
     border-bottom-color: rgb(215 204 235 / 22%);
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     backdrop-filter: blur(16px) saturate(120%);
@@ -492,7 +466,7 @@ dd {
       backdrop-filter: none;
     }
     .site-header {
-      background-color: var(--header-bg);
+      background-color: var(--paper);
     }
     .button-dark {
       background-color: #242824;
@@ -2408,10 +2382,8 @@ dd {
   .hero-intro h1 {
     font-size: clamp(54px, 14vw, 78px);
   }
-  .hero-switch {
-    --hero-cue-offset: 22px;
-  }
   .hero-role {
+    margin-top: 22px;
     font-size: 15px;
   }
   .hero-intro .button {
