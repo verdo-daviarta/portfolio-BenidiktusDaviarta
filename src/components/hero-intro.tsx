@@ -22,6 +22,8 @@ export function HeroIntro() {
     setShowPortrait(visible);
   }
 
+  const [firstName, ...remainingNames] = profile.name.split(" ");
+
   return (
     <div
       className="hero-intro hero-switch"
@@ -43,8 +45,24 @@ export function HeroIntro() {
             title="Show portrait"
             onClick={() => togglePortrait(true)}
           >
-            {profile.name.replace(" ", "\n")}
-            <span className="name-period">.</span>
+            {firstName}{" "}
+            <span className="hero-name-last-line">
+              <span>
+                {remainingNames.join(" ")}
+                <span className="name-period">.</span>
+              </span>
+              <span className="hero-name-cue" aria-hidden="true">
+                <Image
+                  src="/profile-click.png"
+                  alt=""
+                  width={2709}
+                  height={1766}
+                  sizes="97px"
+                  loading="eager"
+                  draggable={false}
+                />
+              </span>
+            </span>
           </button>
         </h1>
         <p className="hero-role">
