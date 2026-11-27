@@ -5,7 +5,7 @@ for (const width of [390, 768, 1440]) {
     page,
   }) => {
     await page.setViewportSize({ width, height: 1000 });
-    await page.goto("/portfolio");
+    await page.goto("/portfolio/work-gallery");
     let expectedHeight = 0;
     for (const filter of [
       "All artifacts",

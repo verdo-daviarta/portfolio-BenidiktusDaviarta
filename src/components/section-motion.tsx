@@ -26,7 +26,7 @@ const entrances = [
   },
   {
     selector:
-      ".stack-table, .project-index, .landing-gallery-mobile, .detail-facts, .project-media-layout, .detail-section, .detail-description",
+      ".stack-table, .project-index, .directory-grid, .landing-gallery-mobile, .detail-facts, .project-media-layout, .detail-section, .detail-description",
     frames: { transform: ["translateY(20px)", "none"] },
     duration: 0.7,
   },

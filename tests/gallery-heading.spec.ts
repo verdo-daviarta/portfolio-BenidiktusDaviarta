@@ -1,85 +1,57 @@
 import { test, expect } from "./fixtures";
+import AxeBuilder from "@axe-core/playwright";
+import { gallery } from "../src/data/gallery";
+import { portfolioSections } from "../src/data/portfolio-sections";
 
 for (const width of [390, 768, 1440]) {
-  test(`Work gallery heading matches Quality in context at ${width}px`, async ({
+  test(`portfolio directory and detail pages work at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/portfolio");
-    await page.evaluate(() => document.fonts.ready);
-    const referenceTitle = page.getByRole("heading", {
-      name: "Quality in context.",
-      level: 2,
-      exact: true,
-    });
-    const galleryTitle = page.getByRole("heading", {
-      name: "Work gallery.",
-      level: 2,
-      exact: true,
-    });
-    await expect(galleryTitle).toHaveCount(1);
-    const reference = page
-      .locator(".section-heading")
-      .filter({ has: referenceTitle });
-    const heading = page.locator(".work-gallery > .section-heading");
-    await expect(heading).toHaveCount(1);
-    await expect(page.locator(".section-accent")).toHaveCount(0);
-    for (const section of await page.locator(".section-heading").all()) {
-      await expect(section.getByRole("heading")).toHaveCSS(
-        "text-align",
-        "center",
+    await expect(page.locator(".directory-card")).toHaveCount(4);
+    await expect(page.locator(".work-gallery")).toHaveCount(0);
+    for (const section of portfolioSections) {
+      const card = page.locator(
+        `.directory-card[href="/portfolio/${section.slug}"]`,
       );
-      const description = section.locator(".section-description");
-      await expect(description).toHaveCSS("text-align", "center");
-      const { sectionCenter, descriptionCenter } = await description.evaluate(
-        (element) => {
-          const parent = element.parentElement!.getBoundingClientRect();
-          const paragraph = element.getBoundingClientRect();
-          return {
-            sectionCenter: parent.x + parent.width / 2,
-            descriptionCenter: paragraph.x + paragraph.width / 2,
-          };
-        },
+      await card.click();
+      await expect(page).toHaveURL(`/portfolio/${section.slug}`);
+      await expect(page.getByRole("heading", { level: 1 })).toContainText(
+        section.title,
       );
-      expect(descriptionCenter).toBeCloseTo(sectionCenter, 1);
-    }
-    await expect(heading.locator(".section-description")).toHaveText(
-      "Test plans, screenshots, automation, and the work behind a release. Select an artifact to view its preview.",
-    );
-    for (const [actual, expected, properties] of [
-      [heading, reference, ["text-align", "margin-bottom"]],
-      [
-        galleryTitle,
-        referenceTitle,
-        ["font-size", "font-weight", "letter-spacing", "line-height", "color"],
-      ],
-      [
-        heading.locator(".section-description"),
-        reference.locator(".section-description"),
-        ["font-size", "line-height", "max-width", "margin-top", "color"],
-      ],
-    ] as const) {
-      for (const property of properties) {
-        const referenceValue = await expected.evaluate(
-          (element, name) => getComputedStyle(element).getPropertyValue(name),
-          property,
+      if (section.slug === "work-gallery") {
+        await expect(page.locator(".gallery-item")).toHaveCount(gallery.length);
+        await page.getByRole("button", { name: "Source", exact: true }).click();
+        await expect(page.locator(".gallery-item")).toHaveCount(
+          gallery.filter((item) => item.type === "repository").length,
         );
-        await expect(actual).toHaveCSS(property, referenceValue);
+        await page.locator(".gallery-preview").first().click();
+        await expect(page.getByRole("dialog")).toBeVisible();
+        await page.keyboard.press("Escape");
       }
+      if (section.slug === "certifications") {
+        await expect(
+          page.getByText("Certificates have not been added yet.", {
+            exact: true,
+          }),
+        ).toBeVisible();
+      }
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth > innerWidth,
+        ),
+      ).toBe(false);
+      const audit = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+        .analyze();
+      expect(audit.violations).toEqual([]);
+      await page
+        .getByRole("link", { name: "Back to portfolio", exact: true })
+        .click();
+      await expect(page).toHaveURL("/portfolio#explore");
     }
-    expect((await galleryTitle.boundingBox())!.x).toBeCloseTo(
-      (await referenceTitle.boundingBox())!.x,
-      1,
-    );
-    expect(
-      await page.evaluate(
-        () =>
-          document.documentElement.scrollWidth <=
-          document.documentElement.clientWidth,
-      ),
-    ).toBe(true);
-
-    // The compact project-overview sidebar must retain its existing heading.
     await page.goto("/projects/command-center");
     await expect(
       page.getByRole("heading", {
@@ -88,8 +60,19 @@ for (const width of [390, 768, 1440]) {
         level: 2,
       }),
     ).toHaveClass("sidebar-gallery-heading");
-    await expect(page.locator(".work-gallery > .section-heading")).toHaveCount(
-      0,
-    );
   });
 }
+
+test("gallery deep links resume after entry and unknown sections return 404", async ({
+  page,
+  context,
+}) => {
+  await context.clearCookies();
+  await page.goto("/portfolio/work-gallery");
+  await expect(page).toHaveURL(/next=/);
+  await page.getByRole("button", { name: "Skip test", exact: true }).click();
+  await expect(page).toHaveURL("/portfolio/work-gallery");
+  await expect(page.locator(".gallery-item")).toHaveCount(gallery.length);
+  const response = await page.goto("/portfolio/unknown-section");
+  expect(response?.status()).toBe(404);
+});

@@ -7,7 +7,7 @@ for (const width of [360, 390, 430]) {
   }) => {
     await page.setViewportSize({ width, height: 800 });
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/portfolio");
+    await page.goto("/portfolio/work-gallery");
     const viewport = page.locator(".landing-gallery-mobile");
     for (const filter of [
       "All artifacts",
@@ -75,12 +75,12 @@ for (const width of [360, 390, 430]) {
 }
 
 for (const width of [360, 390, 430]) {
-  test(`mobile gallery leaves Contact reachable at ${width}px`, async ({
+  test(`mobile gallery keeps scrolling and previews usable at ${width}px`, async ({
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.setViewportSize({ width, height: 800 });
-    await page.goto("/portfolio");
+    await page.goto("/portfolio/work-gallery");
     const scroller = page.getByRole("region", {
       name: "Work Gallery artifacts",
       exact: true,
@@ -132,8 +132,6 @@ for (const width of [360, 390, 430]) {
       .poll(() => page.evaluate(() => window.scrollY))
       .toBeGreaterThan(before);
     expect(await scroller.evaluate((element) => element.scrollTop)).toBe(0);
-    await page.locator("#contact").scrollIntoViewIfNeeded();
-    await expect(page.locator("#contact h2")).toBeInViewport();
     await page.getByRole("button", { name: "Images", exact: true }).click();
     await expect
       .poll(() => scroller.evaluate((element) => element.scrollLeft))
@@ -164,7 +162,7 @@ test("gallery restores the desktop grid after resizing from mobile", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 800 });
-  await page.goto("/portfolio");
+  await page.goto("/portfolio/work-gallery");
   const scroller = page.getByRole("region", {
     name: "Work Gallery artifacts",
     exact: true,

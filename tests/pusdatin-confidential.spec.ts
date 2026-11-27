@@ -103,6 +103,7 @@ test("PUSDATIN displays only illustrated confidentiality notices, not project ev
     "src",
     project.thumbnail!,
   );
+  await page.goto("/portfolio/work-gallery");
   await page.getByRole("button", { name: "Images", exact: true }).click();
   for (const item of notices) {
     await expect(

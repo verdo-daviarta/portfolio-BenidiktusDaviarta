@@ -142,7 +142,7 @@ test("project rows expand one at a time, collapse, and retain overview navigatio
 test("gallery filters, keyboard preview, focus trap, and return focus", async ({
   page,
 }) => {
-  await page.goto("/portfolio");
+  await page.goto("/portfolio/work-gallery");
   await expect(page.locator(".gallery-item")).toHaveCount(gallery.length);
   await page.getByRole("button", { name: "Spreadsheets", exact: true }).click();
   await expect(page.locator(".gallery-item")).toHaveCount(
@@ -198,7 +198,7 @@ test("all spreadsheet cards use the standard table model and Test planning shows
 }) => {
   for (const width of [390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/portfolio");
+    await page.goto("/portfolio/work-gallery");
     await page
       .getByRole("button", { name: "Spreadsheets", exact: true })
       .click();
@@ -298,7 +298,7 @@ test("landing gallery scrolls after six cards and removes the limit for filtered
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/portfolio");
+  await page.goto("/portfolio/work-gallery");
   const scroller = page.getByRole("region", { name: "Work Gallery artifacts" });
   const cards = scroller.locator(".gallery-item");
   await expect(cards).toHaveCount(gallery.length);
@@ -738,7 +738,7 @@ test("Tekfunghan uses the student dashboard hero and previews safe representativ
       await expect(trigger).toBeFocused();
     }
   }
-  await page.goto("/portfolio");
+  await page.goto("/portfolio/work-gallery");
   await page.getByRole("button", { name: "Images", exact: true }).click();
   for (const item of screenshots) {
     await expect(
@@ -900,7 +900,7 @@ test("Bahasa uses the admin hero and previews representative Admin Panel and VR 
     await page.keyboard.press("Escape");
   }
 
-  await page.goto("/portfolio");
+  await page.goto("/portfolio/work-gallery");
   await page.getByRole("button", { name: "Images", exact: true }).click();
   for (const item of screenshots) {
     await expect(
@@ -914,9 +914,12 @@ test("AR issue document appears on the landing gallery and Bela Negara with a sa
 }) => {
   const documentUrl =
     "https://docs.google.com/document/d/1HY3UR9OErT7YvaGcMs3tYiWyV2cr2jHf-WLomZ5STB8/edit?usp=sharing";
-  for (const route of ["/portfolio", "/projects/pusdiklat-bela-negara"]) {
+  for (const route of [
+    "/portfolio/work-gallery",
+    "/projects/pusdiklat-bela-negara",
+  ]) {
     await page.goto(route);
-    if (route === "/portfolio") {
+    if (route === "/portfolio/work-gallery") {
       await page
         .getByRole("button", { name: "Documents", exact: true })
         .click();
@@ -993,9 +996,12 @@ test("document overview keeps a readable issue excerpt and usable preview at res
 }) => {
   for (const width of [390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const route of ["/portfolio", "/projects/pusdiklat-bela-negara"]) {
+    for (const route of [
+      "/portfolio/work-gallery",
+      "/projects/pusdiklat-bela-negara",
+    ]) {
       await page.goto(route);
-      if (route === "/portfolio") {
+      if (route === "/portfolio/work-gallery") {
         await page
           .getByRole("button", { name: "Documents", exact: true })
           .click();
@@ -1055,9 +1061,12 @@ test("Data Archive sheet has a readable table overview and opens the exact tab",
     "https://docs.google.com/spreadsheets/d/1PNT3h3j_aFL7UaqpJPOTVkDDPNO7Xi4v7qiGB7f4LeA/edit?gid=352178411#gid=352178411&range=A1:B1";
   for (const width of [390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const route of ["/portfolio", "/projects/pusdiklat-bela-negara"]) {
+    for (const route of [
+      "/portfolio/work-gallery",
+      "/projects/pusdiklat-bela-negara",
+    ]) {
       await page.goto(route);
-      if (route === "/portfolio") {
+      if (route === "/portfolio/work-gallery") {
         await page
           .getByRole("button", { name: "Spreadsheets", exact: true })
           .click();
@@ -1313,7 +1322,7 @@ for (const width of [390, 1440]) {
         .analyze();
       expect(result.violations).toEqual([]);
     }
-    await page.goto("/portfolio");
+    await page.goto("/portfolio/work-gallery");
     await page
       .getByRole("button", { name: "Preview Test planning", exact: true })
       .click();

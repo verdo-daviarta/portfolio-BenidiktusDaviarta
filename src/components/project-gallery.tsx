@@ -29,9 +29,11 @@ const filters: { id: "all" | ArtifactType; label: string }[] = [
 export function ProjectGallery({
   projectSlug,
   primaryItem,
+  fullPage = false,
 }: {
   projectSlug?: string;
   primaryItem?: GalleryItem;
+  fullPage?: boolean;
 }) {
   const [filter, setFilter] = useState<"all" | ArtifactType>("all");
   const [selected, setSelected] = useState<GalleryItem | null>(null);
@@ -146,13 +148,14 @@ export function ProjectGallery({
           </div>
         ))}
       <div
-        className={`work-gallery${primaryItem ? " work-gallery-sidebar" : ""}`}
+        className={`work-gallery${primaryItem ? " work-gallery-sidebar" : ""}${fullPage ? " work-gallery-page" : ""}`}
       >
         {primaryItem ? (
           <h2 className="sidebar-gallery-heading">Work Gallery</h2>
         ) : (
           <SectionHeading
             id="work-gallery-heading"
+            headingLevel={fullPage ? "h1" : "h2"}
             title="Work gallery."
             description={`${
               projectSlug

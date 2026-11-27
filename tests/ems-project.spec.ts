@@ -186,7 +186,7 @@ for (const width of [390, 768, 1440]) {
       .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
       .analyze();
     expect(audit.violations).toEqual([]);
-    await page.goto("/portfolio");
+    await page.goto("/portfolio/work-gallery");
     await page.getByRole("button", { name: "Images", exact: true }).click();
     for (const item of screenshots) {
       await expect(

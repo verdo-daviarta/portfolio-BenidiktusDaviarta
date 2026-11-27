@@ -49,8 +49,8 @@ for (const width of [390, 1440]) {
       [".stack-table", "transform"],
       ["#projects > .section-heading", "clipPath"],
       [".project-index", "transform"],
-      [".work-gallery > .section-heading", "clipPath"],
-      [".landing-gallery-mobile", "transform"],
+      [".portfolio-directory > .section-heading", "clipPath"],
+      [".directory-grid", "transform"],
       [".contact-grid", "transform"],
       [".footer", "opacity"],
     ]) {
@@ -180,7 +180,7 @@ test("reduced motion skips entrances from the first render", async ({
   await page.locator("#contact").scrollIntoViewIfNeeded();
   expect(await page.evaluate(() => window.sectionEntrances)).toEqual([]);
   await expect(
-    page.getByRole("heading", { name: "Work gallery.", exact: true }),
+    page.getByRole("heading", { name: "More about my work.", exact: true }),
   ).toHaveCSS("clip-path", "none");
 });
 

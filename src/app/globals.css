@@ -223,10 +223,14 @@ dd {
   transform: translateY(0);
 }
 .site-header {
+  --header-bg: #252922;
+  --ink: #f7f7f2;
+  --accent: #ec9bb5;
   position: sticky;
   top: 0;
   z-index: 30;
-  background: var(--paper);
+  background: var(--header-bg);
+  color: var(--ink);
   /* border-bottom: 1px solid var(--line); */
 }
 .header-inner {
@@ -311,6 +315,7 @@ dd {
   color: var(--accent);
 }
 .hero-switch {
+  --hero-cue-offset: 27px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -324,12 +329,33 @@ dd {
   outline-offset: -3px;
 }
 .hero-name-button {
-  white-space: pre-line;
   display: inline-block;
-  padding: 0;
+  max-width: 100%;
+  padding: 0 4px calc(var(--hero-cue-offset) + 4px) 0;
   font: inherit;
   letter-spacing: inherit;
   text-align: left;
+}
+.hero-name-last-line {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+.hero-name-cue {
+  position: relative;
+  width: 84px;
+  aspect-ratio: 2357 / 1272;
+  margin-bottom: calc(-1 * var(--hero-cue-offset));
+  overflow: hidden;
+}
+.hero-name-cue img {
+  position: absolute;
+  /* Crop the transparent padding around the supplied art. */
+  inset: -9.67% auto auto -8.36%;
+  width: 114.94%;
+  max-width: none;
+  height: auto;
 }
 .hero-text-panel,
 .hero-portrait-panel {
@@ -412,7 +438,7 @@ dd {
 }
 .hero-role {
   font-size: 17px;
-  margin-top: 25px;
+  margin-top: 8px;
   line-height: 1.7;
   letter-spacing: -0.02em;
 }
@@ -445,7 +471,7 @@ dd {
   (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
 ) {
   .site-header {
-    background-color: rgb(247 247 244 / 94%);
+    background-color: color-mix(in srgb, var(--header-bg) 94%, transparent);
     border-bottom-color: rgb(215 204 235 / 22%);
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     backdrop-filter: blur(16px) saturate(120%);
@@ -466,7 +492,7 @@ dd {
       backdrop-filter: none;
     }
     .site-header {
-      background-color: var(--paper);
+      background-color: var(--header-bg);
     }
     .button-dark {
       background-color: #242824;
@@ -2039,7 +2065,7 @@ dd {
 .work-gallery-sidebar {
   min-width: 0;
   padding-top: 0;
-  container-type: inline-size;
+  container: gallery-sidebar / inline-size;
 }
 .sidebar-gallery-heading {
   margin-bottom: 12px;
@@ -2075,7 +2101,7 @@ dd {
   margin-bottom: 22px;
   flex-wrap: wrap;
 }
-@container (max-width: 240px) {
+@container gallery-sidebar (max-width: 240px) {
   .repository-overview.compact .repository-window-dots,
   .repository-overview.compact .repository-editor {
     display: none;
@@ -2382,8 +2408,10 @@ dd {
   .hero-intro h1 {
     font-size: clamp(54px, 14vw, 78px);
   }
+  .hero-switch {
+    --hero-cue-offset: 22px;
+  }
   .hero-role {
-    margin-top: 22px;
     font-size: 15px;
   }
   .hero-intro .button {
@@ -2628,6 +2656,223 @@ dd {
   *::after {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+.portfolio-directory {
+  margin-top: var(--space-section);
+}
+.directory-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px 20px;
+}
+.directory-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 20px;
+  min-width: 0;
+  padding: 20px 24px;
+  border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  border-radius: var(--radius);
+  background: var(--paper);
+  transition: border-color var(--duration);
+}
+.directory-card:not(.directory-card-featured) {
+  border-radius: 7px;
+}
+.directory-card:is(:hover, :focus-visible) {
+  border-color: var(--accent);
+  background: var(--accent-fill);
+}
+.directory-card:is(:hover, :focus-visible)
+  :is(.directory-card-copy h3, .directory-card-copy p, .directory-arrow) {
+  color: var(--on-accent);
+}
+.directory-card h3 {
+  font-size: 20px;
+  letter-spacing: -0.035em;
+}
+.directory-card-copy p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.directory-card-featured {
+  grid-row: span 3;
+  align-content: start;
+  padding: clamp(20px, 2.5vw, 32px);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--paper));
+}
+.directory-card-featured h3 {
+  font-size: 23px;
+  letter-spacing: -0.045em;
+}
+.directory-preview {
+  --preview-step: clamp(17px, 2.4vw, 34px);
+
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  grid-column: 1 / -1;
+  width: 90%;
+  margin: 14px auto 4px;
+  padding-top: calc(2 * var(--preview-step));
+}
+.directory-preview-image,
+.directory-preview-repository {
+  overflow: hidden;
+  border-radius: 7px;
+}
+.directory-preview-image {
+  position: absolute;
+  inset: 0 24% auto 0;
+  aspect-ratio: 16 / 9;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  background: var(--paper);
+  box-shadow:
+    0 1px 3px rgb(37 41 34 / 18%),
+    -3px 5px 9px -2px rgb(37 41 34 / 20%);
+}
+.directory-preview-image + .directory-preview-image {
+  inset: var(--preview-step) 17% auto 6%;
+  box-shadow:
+    0 2px 4px rgb(37 41 34 / 21%),
+    -5px 9px 14px -3px rgb(37 41 34 / 26%);
+}
+.directory-preview-image img {
+  object-fit: cover;
+  object-position: left top;
+}
+.directory-preview-repository {
+  position: relative;
+  margin-left: 12%;
+  box-shadow:
+    0 2px 5px rgb(37 41 34 / 25%),
+    -7px 12px 21px -4px rgb(37 41 34 / 35%);
+}
+.directory-preview-repository .repository-overview.compact {
+  min-height: 49.5cqi;
+  padding: clamp(12px, 3cqi, 18px);
+}
+.directory-preview-repository .repository-overview.compact .repository-title {
+  font-size: clamp(16px, 4cqi, 22px);
+}
+.directory-preview-repository
+  .repository-overview.compact
+  :is(.repository-chrome, .repository-owner, .repository-frameworks li, .repository-tree li, .repository-footnote) {
+  font-size: clamp(10px, 2.3cqi, 12px);
+}
+.directory-preview-repository .repository-overview.compact .repository-footnote {
+  padding: 10px 0 0;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .directory-card-featured:hover
+    :is(.directory-preview-image, .directory-preview-repository) {
+    animation: directory-preview-lift 1800ms ease-in-out
+      var(--preview-lift-delay, 0ms) infinite;
+  }
+  .directory-preview-image {
+    --preview-lift: -3px;
+  }
+  .directory-preview-image + .directory-preview-image {
+    --preview-lift: -5px;
+    --preview-lift-delay: 60ms;
+  }
+  .directory-preview-repository {
+    --preview-lift: -7px;
+    --preview-lift-delay: 120ms;
+  }
+}
+@keyframes directory-preview-lift {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(var(--preview-lift));
+  }
+}
+.directory-arrow {
+  color: var(--accent);
+  transition: transform var(--duration);
+}
+.directory-card:is(:hover, :focus-visible) .directory-arrow {
+  transform: translateX(4px);
+}
+.portfolio-section-page {
+  padding-block: 40px 64px;
+  min-height: calc(100svh - 200px);
+}
+.portfolio-page-heading {
+  margin-top: 36px;
+}
+.section-heading h1 {
+  font-size: clamp(32px, 4vw, 42px);
+  letter-spacing: -0.045em;
+  line-height: 1.2;
+}
+.work-gallery-page {
+  margin-top: 36px;
+  padding-top: 0;
+}
+.portfolio-empty,
+.education-record,
+.credential-record {
+  padding: 32px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.portfolio-empty {
+  color: var(--muted);
+  text-align: center;
+}
+.education-record h2,
+.credential-record h2 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.credential-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 24px;
+}
+.credential-record img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+.credential-record .button {
+  margin-top: 20px;
+}
+.social-profile-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 80px;
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.social-profile-list a:hover {
+  color: var(--accent);
+}
+.social-profile-list span {
+  font-size: 13px;
+}
+@media (max-width: 800px) {
+  .directory-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+  .directory-card-featured {
+    grid-row: auto;
+  }
+  .directory-card {
+    padding-inline: 20px;
   }
 }
 

@@ -20,6 +20,11 @@ for (const width of [390, 768, 1440]) {
       await expect(page.locator(".wordmark-name")).toHaveText(profile.name);
       await expect(page.locator("h1")).toHaveAccessibleName(profile.name);
       await expect(name).toHaveText(`${profile.name}.`);
+      const cue = name.locator(".hero-name-cue");
+      await expect(cue).toBeVisible();
+      const cueWidth = (await cue.boundingBox())!.width;
+      expect(cueWidth).toBeGreaterThan(0);
+      expect(cueWidth).toBeLessThanOrEqual(84);
       const panel = page.locator(".hero-portrait-panel");
       const slogan = page.locator(".hero-portrait-slogan");
       await expect(slogan).not.toBeVisible();

@@ -37,7 +37,7 @@ for (const width of [390, 768, 1440]) {
     page,
   }) => {
     await page.setViewportSize({ width, height: 950 });
-    await page.goto("/portfolio");
+    await page.goto("/portfolio/work-gallery");
     for (const project of projects) {
       const filter = page.getByRole("button", {
         name: project.filter,

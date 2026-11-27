@@ -29,11 +29,11 @@ for (const width of [390, 768, 1440]) {
     ]);
     await page.setViewportSize({ width, height: 900 });
     for (const route of [
-      "/portfolio",
+      "/portfolio/work-gallery",
       "/projects/ems-energy-management-system",
     ]) {
       await page.goto(route);
-      if (route === "/portfolio")
+      if (route === "/portfolio/work-gallery")
         await page
           .getByRole("button", { name: "Spreadsheets", exact: true })
           .click();
@@ -87,7 +87,7 @@ for (const width of [390, 768, 1440]) {
     expect(item.repositoryUrl).toBe(repositoryUrl);
     await page.setViewportSize({ width, height: 900 });
     for (const route of [
-      "/portfolio",
+      "/portfolio/work-gallery",
       "/projects/ems-energy-management-system",
     ]) {
       const externalRequests: string[] = [];
@@ -97,7 +97,7 @@ for (const width of [390, 768, 1440]) {
       };
       page.on("request", onRequest);
       await page.goto(route);
-      if (route === "/portfolio")
+      if (route === "/portfolio/work-gallery")
         await page.getByRole("button", { name: "Source", exact: true }).click();
       const trigger = page.getByRole("button", {
         name: `Preview ${item.title}`,

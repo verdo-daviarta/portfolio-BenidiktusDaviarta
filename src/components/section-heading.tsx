@@ -2,14 +2,16 @@ export function SectionHeading({
   title,
   description,
   id,
+  headingLevel: Heading = "h2",
 }: {
   title: string;
   description?: string;
   id?: string;
+  headingLevel?: "h1" | "h2";
 }) {
   return (
     <div className="section-heading">
-      <h2 id={id}>{title}</h2>
+      <Heading id={id}>{title}</Heading>
       {description && <p className="section-description">{description}</p>}
     </div>
   );
